@@ -17,6 +17,7 @@ const languages = [
   { label: "🇨🇳 中文", value: "zh" },
   { label: "🇫🇷 Français", value: "fr" },
   { label: "🇵🇹 Português", value: "pt" },
+  { label: "🇸🇦 العربية", value: "ar" },
 ];
 
 export const LanguageSwitcher = () => {
