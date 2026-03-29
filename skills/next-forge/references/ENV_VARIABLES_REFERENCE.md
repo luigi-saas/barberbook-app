@@ -143,28 +143,28 @@ All environment variables are managed through `keys.ts` files in each package an
 
 ---
 
-## Available Packages (Not Yet Extended in Apps)
+## All Providers & Integration Services
 
-| Provider | Service | Variables | Required |
-|----------|---------|-----------|----------|
-| **auth** | Clerk | `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, auth URLs | ❌ Optional |
-| **analytics** | PostHog + Google Analytics + Vercel Web Analytics | `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `NEXT_PUBLIC_GA_MEASUREMENT_ID` | ❌ Optional |
-| **cms** | BaseHub | `BASEHUB_TOKEN` | ❌ Optional |
-| **database** | PostgreSQL (Neon) | `DATABASE_URL` | ✅ **Required** |
-| **email** | Resend + React Email | `RESEND_TOKEN`, `RESEND_FROM` | ❌ Optional |
-| **feature-flags** | Vercel Flags + PostHog | `FLAGS_SECRET` | ❌ Optional |
-| **payments** | Stripe | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ❌ Optional |
-| **notifications** | Knock | `KNOCK_SECRET_API_KEY`, `NEXT_PUBLIC_KNOCK_API_KEY`, `NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID` | ❌ Optional |
-| **collaboration** | Liveblocks | `LIVEBLOCKS_SECRET` | ❌ Optional |
-| **webhooks** | Svix | `SVIX_TOKEN` | ❌ Optional |
-| **security** | Arcjet | `ARCJET_KEY` | ❌ Optional |
-| **storage** | Vercel Blob | `BLOB_READ_WRITE_TOKEN` | ❌ Optional |
-| **rate-limit** | Upstash Redis | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | ❌ Optional |
-| **observability** | Sentry + BetterStack | `SENTRY_ORG`, `SENTRY_PROJECT`, `NEXT_PUBLIC_SENTRY_DSN`, `BETTERSTACK_API_KEY`, `BETTERSTACK_URL` | ❌ Optional |
-| **internationalization** | Languine | `LANGUINE_PROJECT_ID` | ❌ Optional |
-| **cron** | Vercel Cron | None | ✅ Built-in |
-| **seo** | Sitemap + JSON-LD + Security Headers | None | ✅ Built-in |
-| **design-system** | shadcn/ui | None | ✅ Built-in |
+| Provider | Service | Variables | Required | Link |
+|----------|---------|-----------|----------|------|
+| **auth** | Clerk | `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, auth URLs | ❌ Optional | https://clerk.com |
+| **analytics** | PostHog + Google Analytics + Vercel Web Analytics | `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`, `NEXT_PUBLIC_GA_MEASUREMENT_ID` | ❌ Optional | [PostHog](https://posthog.com) / [GA](https://analytics.google.com) |
+| **cms** | BaseHub | `BASEHUB_TOKEN` | ❌ Optional | https://basehub.com |
+| **database** | PostgreSQL (Neon) | `DATABASE_URL` | ✅ **Required** | https://neon.tech |
+| **email** | Resend + React Email | `RESEND_TOKEN`, `RESEND_FROM` | ❌ Optional | https://resend.com |
+| **feature-flags** | Vercel Flags + PostHog | `FLAGS_SECRET` | ❌ Optional | https://vercel.com/features/flags |
+| **payments** | Stripe | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | ❌ Optional | https://stripe.com |
+| **notifications** | Knock | `KNOCK_SECRET_API_KEY`, `NEXT_PUBLIC_KNOCK_API_KEY`, `NEXT_PUBLIC_KNOCK_FEED_CHANNEL_ID` | ❌ Optional | https://knock.app |
+| **collaboration** | Liveblocks | `LIVEBLOCKS_SECRET` | ❌ Optional | https://liveblocks.io |
+| **webhooks** | Svix | `SVIX_TOKEN` | ❌ Optional | https://svix.com |
+| **security** | Arcjet | `ARCJET_KEY` | ❌ Optional | https://arcjet.com |
+| **storage** | Vercel Blob | `BLOB_READ_WRITE_TOKEN` | ❌ Optional | https://vercel.com/storage/blob |
+| **rate-limit** | Upstash Redis | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | ❌ Optional | https://upstash.com |
+| **observability** | Sentry + BetterStack | `SENTRY_ORG`, `SENTRY_PROJECT`, `NEXT_PUBLIC_SENTRY_DSN`, `BETTERSTACK_API_KEY`, `BETTERSTACK_URL` | ❌ Optional | [Sentry](https://sentry.io) / [BetterStack](https://betterstack.com) |
+| **internationalization** | Languine | `LANGUINE_PROJECT_ID` | ❌ Optional | https://languine.ai |
+| **cron** | Vercel Cron | None | ✅ Built-in | https://vercel.com/docs/cron-jobs |
+| **seo** | Sitemap + JSON-LD + Security Headers | None | ✅ Built-in | Built-in |
+| **design-system** | shadcn/ui | None | ✅ Built-in | https://ui.shadcn.com |
 
 ---
 
