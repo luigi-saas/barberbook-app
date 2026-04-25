@@ -100,6 +100,37 @@
             }
           }
         ]
+      },
+      "faq": {
+        "title": "Perguntas Frequentes, Respostas de Especialistas",
+        "description": "Obtenha respostas rápidas para suas perguntas mais urgentes sobre nossa plataforma. Compilamos tudo o que você precisa saber para transformar suas operações comerciais.",
+        "cta": "Alguma dúvida? Entre em contato",
+        "items": [
+          {
+            "question": "O que é a plataforma?",
+            "answer": "A plataforma é uma solução de negociação que permite negociar com confiança."
+          },
+          {
+            "question": "Qual é a segurança da plataforma?",
+            "answer": "Nossa plataforma emprega medidas de segurança de nível empresarial, incluindo criptografia de ponta a ponta e autenticação multifator."
+          },
+          {
+            "question": "Quais recursos de negociação estão disponíveis?",
+            "answer": "A plataforma oferece ferramentas abrangentes incluindo dados de mercado em tempo real, gráficos avançados e estratégias de negociação automatizadas."
+          },
+          {
+            "question": "Como funciona o preço?",
+            "answer": "Oferecemos níveis de preços flexíveis projetados para crescer com as necessidades do seu negócio."
+          },
+          {
+            "question": "Que tipo de suporte vocês oferecem?",
+            "answer": "Nossa equipe de suporte dedicada está disponível 24 horas por dia, 7 dias por semana, por vários canais incluindo chat ao vivo, e-mail e telefone."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Comece Sua Transformação Comercial",
+        "description": "Junte-se a milhares de empresas visionárias que já modernizaram suas operações. Nossa plataforma oferece as ferramentas, suporte e eficiência que você precisa para ter sucesso."
       }
     }
   }

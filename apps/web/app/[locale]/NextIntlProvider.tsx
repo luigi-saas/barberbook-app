@@ -1,22 +1,17 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { ReactNode } from 'react';
-import { notFound } from 'next/navigation';
-import { headers } from 'next/headers';
+'use client';
 
-export default async function NextIntlProviderWrapper({
+import { NextIntlClientProvider } from 'next-intl';
+import type { ReactNode } from 'react';
+
+export default function NextIntlProviderWrapper({
   children,
-  locale
+  locale,
+  messages,
 }: {
   children: ReactNode;
   locale: string;
+  messages: Record<string, unknown>;
 }) {
-  let messages;
-  try {
-    messages = (await import(`../../messages/${locale}.json`)).default;
-  } catch (error) {
-    notFound();
-  }
-
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       {children}

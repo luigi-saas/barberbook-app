@@ -100,6 +100,37 @@
             }
           }
         ]
+      },
+      "faq": {
+        "title": "Questions fréquentes, réponses d'experts",
+        "description": "Obtenez des réponses rapides à vos questions les plus urgentes concernant notre plateforme. Nous avons compilé tout ce que vous devez savoir pour transformer vos opérations commerciales.",
+        "cta": "Des questions ? Contactez-nous",
+        "items": [
+          {
+            "question": "Qu'est-ce que la plateforme ?",
+            "answer": "La plateforme est une solution de trading qui vous permet de trader en toute confiance."
+          },
+          {
+            "question": "Quelle est la sécurité de la plateforme ?",
+            "answer": "Notre plateforme utilise des mesures de sécurité de niveau entreprise, incluant le chiffrement de bout en bout et l'authentification multifacteur."
+          },
+          {
+            "question": "Quelles fonctionnalités de trading sont disponibles ?",
+            "answer": "La plateforme offre des outils complets incluant des données de marché en temps réel, des graphiques avancés et des stratégies de trading automatisées."
+          },
+          {
+            "question": "Comment fonctionne la tarification ?",
+            "answer": "Nous proposons des niveaux de tarification flexibles conçus pour évoluer avec les besoins de votre entreprise."
+          },
+          {
+            "question": "Quel type de support proposez-vous ?",
+            "answer": "Notre équipe de support dédiée est disponible 24h/24 et 7j/7 via plusieurs canaux incluant le chat en direct, l'email et le téléphone."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Commencez votre transformation commerciale",
+        "description": "Rejoignez des milliers d'entreprises avant-gardistes qui ont déjà modernisé leurs opérations. Notre plateforme offre les outils, le support et l'efficacité dont vous avez besoin pour réussir."
       }
     }
   }

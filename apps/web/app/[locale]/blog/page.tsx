@@ -2,7 +2,7 @@ import { blog } from "@repo/cms";
 import { Feed } from "@repo/cms/components/feed";
 import { Image } from "@repo/cms/components/image";
 import { cn } from "@repo/design-system/lib/utils";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import type { Blog, WithContext } from "@repo/seo/json-ld";
 import { JsonLd } from "@repo/seo/json-ld";
 import { createMetadata } from "@repo/seo/metadata";
@@ -11,20 +11,20 @@ import Link from "next/link";
 
 
 interface BlogProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
-
 export const generateMetadata = async ({ params }: BlogProps): Promise<Metadata> => {
-  const { locale } = params;
+  const { locale } = await params;
   const messages = await getMessages({ locale });
   return createMetadata(messages.web.blog.meta);
 };
 
 const BlogIndex = async ({ params }: BlogProps) => {
-  const { locale } = params;
+  const { locale } = await params;
+  setRequestLocale(locale);
   const messages = await getMessages({ locale });
 
   const jsonLd: WithContext<Blog> = {

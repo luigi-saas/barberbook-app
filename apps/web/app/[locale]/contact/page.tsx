@@ -5,20 +5,21 @@ import type { Metadata } from "next";
 import { ContactForm } from "./components/contact-form";
 
 interface ContactProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export const generateMetadata = async ({ params }: ContactProps): Promise<Metadata> => {
-  const { locale } = params;
+  const { locale } = await params;
   const messages = await getMessages({ locale }) as unknown as Dictionary;
   return createMetadata(messages.web.contact.meta);
 };
 
 const Contact = async ({ params }: ContactProps) => {
-  setRequestLocale(params.locale);
-  const messages = await getMessages({ locale: params.locale }) as unknown as Dictionary;
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const messages = await getMessages({ locale }) as unknown as Dictionary;
   return <ContactForm dictionary={messages} />;
 };
 

@@ -7,8 +7,14 @@ import {
   securityMiddleware,
 } from "@repo/security/proxy";
 import { createNEMO } from "@rescale/nemo";
+import createIntlMiddleware from "next-intl/middleware";
 import { type NextProxy, type NextRequest, NextResponse } from "next/server";
 import { env } from "@/env";
+
+const intlMiddleware = createIntlMiddleware({
+  locales: ["en", "fr", "es", "ar", "pt", "de", "zh"],
+  defaultLocale: "en",
+});
 
 export const config = {
   // matcher tells Next.js which routes to run the middleware on. This runs the
@@ -54,15 +60,20 @@ const composedMiddleware = createNEMO(
 
 // Clerk middleware wraps other middleware in its callback
 export default authMiddleware(async (_auth, request, event) => {
-  // Run security headers first
+  // i18n: redirect / → /en (or detected locale) before anything else
+  const intlResponse = intlMiddleware(request as unknown as Parameters<typeof intlMiddleware>[0]);
+  if (intlResponse) {
+    return intlResponse;
+  }
+
+  // Run security headers
   const headersResponse = securityHeaders();
 
-  // Then run composed middleware (i18n + arcjet)
+  // Run composed middleware (arcjet)
   const middlewareResponse = await composedMiddleware(
     request as unknown as NextRequest,
     event
   );
 
-  // Return middleware response if it exists, otherwise headers response
   return middlewareResponse || headersResponse;
 }) as unknown as NextProxy;

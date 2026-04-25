@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
 } from "@repo/design-system/components/ui/navigation-menu";
 import type { Dictionary } from "@repo/internationalization";
-import { Menu, MoveRight, X } from "lucide-react";
+import { Menu, X, MoveRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { env } from "@/env";
@@ -20,6 +20,58 @@ import { LanguageSwitcher } from "./language-switcher";
 interface HeaderProps {
   dictionary: Dictionary;
 }
+
+const MobileMenu = () => {
+  const [isOpen, setOpen] = useState(false);
+  return (
+    <div className="flex w-12 shrink items-end justify-end lg:hidden">
+      <Button onClick={() => setOpen(!isOpen)} variant="ghost">
+        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </Button>
+      {isOpen && (
+        <div className="container absolute top-20 right-0 flex w-full flex-col gap-8 border-t bg-background py-4 shadow-lg">
+          {navigationItems.map((item) => (
+            <div key={item.title}>
+              <div className="flex flex-col gap-2">
+                {item.href ? (
+                  <Link
+                    className="flex items-center justify-between"
+                    href={item.href}
+                    rel={
+                      item.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
+                    target={
+                      item.href.startsWith("http") ? "_blank" : undefined
+                    }
+                  >
+                    <span className="text-lg">{item.title}</span>
+                    <MoveRight className="h-4 w-4 stroke-1 text-muted-foreground" />
+                  </Link>
+                ) : (
+                  <p className="text-lg">{item.title}</p>
+                )}
+                {item.items?.map((subItem) => (
+                  <Link
+                    className="flex items-center justify-between"
+                    href={subItem.href}
+                    key={subItem.title}
+                  >
+                    <span className="text-muted-foreground">
+                      {subItem.title}
+                    </span>
+                    <MoveRight className="h-4 w-4 stroke-1" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const Header = ({ dictionary }: HeaderProps) => {
   const navigationItems = [
@@ -53,7 +105,6 @@ export const Header = ({ dictionary }: HeaderProps) => {
     });
   }
 
-  const [isOpen, setOpen] = useState(false);
   return (
     <header className="sticky top-0 left-0 z-40 w-full border-b bg-background">
       <div className="container relative mx-auto flex min-h-20 flex-row items-center gap-4 lg:grid lg:grid-cols-3">
@@ -147,52 +198,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
             </Link>
           </Button>
         </div>
-        <div className="flex w-12 shrink items-end justify-end lg:hidden">
-          <Button onClick={() => setOpen(!isOpen)} variant="ghost">
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-          {isOpen && (
-            <div className="container absolute top-20 right-0 flex w-full flex-col gap-8 border-t bg-background py-4 shadow-lg">
-              {navigationItems.map((item) => (
-                <div key={item.title}>
-                  <div className="flex flex-col gap-2">
-                    {item.href ? (
-                      <Link
-                        className="flex items-center justify-between"
-                        href={item.href}
-                        rel={
-                          item.href.startsWith("http")
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                        target={
-                          item.href.startsWith("http") ? "_blank" : undefined
-                        }
-                      >
-                        <span className="text-lg">{item.title}</span>
-                        <MoveRight className="h-4 w-4 stroke-1 text-muted-foreground" />
-                      </Link>
-                    ) : (
-                      <p className="text-lg">{item.title}</p>
-                    )}
-                    {item.items?.map((subItem) => (
-                      <Link
-                        className="flex items-center justify-between"
-                        href={subItem.href}
-                        key={subItem.title}
-                      >
-                        <span className="text-muted-foreground">
-                          {subItem.title}
-                        </span>
-                        <MoveRight className="h-4 w-4 stroke-1" />
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <MobileMenu />
       </div>
     </header>
   );

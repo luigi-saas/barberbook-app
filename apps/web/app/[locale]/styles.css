@@ -1,5 +1,45 @@
 @import "@repo/design-system/styles/globals.css";
 
+/* BarberBook brand tokens */
+:root {
+  --bb-gold: #775a19;
+  --bb-gold-container: #c5a059;
+  --bb-gold-muted: rgba(197, 160, 89, 0.2);
+  --bb-charcoal: #1c1b1b;
+  --bb-surface: #fcf9f8;
+  --bb-surface-variant: #f6f3f2;
+  --bb-surface-elevated: #f0eded;
+  --bb-on-surface-muted: #4e4639;
+  --bb-outline: #d1c5b4;
+  --bb-success: #2b6954;
+  --bb-success-container: #adedd3;
+  --bb-error: #ba1a1a;
+  --bb-error-container: #ffdad6;
+  --bb-radius-card: 1.5rem;
+  --bb-radius-button: 1rem;
+  --bb-shadow-card: 0px 12px 40px 0px rgba(28, 27, 27, 0.06);
+  --bb-shadow-button: 0px 10px 15px -3px rgba(119, 90, 25, 0.2), 0px 4px 6px -4px rgba(119, 90, 25, 0.2);
+}
+
+@theme inline {
+  --color-bb-gold: var(--bb-gold);
+  --color-bb-gold-container: var(--bb-gold-container);
+  --color-bb-gold-muted: var(--bb-gold-muted);
+  --color-bb-charcoal: var(--bb-charcoal);
+  --color-bb-surface: var(--bb-surface);
+  --color-bb-surface-variant: var(--bb-surface-variant);
+  --color-bb-surface-elevated: var(--bb-surface-elevated);
+  --color-bb-on-surface-muted: var(--bb-on-surface-muted);
+  --color-bb-outline: var(--bb-outline);
+  --color-bb-success: var(--bb-success);
+  --color-bb-success-container: var(--bb-success-container);
+  --color-bb-error: var(--bb-error);
+  --color-bb-error-container: var(--bb-error-container);
+  --radius-bb-card: var(--bb-radius-card);
+  --radius-bb-button: var(--bb-radius-button);
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+}
+
 .shiki {
   color: var(--shiki-light);
   background-color: var(--shiki-light-bg);

@@ -11,22 +11,22 @@ import { Hero } from "./components/hero";
 import { Stats } from "./components/stats";
 import { Testimonials } from "./components/testimonials";
 
-
 interface HomeProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export const generateMetadata = async ({ params }: HomeProps): Promise<Metadata> => {
-  const { locale } = params;
+  const { locale } = await params;
   const messages = await getMessages({ locale }) as unknown as Dictionary;
   return createMetadata(messages.web.home.meta);
 };
 
 const Home = async ({ params }: HomeProps) => {
-  setRequestLocale(params.locale);
-  const messages = await getMessages({ locale: params.locale }) as unknown as Dictionary;
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const messages = await getMessages({ locale }) as unknown as Dictionary;
   const betaFeature = await showBetaFeature();
 
   return (
