@@ -12,8 +12,8 @@ import { type NextProxy, type NextRequest, NextResponse } from "next/server";
 import { env } from "@/env";
 
 const intlMiddleware = createIntlMiddleware({
-  locales: ["en", "fr", "es", "ar", "pt", "de", "zh"],
-  defaultLocale: "en",
+  locales: ["fr", "en", "ar"],
+  defaultLocale: "fr",
 });
 
 export const config = {

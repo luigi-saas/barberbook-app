@@ -1,5 +1,6 @@
 import { cn } from '@repo/design-system/lib/utils';
 import { MapPin, Star } from 'lucide-react';
+import Link from 'next/link';
 
 type BookingStatus = 'confirmed' | 'pending';
 
@@ -9,8 +10,12 @@ interface BBShopCardProps {
   rating: number;
   imageUrl: string;
   imageAlt?: string;
+  reviewCount?: number;
+  price?: string;
+  priceLabel?: string;
+  viewProfileLabel?: string;
+  viewProfileHref?: string;
   status?: BookingStatus;
-  onViewProfile?: () => void;
   className?: string;
 }
 
@@ -31,8 +36,12 @@ export function BBShopCard({
   rating,
   imageUrl,
   imageAlt = '',
+  reviewCount,
+  price,
+  priceLabel,
+  viewProfileLabel,
+  viewProfileHref,
   status,
-  onViewProfile,
   className,
 }: BBShopCardProps) {
   return (
@@ -55,22 +64,41 @@ export function BBShopCard({
           <span className="font-sans text-xs font-semibold text-bb-charcoal">
             {rating.toFixed(1)}
           </span>
+          {reviewCount !== undefined && (
+            <span className="font-sans text-xs text-bb-on-surface-muted">
+              ({reviewCount})
+            </span>
+          )}
         </div>
       </div>
 
       {/* Body */}
       <div className="flex flex-col gap-4 p-6">
-        {/* Name + location */}
-        <div>
-          <h4 className="font-sans text-lg font-semibold text-bb-charcoal leading-7">
-            {name}
-          </h4>
-          <div className="flex items-center gap-1 mt-0.5">
-            <MapPin className="size-3 text-bb-on-surface-muted shrink-0" />
-            <span className="font-sans text-sm text-bb-on-surface-muted leading-5">
-              {location}
-            </span>
+        {/* Name + location + price */}
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h4 className="font-sans text-lg font-semibold text-bb-charcoal leading-7">
+              {name}
+            </h4>
+            <div className="flex items-center gap-1 mt-0.5">
+              <MapPin className="size-3 text-bb-on-surface-muted shrink-0" />
+              <span className="font-sans text-sm text-bb-on-surface-muted leading-5">
+                {location}
+              </span>
+            </div>
           </div>
+          {price && (
+            <div className="shrink-0 text-right">
+              {priceLabel && (
+                <span className="block font-sans text-[10px] font-bold uppercase tracking-widest text-bb-on-surface-muted">
+                  {priceLabel}
+                </span>
+              )}
+              <span className="font-sans text-base font-extrabold text-bb-espresso-gold">
+                {price}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Status chips */}
@@ -88,14 +116,13 @@ export function BBShopCard({
         )}
 
         {/* CTA */}
-        {onViewProfile && (
-          <button
-            type="button"
-            onClick={onViewProfile}
-            className="w-full rounded-xl bg-bb-gold-muted py-3 font-sans text-sm font-semibold text-[#4e3700] text-center transition hover:opacity-80"
+        {viewProfileHref && (
+          <Link
+            href={viewProfileHref}
+            className="block w-full rounded-xl bg-bb-gold-muted py-3 font-sans text-sm font-semibold text-[#4e3700] text-center transition hover:opacity-80"
           >
-            Voir le Profil
-          </button>
+            {viewProfileLabel ?? 'View Profile'}
+          </Link>
         )}
       </div>
     </div>

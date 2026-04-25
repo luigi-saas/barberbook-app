@@ -1,6 +1,6 @@
 const nextIntlConfig = {
-  locales: ['en', 'fr', 'es', 'ar', 'pt', 'de', 'zh'],
-  defaultLocale: 'en'
+  locales: ['fr', 'en', 'ar'],
+  defaultLocale: 'fr'
 };
 
 module.exports = nextIntlConfig;

@@ -1,20 +1,15 @@
 import { showBetaFeature } from "@repo/feature-flags";
-import type { Dictionary } from "@repo/internationalization";
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { createMetadata } from "@repo/seo/metadata";
+import type { Dictionary } from "@repo/internationalization";
 import type { Metadata } from "next";
-import { Cases } from "./components/cases";
-import { CTA } from "./components/cta";
-import { FAQ } from "./components/faq";
-import { Features } from "./components/features";
-import { Hero } from "./components/hero";
-import { Stats } from "./components/stats";
-import { Testimonials } from "./components/testimonials";
+import { OnboardingHero } from "./components/onboarding-hero";
+import { OnboardingSplitPaths } from "./components/onboarding-split-paths";
+import { OnboardingWhyChoose } from "./components/onboarding-why-choose";
+import { OnboardingFunctionality } from "./components/onboarding-functionality";
 
 interface HomeProps {
-  params: Promise<{
-    locale: string;
-  }>;
+  params: Promise<{ locale: string }>;
 }
 
 export const generateMetadata = async ({ params }: HomeProps): Promise<Metadata> => {
@@ -26,7 +21,6 @@ export const generateMetadata = async ({ params }: HomeProps): Promise<Metadata>
 const Home = async ({ params }: HomeProps) => {
   const { locale } = await params;
   setRequestLocale(locale);
-  const messages = await getMessages({ locale }) as unknown as Dictionary;
   const betaFeature = await showBetaFeature();
 
   return (
@@ -36,13 +30,10 @@ const Home = async ({ params }: HomeProps) => {
           Beta feature now available
         </div>
       )}
-      <Hero dictionary={messages} />
-      <Cases dictionary={messages} />
-      <Features dictionary={messages} />
-      <Stats dictionary={messages} />
-      <Testimonials dictionary={messages} />
-      <FAQ dictionary={messages} />
-      <CTA dictionary={messages} />
+      <OnboardingHero />
+      <OnboardingSplitPaths />
+      <OnboardingWhyChoose />
+      <OnboardingFunctionality />
     </>
   );
 };
