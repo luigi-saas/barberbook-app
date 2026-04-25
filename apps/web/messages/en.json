@@ -1,0 +1,444 @@
+{
+  "web": {
+    "global": {
+      "primaryCta": "Book a call",
+      "secondaryCta": "Sign up"
+    },
+    "header": {
+      "home": "Home",
+      "product": {
+        "title": "Product",
+        "description": "Managing a small business today is already tough.",
+        "pricing": "Pricing"
+      },
+      "blog": "Blog",
+      "docs": "Docs",
+      "contact": "Contact",
+      "signIn": "Sign in",
+      "signUp": "Get started"
+    },
+    "home": {
+      "meta": {
+        "title": "Transform Your Business Operations Today",
+        "description": "In today's fast-paced world, your business deserves better than outdated trading systems. Our innovative platform streamlines operations, reduces complexity, and helps small businesses thrive in the modern economy."
+      },
+      "hero": {
+        "announcement": "Read our latest article"
+      },
+      "cases": {
+        "title": "Empowering Success Stories Across the Globe"
+      },
+      "features": {
+        "title": "Powerful Tools for Modern Business",
+        "description": "Discover how our cutting-edge features can revolutionize your daily operations.",
+        "items": [
+          {
+            "title": "Streamlined Operations",
+            "description": "Our platform streamlines operations, reduces complexity, and helps small businesses thrive in the modern economy."
+          },
+          {
+            "title": "Real-Time Analytics",
+            "description": "Get instant insights into your business performance with comprehensive analytics and reporting tools."
+          },
+          {
+            "title": "Automated Workflows",
+            "description": "Save time and reduce errors with intelligent automation that handles repetitive tasks for you."
+          },
+          {
+            "title": "Secure Transactions",
+            "description": "Rest easy knowing your business operations are protected by enterprise-grade security and encryption."
+          }
+        ]
+      },
+      "stats": {
+        "title": "Real Results, Real Impact",
+        "description": "Join thousands of businesses that have transformed their operations with our platform. Our solutions have helped companies reduce administrative overhead by 60% and increase trading efficiency by 45% on average.",
+        "items": [
+          {
+            "title": "Monthly active users",
+            "metric": "100000",
+            "delta": "10",
+            "type": "unit"
+          },
+          {
+            "title": "Daily active users",
+            "metric": "10000",
+            "delta": "-5",
+            "type": "unit"
+          },
+          {
+            "title": "Monthly recurring revenue",
+            "metric": "100000",
+            "delta": "20",
+            "type": "currency"
+          },
+          {
+            "title": "Cost per acquisition",
+            "metric": "100",
+            "delta": "-10",
+            "type": "currency"
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "Hear from Our Thriving Community",
+        "items": [
+          {
+            "title": "Best decision",
+            "description": "Our goal was to streamline SMB trade, making it easier and faster than ever and we did it together.",
+            "author": {
+              "name": "Hayden Bleasel",
+              "image": "https://github.com/haydenbleasel.png"
+            }
+          },
+          {
+            "title": "Game changer",
+            "description": "This platform revolutionized how we handle our day-to-day operations. The efficiency gains have been remarkable.",
+            "author": {
+              "name": "Lee Robinson",
+              "image": "https://github.com/leerob.png"
+            }
+          },
+          {
+            "title": "Exceeded expectations",
+            "description": "Implementation was smooth and the results were immediate. Our team adapted quickly and productivity soared.",
+            "author": {
+              "name": "shadcn",
+              "image": "https://github.com/shadcn.png"
+            }
+          },
+          {
+            "title": "Outstanding support",
+            "description": "Not only is the platform powerful, but the customer support team has been exceptional in helping us maximize its potential.",
+            "author": {
+              "name": "Pontus Abrahamsson",
+              "image": "https://github.com/pontusab.png"
+            }
+          }
+        ]
+      },
+      "faq": {
+        "title": "Common Questions, Expert Answers",
+        "description": "Get quick answers to your most pressing questions about our platform. We've compiled everything you need to know about transforming your business operations and getting started with modern trading solutions.",
+        "cta": "Any questions? Reach out",
+        "items": [
+          {
+            "question": "What is the platform?",
+            "answer": "The platform is a trading platform that allows you to trade with confidence."
+          },
+          {
+            "question": "How secure is the platform?",
+            "answer": "Our platform employs enterprise-grade security measures, including end-to-end encryption and multi-factor authentication, to ensure your trading activities remain completely secure."
+          },
+          {
+            "question": "What trading features are available?",
+            "answer": "The platform offers comprehensive trading tools including real-time market data, advanced charting, automated trading strategies, and detailed analytics to support informed decision-making."
+          },
+          {
+            "question": "How does pricing work?",
+            "answer": "We offer flexible pricing tiers designed to scale with your business needs, from starter plans for individual traders to enterprise solutions for large organizations."
+          },
+          {
+            "question": "What kind of support do you provide?",
+            "answer": "Our dedicated support team is available 24/7 through multiple channels including live chat, email, and phone. We also provide extensive documentation and training resources."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Start Your Business Transformation",
+        "description": "Join thousands of forward-thinking businesses who have already modernized their operations. Our platform offers the tools, support, and efficiency you need to succeed in today's competitive market. Get started in minutes."
+      },
+      "onboarding": {
+        "nav": {
+          "story": "Our Story",
+          "services": "Services",
+          "gallery": "Gallery",
+          "locations": "Locations",
+          "cta": "Book Appointment"
+        },
+        "hero": {
+          "badge": "Heritage & Precision",
+          "title1": "The Art of",
+          "title2": "Moroccan",
+          "title3": "Grooming",
+          "description": "Step into a world where ancestral traditions meet contemporary luxury. BarberBook.ma connects discerning gentlemen with the finest master barbers in the Kingdom.",
+          "primaryCta": "Elevate Your Ritual",
+          "secondaryCta": "Explore Services"
+        },
+        "splitPaths": {
+          "title": "Choose Your Experience",
+          "description": "Tailored journeys for both modern gentlemen seeking excellence and visionary artisans building their legacy.",
+          "customer": {
+            "title": "Find Your Master",
+            "description": "Discover curated grooming lounges, browse portfolios of elite artisans, and secure your next appointment in seconds.",
+            "features": ["Verified Artisan Portfolios", "Seamless Instant Booking", "Exclusive Loyalty Rituals"],
+            "cta": "Find a Barber"
+          },
+          "owner": {
+            "title": "Scale Your Craft",
+            "description": "Join Morocco's premier network of grooming professionals. Manage your shop, optimize schedules, and grow your clientele.",
+            "features": ["Advanced Shop Management", "Smart Scheduling & Reminders", "Integrated Growth Analytics"],
+            "cta": "Register Your Shop"
+          }
+        },
+        "whyChoose": {
+          "title1": "Why Choose",
+          "title2": "L'Artisan Moderne",
+          "ritualsCount": "50k+",
+          "ritualsLabel": "Rituals Performed",
+          "ratingCount": "4.9/5",
+          "ratingLabel": "Client Satisfaction",
+          "features": [
+            {
+              "title": "Curated Quality",
+              "description": "We hand-select each lounge to ensure they meet our rigorous standards of hygiene, hospitality, and skill."
+            },
+            {
+              "title": "Zero Waiting Time",
+              "description": "Our digital concierge ensures your chair is ready the moment you arrive. Respecting your time is our priority."
+            },
+            {
+              "title": "Heritage First",
+              "description": "Blending traditional Moroccan barbering rituals with modern ergonomic precision for a unique experience."
+            }
+          ]
+        },
+        "functionality": {
+          "title": "Refined Functionality",
+          "description": "Every detail designed for ease and elegance.",
+          "mirrorCalendarTitle": "The Mirror Calendar",
+          "mirrorCalendarDescription": "A booking interface that's as clear as your reflection.",
+          "smartReminders": "Smart Reminders",
+          "smartRemindersDescription": "Never miss a ritual with timed notifications.",
+          "secureCheckout": "Secure Checkout",
+          "secureCheckoutDescription": "Swift, encrypted payments for peace of mind.",
+          "loungeFinderTitle": "Lounge Finder",
+          "loungeFinderDescription": "Discover the nearest sanctuary for your grooming needs across the Kingdom."
+        }
+      }
+    },
+    "guest": {
+      "nav": {
+        "findBarbers": "Find Barbers",
+        "services": "Services",
+        "packages": "Packages",
+        "about": "About",
+        "login": "Login",
+        "signUp": "Sign Up"
+      },
+      "footer": {
+        "tagline": "Connecting discerning gentlemen with the finest grooming studios across the Kingdom of Morocco.",
+        "company": {
+          "title": "Company",
+          "terms": "Terms of Service",
+          "privacy": "Privacy Policy",
+          "contact": "Contact Us"
+        },
+        "forBarbers": {
+          "title": "For Barbers",
+          "partner": "Partner With Us",
+          "academy": "Barber Academy",
+          "software": "Software"
+        },
+        "newsletter": {
+          "title": "Newsletter",
+          "placeholder": "Email address",
+          "cta": "Subscribe"
+        },
+        "copyright": "© 2024 BarberBook.ma — Excellence in Moroccan Grooming"
+      },
+      "explore": {
+        "title": "Explore Barber Shops",
+        "subtitle": "Discover",
+        "searchPlaceholder": "Search by name or city…",
+        "search": "Search",
+        "cityFilter": "All cities",
+        "serviceFilter": "All services",
+        "startingFrom": "Starting from",
+        "viewProfile": "View Profile",
+        "services": {
+          "all": "All Services",
+          "haircut": "Haircut",
+          "beard": "Beard Trim",
+          "shave": "Traditional Shave",
+          "facial": "Facial Ritual",
+          "combo": "Premium Combo"
+        },
+        "filters": {
+          "title": "Filters",
+          "rating": "Rating",
+          "distance": "Distance",
+          "distanceNear": "Nearby",
+          "price": "Price range (MAD)",
+          "availableToday": "Available today",
+          "apply": "Apply filters",
+          "reset": "Reset"
+        },
+        "noResults": "No shops found for your search.",
+        "shopCount": "{count} shops found"
+      },
+      "shop": {
+        "services": "Services",
+        "team": "Team",
+        "gallery": "Gallery",
+        "reviews": "Reviews",
+        "bookSlot": "Book a slot",
+        "selectBarber": "Select barber",
+        "selectDate": "Select date",
+        "selectTime": "Select time",
+        "confirmBooking": "Confirm booking",
+        "loginToContinue": "Sign in to continue",
+        "openNow": "Open now",
+        "closedNow": "Closed",
+        "rating": "Rating",
+        "reviews_count": "{count} reviews",
+        "located": "Located in"
+      },
+      "search": {
+        "resultsFor": "Results for:",
+        "sortBy": "Sort by:",
+        "relevance": "Relevance",
+        "distance": "Distance",
+        "rating": "Rating",
+        "price": "Price",
+        "noResults": "No results found for your search.",
+        "showingCount": "{count} results found",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "barber": {
+        "specialty": "Specialties",
+        "at": "at",
+        "portfolio": "Portfolio",
+        "viewAll": "View All",
+        "bookWithBarber": "Book an appointment with this barber by visiting the shop page.",
+        "viewShop": "View shop & Book",
+        "bio": "About",
+        "reviews": "Reviews",
+        "topRated": "Top Rated",
+        "vision": "The Vision",
+        "expertise": "Expertise",
+        "nextAvailability": "Next Availability",
+        "serviceFrom": "Service From",
+        "selectAndContinue": "Select & Continue"
+      },
+      "booking": {
+        "stepService": "Service",
+        "stepBarber": "Barber",
+        "stepDateTime": "Date & Time",
+        "stepSummary": "Summary",
+        "selectService": "Choose your service",
+        "selectServiceSubtitle": "Each service is crafted with precision and Moroccan tradition at its heart.",
+        "selectBarberTitle": "Select Your Artist",
+        "selectBarberSubtitle": "Our master barbers are experts in their craft. Choose one to craft your look.",
+        "selectDateTime": "Select Date & Time",
+        "selectDateTimeSubtitle": "Find a moment that suits your pace. Our concierge-style booking ensures your session is perfectly timed.",
+        "duration": "Duration",
+        "price": "Price",
+        "continue": "Continue",
+        "continueToBarber": "Continue to Barber",
+        "continueToTime": "Continue to Time",
+        "confirmAppointment": "Confirm Appointment",
+        "back": "Back",
+        "returnToServices": "Return to Services",
+        "anyAvailableTitle": "Any Available Artisan",
+        "anyAvailableDesc": "Perfect for those who value time and efficiency. We'll pair you with the next available master barber.",
+        "yearsExp": "Years Experience",
+        "availableSlots": "Available Slots",
+        "liveAvailability": "Live availability",
+        "fullyBooked": "Fully booked",
+        "noSlotsTitle": "No slots available for this date",
+        "noSlotsDesc": "The selected barber is fully booked for Nov {day}.",
+        "slotBooked": "Booked",
+        "arrivalNote": "Estimated service duration is 45 minutes. Please arrive 10 minutes prior.",
+        "waitlistTitle": "Join the Smart Waitlist",
+        "waitlistDesc": "We'll notify you via WhatsApp 45 minutes before if a slot becomes available due to a cancellation.",
+        "joinWaitlist": "Join Waitlist",
+        "orExploreAlternatives": "Or explore alternatives",
+        "changeBarber": "Change Master Barber",
+        "selectTimeToConfirm": "Please select an available time slot to proceed with your booking.",
+        "secureBookingTitle": "Secure Booking",
+        "secureBookingText": "Your data is encrypted and secure.",
+        "flexibilityPolicyTitle": "Flexibility Policy",
+        "flexibilityPolicyText": "Cancel or reschedule for free up to 24 hours before your ritual.",
+        "termsPrefix": "By confirming, you agree to our",
+        "termsLink": "Terms of Service",
+        "cancellationSuffix": "and our 24h cancellation policy.",
+        "categories": {
+          "classic": "Classic Cut",
+          "beard": "Beard",
+          "care": "Care",
+          "ritual": "Full Ritual"
+        },
+        "sidebar": {
+          "title": "Your Session",
+          "serviceLabel": "Service",
+          "barberLabel": "Master Barber",
+          "timeLabel": "Selected Time",
+          "total": "Total Amount",
+          "vat": "Includes Moroccan VAT",
+          "selectService": "Select a service…",
+          "selectBarber": "Select a barber…",
+          "selectTime": "No time selected",
+          "topRated": "Top Rated Artisan"
+        },
+        "summary": {
+          "title": "Confirm Your Booking",
+          "subtitle": "Review your session details below and sign in to confirm your appointment.",
+          "receiptLabel": "Booking Summary",
+          "authPrompt": "To secure your appointment, please sign in or create an account.",
+          "signInToConfirm": "Sign In to Confirm",
+          "noAccount": "Don't have an account?",
+          "signUpHere": "Sign up here",
+          "or": "or",
+          "continueAsGuest": "Continue as Guest",
+          "shopLabel": "Shop",
+          "barberLabel": "Barber",
+          "serviceLabel": "Service",
+          "dateLabel": "Date",
+          "timeLabel": "Time",
+          "priceLabel": "Price",
+          "total": "Total",
+          "login": "Sign in",
+          "createAccount": "Create account"
+        }
+      }
+    },
+    "blog": {
+      "meta": {
+        "title": "Blog",
+        "description": "Thoughts, ideas, and opinions."
+      }
+    },
+    "contact": {
+      "meta": {
+        "title": "Let's Talk About Your Business",
+        "description": "Schedule a consultation with our team to discuss how we can help streamline your operations and drive growth for your business."
+      },
+      "hero": {
+        "benefits": [
+          {
+            "title": "Personalized Consultation",
+            "description": "Get tailored solutions and expert advice specific to your business needs."
+          },
+          {
+            "title": "Seamless Integration",
+            "description": "We seamlessly integrate with your existing systems to ensure a smooth transition and minimal disruption."
+          },
+          {
+            "title": "Expert Guidance",
+            "description": "Our team of experts will guide you through the process, ensuring you get the most out of our platform."
+          }
+        ],
+        "form": {
+          "title": "Book a meeting",
+          "date": "Date",
+          "firstName": "First name",
+          "lastName": "Last name",
+          "resume": "Upload resume",
+          "cta": "Book the meeting"
+        }
+      }
+    }
+  }
+}

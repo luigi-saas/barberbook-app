@@ -5,10 +5,28 @@ import { DesignSystemProvider } from "@repo/design-system";
 import { fonts } from "@repo/design-system/lib/fonts";
 import { cn } from "@repo/design-system/lib/utils";
 import { Toolbar } from "@repo/feature-flags/components/toolbar";
-import { getDictionary } from "@repo/internationalization";
+import type { Dictionary } from "@repo/internationalization";
+import { Cairo, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
-import { Footer } from "./components/footer";
-import { Header } from "./components/header";
+import { setRequestLocale } from "next-intl/server";
+import NextIntlProvider from "./NextIntlProvider";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  variable: "--font-cairo",
+  display: "swap",
+});
+
+const locales = ['fr', 'en', 'ar'];
+
+export const generateStaticParams = () =>
+  locales.map((locale) => ({ locale }));
 
 interface RootLayoutProperties {
   readonly children: ReactNode;
@@ -19,20 +37,27 @@ interface RootLayoutProperties {
 
 const RootLayout = async ({ children, params }: RootLayoutProperties) => {
   const { locale } = await params;
-  const dictionary = await getDictionary(locale);
+  setRequestLocale(locale);
+  const messages = (await import(`../../messages/${locale}.json`)).default as Dictionary;
 
   return (
     <html
-      className={cn(fonts, "scroll-smooth")}
-      lang="en"
+      className={cn(fonts, manrope.variable, cairo.variable, "scroll-smooth")}
+      lang={locale}
       suppressHydrationWarning
     >
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
       <body>
         <AnalyticsProvider>
           <DesignSystemProvider>
-            <Header dictionary={dictionary} />
-            {children}
-            <Footer />
+            <NextIntlProvider locale={locale} messages={messages as unknown as Record<string, unknown>}>
+              {children}
+            </NextIntlProvider>
           </DesignSystemProvider>
           <Toolbar />
           <CMSToolbar />

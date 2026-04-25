@@ -38,11 +38,11 @@
           },
           {
             "title": "Análises em Tempo Real",
-            "description": "Obtenha insights instantâneos sobre o desempenho da sua empresa com ferramentas abrangentes de análise e relatórios."
+            "description": "Obtenha insights instantâneos sobre o desempenho da sua empresa com análises abrangentes e ferramentas de relatórios."
           },
           {
             "title": "Fluxos de Trabalho Automatizados",
-            "description": "Economize tempo e reduza erros com automação inteligente que cuida de tarefas repetitivas para você."
+            "description": "Economize tempo e reduza erros com automação inteligente que lida com tarefas repetitivas para você."
           },
           {
             "title": "Transações Seguras",
@@ -85,7 +85,7 @@
         "items": [
           {
             "title": "Melhor decisão",
-            "description": "Nosso objetivo era simplificar o comércio de PME, tornando-o mais fácil e rápido do que nunca, e conseguimos isso juntos.",
+            "description": "Nosso objetivo era simplificar o comércio de PMEs, tornando-o mais fácil e rápido do que nunca, e conseguimos isso juntos.",
             "author": {
               "name": "Hayden Bleasel",
               "image": "https://github.com/haydenbleasel.png"
@@ -100,7 +100,7 @@
             }
           },
           {
-            "title": "Superou as expectativas",
+            "title": "Superou expectativas",
             "description": "A implementação foi tranquila e os resultados foram imediatos. Nossa equipe se adaptou rapidamente e a produtividade disparou.",
             "author": {
               "name": "shadcn",
@@ -109,7 +109,7 @@
           },
           {
             "title": "Suporte excepcional",
-            "description": "Não só a plataforma é poderosa, mas a equipe de suporte ao cliente tem sido excepcional em nos ajudar a maximizar seu potencial.",
+            "description": "Não apenas a plataforma é poderosa, mas a equipe de suporte ao cliente tem sido excepcional em nos ajudar a maximizar seu potencial.",
             "author": {
               "name": "Pontus Abrahamsson",
               "image": "https://github.com/pontusab.png"
@@ -140,7 +140,7 @@
           },
           {
             "question": "Que tipo de suporte você oferece?",
-            "answer": "Nossa equipe de suporte dedicada está disponível 24/7 através de vários canais, incluindo chat ao vivo, e-mail e telefone. Também fornecemos documentação extensa e recursos de treinamento."
+            "answer": "Nossa equipe de suporte dedicada está disponível 24/7 através de múltiplos canais, incluindo chat ao vivo, e-mail e telefone. Também fornecemos documentação extensa e recursos de treinamento."
           }
         ]
       },
@@ -161,6 +161,14 @@
         "description": "Agende uma consulta com nossa equipe para discutir como podemos ajudar a simplificar suas operações e impulsionar o crescimento da sua empresa."
       },
       "hero": {
+        "form": {
+          "title": "Agende uma reunião",
+          "date": "Data",
+          "firstName": "Primeiro nome",
+          "lastName": "Último nome",
+          "resume": "Carregar currículo",
+          "cta": "Agende a reunião"
+        },
         "benefits": [
           {
             "title": "Consulta Personalizada",
@@ -174,15 +182,7 @@
             "title": "Orientação Especializada",
             "description": "Nossa equipe de especialistas irá guiá-lo durante o processo, garantindo que você aproveite ao máximo nossa plataforma."
           }
-        ],
-        "form": {
-          "title": "Agende uma reunião",
-          "date": "Data",
-          "firstName": "Primeiro nome",
-          "lastName": "Último nome",
-          "resume": "Carregar currículo",
-          "cta": "Agende a reunião"
-        }
+        ]
       }
     }
   }
