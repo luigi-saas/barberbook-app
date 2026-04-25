@@ -2,31 +2,30 @@ import { blog } from "@repo/cms";
 import { Feed } from "@repo/cms/components/feed";
 import { Image } from "@repo/cms/components/image";
 import { cn } from "@repo/design-system/lib/utils";
-import { getDictionary } from "@repo/internationalization";
+import { getMessages } from "next-intl/server";
 import type { Blog, WithContext } from "@repo/seo/json-ld";
 import { JsonLd } from "@repo/seo/json-ld";
 import { createMetadata } from "@repo/seo/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+
 interface BlogProps {
-  params: Promise<{
+  params: {
     locale: string;
-  }>;
+  };
 }
 
-export const generateMetadata = async ({
-  params,
-}: BlogProps): Promise<Metadata> => {
-  const { locale } = await params;
-  const dictionary = await getDictionary(locale);
 
-  return createMetadata(dictionary.web.blog.meta);
+export const generateMetadata = async ({ params }: BlogProps): Promise<Metadata> => {
+  const { locale } = params;
+  const messages = await getMessages({ locale });
+  return createMetadata(messages.web.blog.meta);
 };
 
 const BlogIndex = async ({ params }: BlogProps) => {
-  const { locale } = await params;
-  const dictionary = await getDictionary(locale);
+  const { locale } = params;
+  const messages = await getMessages({ locale });
 
   const jsonLd: WithContext<Blog> = {
     "@type": "Blog",
@@ -40,7 +39,7 @@ const BlogIndex = async ({ params }: BlogProps) => {
         <div className="container mx-auto flex flex-col gap-14">
           <div className="flex w-full flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
             <h4 className="max-w-xl font-regular text-3xl tracking-tighter md:text-5xl">
-              {dictionary.web.blog.meta.title}
+              {messages.web.blog.meta.title}
             </h4>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">

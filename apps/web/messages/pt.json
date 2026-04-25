@@ -1,0 +1,106 @@
+{
+  "web": {
+    "global": {
+      "primaryCta": "Agende uma chamada",
+      "secondaryCta": "Inscreva-se"
+    },
+    "header": {
+      "home": "Início",
+      "product": {
+        "title": "Produto",
+        "description": "Gerenciar uma pequena empresa hoje já é difícil.",
+        "pricing": "Preços"
+      },
+      "blog": "Blog",
+      "docs": "Documentos",
+      "contact": "Contato",
+      "signIn": "Entrar",
+      "signUp": "Comece agora"
+    },
+    "home": {
+      "meta": {
+        "title": "Transforme as Operações da Sua Empresa Hoje",
+        "description": "No mundo acelerado de hoje, sua empresa merece mais do que sistemas de negociação ultrapassados. Nossa plataforma inovadora simplifica operações, reduz a complexidade e ajuda pequenas empresas a prosperar na economia moderna."
+      },
+      "hero": {
+        "announcement": "Leia nosso último artigo"
+      },
+      "cases": {
+        "title": "Histórias de Sucesso que Empoderam o Mundo Todo"
+      },
+      "features": {
+        "title": "Ferramentas Poderosas para Negócios Modernos",
+        "description": "Descubra como nossos recursos de ponta podem revolucionar suas operações diárias.",
+        "items": [
+          {
+            "title": "Operações Simplificadas",
+            "description": "Nossa plataforma simplifica operações, reduz a complexidade e ajuda pequenas empresas a prosperar na economia moderna."
+          },
+          {
+            "title": "Análises em Tempo Real",
+            "description": "Obtenha insights instantâneos sobre o desempenho da sua empresa com análises abrangentes e ferramentas de relatórios."
+          },
+          {
+            "title": "Fluxos de Trabalho Automatizados",
+            "description": "Economize tempo e reduza erros com automação inteligente que lida com tarefas repetitivas para você."
+          },
+          {
+            "title": "Transações Seguras",
+            "description": "Fique tranquilo sabendo que as operações da sua empresa estão protegidas por segurança e criptografia de nível empresarial."
+          }
+        ]
+      },
+      "stats": {
+        "title": "Resultados Reais, Impacto Real",
+        "description": "Junte-se a milhares de empresas que transformaram suas operações com nossa plataforma. Nossas soluções ajudaram empresas a reduzir a sobrecarga administrativa em 60% e aumentar a eficiência comercial em 45% em média.",
+        "items": [
+          {
+            "title": "Usuários ativos mensais",
+            "metric": "100000",
+            "delta": "10",
+            "type": "unidade"
+          },
+          {
+            "title": "Usuários ativos diários",
+            "metric": "10000",
+            "delta": "-5",
+            "type": "unidade"
+          },
+          {
+            "title": "Receita recorrente mensal",
+            "metric": "100000",
+            "delta": "20",
+            "type": "moeda"
+          },
+          {
+            "title": "Custo por aquisição",
+            "metric": "100",
+            "delta": "-10",
+            "type": "moeda"
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "Ouça Nossa Comunidade Próspera",
+        "items": [
+          {
+            "title": "Melhor decisão",
+            "description": "Nosso objetivo era simplificar o comércio de PMEs, tornando-o mais fácil e rápido do que nunca, e conseguimos isso juntos.",
+            "author": {
+              "name": "Hayden Bleasel",
+              "image": "https://github.com/haydenbleasel.png"
+            }
+          },
+          {
+            "title": "Mudança de jogo",
+            "description": "Esta plataforma revolucionou a forma como lidamos com nossas operações diárias. Os ganhos de eficiência foram notáveis.",
+            "author": {
+              "name": "Lee Robinson",
+              "image": "https://github.com/leerob.png"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

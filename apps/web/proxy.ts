@@ -1,5 +1,4 @@
 import { authMiddleware } from "@repo/auth/proxy";
-import { internationalizationMiddleware } from "@repo/internationalization/proxy";
 import { parseError } from "@repo/observability/error";
 import { secure } from "@repo/security";
 import {
@@ -49,7 +48,7 @@ const arcjetMiddleware = async (request: NextRequest) => {
 const composedMiddleware = createNEMO(
   {},
   {
-    before: [internationalizationMiddleware, arcjetMiddleware],
+    before: [arcjetMiddleware],
   }
 );
 

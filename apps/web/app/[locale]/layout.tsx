@@ -5,7 +5,8 @@ import { DesignSystemProvider } from "@repo/design-system";
 import { fonts } from "@repo/design-system/lib/fonts";
 import { cn } from "@repo/design-system/lib/utils";
 import { Toolbar } from "@repo/feature-flags/components/toolbar";
-import { getDictionary } from "@repo/internationalization";
+import type { Dictionary } from "@repo/internationalization";
+import NextIntlProvider from "./NextIntlProvider";
 import type { ReactNode } from "react";
 import { Footer } from "./components/footer";
 import { Header } from "./components/header";
@@ -19,20 +20,22 @@ interface RootLayoutProperties {
 
 const RootLayout = async ({ children, params }: RootLayoutProperties) => {
   const { locale } = await params;
-  const dictionary = await getDictionary(locale);
+  const messages = (await import(`../../messages/${locale}.json`)).default as Dictionary;
 
   return (
     <html
       className={cn(fonts, "scroll-smooth")}
-      lang="en"
+      lang={locale}
       suppressHydrationWarning
     >
       <body>
         <AnalyticsProvider>
           <DesignSystemProvider>
-            <Header dictionary={dictionary} />
-            {children}
-            <Footer />
+            <NextIntlProvider locale={locale}>
+              <Header dictionary={messages} />
+              {children}
+              <Footer />
+            </NextIntlProvider>
           </DesignSystemProvider>
           <Toolbar />
           <CMSToolbar />

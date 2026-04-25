@@ -37,7 +37,7 @@ export const FAQ = ({ dictionary }: FAQProps) => (
             </div>
           </div>
         </div>
-        <Accordion className="w-full" collapsible type="single">
+        <Accordion className="w-full" collapsible type="single" id="faq-accordion">
           {dictionary.web.home.faq.items.map((item) => (
             <AccordionItem key={item.question} value={item.question}>
               <AccordionTrigger>{item.question}</AccordionTrigger>

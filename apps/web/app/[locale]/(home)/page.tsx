@@ -1,5 +1,6 @@
 import { showBetaFeature } from "@repo/feature-flags";
-import { getDictionary } from "@repo/internationalization";
+import type { Dictionary } from "@repo/internationalization";
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { createMetadata } from "@repo/seo/metadata";
 import type { Metadata } from "next";
 import { Cases } from "./components/cases";
@@ -10,24 +11,22 @@ import { Hero } from "./components/hero";
 import { Stats } from "./components/stats";
 import { Testimonials } from "./components/testimonials";
 
+
 interface HomeProps {
-  params: Promise<{
+  params: {
     locale: string;
-  }>;
+  };
 }
 
-export const generateMetadata = async ({
-  params,
-}: HomeProps): Promise<Metadata> => {
-  const { locale } = await params;
-  const dictionary = await getDictionary(locale);
-
-  return createMetadata(dictionary.web.home.meta);
+export const generateMetadata = async ({ params }: HomeProps): Promise<Metadata> => {
+  const { locale } = params;
+  const messages = await getMessages({ locale }) as unknown as Dictionary;
+  return createMetadata(messages.web.home.meta);
 };
 
 const Home = async ({ params }: HomeProps) => {
-  const { locale } = await params;
-  const dictionary = await getDictionary(locale);
+  setRequestLocale(params.locale);
+  const messages = await getMessages({ locale: params.locale }) as unknown as Dictionary;
   const betaFeature = await showBetaFeature();
 
   return (
@@ -37,13 +36,13 @@ const Home = async ({ params }: HomeProps) => {
           Beta feature now available
         </div>
       )}
-      <Hero dictionary={dictionary} />
-      <Cases dictionary={dictionary} />
-      <Features dictionary={dictionary} />
-      <Stats dictionary={dictionary} />
-      <Testimonials dictionary={dictionary} />
-      <FAQ dictionary={dictionary} />
-      <CTA dictionary={dictionary} />
+      <Hero dictionary={messages} />
+      <Cases dictionary={messages} />
+      <Features dictionary={messages} />
+      <Stats dictionary={messages} />
+      <Testimonials dictionary={messages} />
+      <FAQ dictionary={messages} />
+      <CTA dictionary={messages} />
     </>
   );
 };
