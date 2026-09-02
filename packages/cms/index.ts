@@ -1,6 +1,5 @@
 /// <reference path="./basehub-types.d.ts" />
-import type { QueryGenqlSelection } from "basehub";
-import { basehub as basehubClient, fragmentOn } from "basehub";
+import { basehub as basehubClient } from "basehub";
 import { keys } from "./keys";
 import "./basehub.config";
 
@@ -23,27 +22,65 @@ const rawQuery = async (query: unknown): Promise<any> => {
 };
 
 /* -------------------------------------------------------------------------------------------------
- * Common Fragments
+ * Types
+ *
+ * Hand-written and intentionally loose. IMPORTANT: do not switch these back to
+ * `fragmentOn(...)` — that API is typed against the build-time-generated
+ * FragmentsMap, which differs per BaseHub project (and doesn't exist at all
+ * without a token). Deployment builds must never depend on those keys.
  * -----------------------------------------------------------------------------------------------*/
 
-const imageFragment = fragmentOn("BlockImage", {
+export type CmsImage = {
+  url?: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+  blurDataURL?: string;
+};
+
+export type PostMeta = {
+  _slug?: string;
+  _title?: string;
+  authors?: { _title?: string; xUrl?: string; avatar?: CmsImage }[];
+  categories?: { _title?: string }[];
+  date?: string;
+  description?: string;
+  image?: CmsImage;
+};
+
+export type Post = PostMeta & {
+  body?: { plainText?: string; readingTime?: number };
+};
+
+export type LegalPostMeta = {
+  _slug?: string;
+  _title?: string;
+  description?: string;
+};
+
+export type LegalPost = LegalPostMeta & {
+  body?: { plainText?: string; readingTime?: number };
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Selections (plain objects — passed through rawQuery, never type-checked
+ * against the generated FragmentsMap)
+ * -----------------------------------------------------------------------------------------------*/
+
+const imageSelection = {
   url: true,
   width: true,
   height: true,
   alt: true,
   blurDataURL: true,
-});
+};
 
-/* -------------------------------------------------------------------------------------------------
- * Blog Fragments & Queries
- * -----------------------------------------------------------------------------------------------*/
-
-const postMetaFragment = fragmentOn("PostsItem", {
+const postMetaSelection = {
   _slug: true,
   _title: true,
   authors: {
     _title: true,
-    avatar: imageFragment,
+    avatar: imageSelection,
     xUrl: true,
   },
   categories: {
@@ -51,11 +88,11 @@ const postMetaFragment = fragmentOn("PostsItem", {
   },
   date: true,
   description: true,
-  image: imageFragment,
-});
+  image: imageSelection,
+};
 
-const postFragment = fragmentOn("PostsItem", {
-  ...postMetaFragment,
+const postSelection = {
+  ...postMetaSelection,
   body: {
     plainText: true,
     json: {
@@ -64,32 +101,38 @@ const postFragment = fragmentOn("PostsItem", {
     },
     readingTime: true,
   },
-});
-
-/**
- * BaseHub only exposes `_slug` / `_title` in its generated types (produced at
- * build time when BASEHUB_TOKEN is configured). Intersect them as optional so
- * tokenless builds (local dev, CI without secrets) still type-check.
- */
-type CmsPostFields = {
-  _slug?: string;
-  _title?: string;
-  date?: string;
-  description?: string;
-  image?: { url?: string; alt?: string; width?: number; height?: number };
 };
 
-export type PostMeta = fragmentOn.infer<typeof postMetaFragment> & CmsPostFields;
-export type Post = fragmentOn.infer<typeof postFragment> & CmsPostFields;
+const legalPostMetaSelection = {
+  _slug: true,
+  _title: true,
+  description: true,
+};
+
+const legalPostSelection = {
+  ...legalPostMetaSelection,
+  body: {
+    plainText: true,
+    json: {
+      content: true,
+      toc: true,
+    },
+    readingTime: true,
+  },
+};
+
+/* -------------------------------------------------------------------------------------------------
+ * Blog
+ * -----------------------------------------------------------------------------------------------*/
 
 export const blog = {
   postsQuery: {
     blog: {
       posts: {
-        items: postMetaFragment,
+        items: postMetaSelection,
       },
     },
-  } satisfies QueryGenqlSelection,
+  },
 
   latestPostQuery: {
     blog: {
@@ -97,10 +140,10 @@ export const blog = {
         __args: {
           orderBy: "_sys_createdAt__DESC" as const,
         },
-        item: postFragment,
+        item: postSelection,
       },
     },
-  } satisfies QueryGenqlSelection,
+  },
 
   postQuery: (slug: string) => ({
     blog: {
@@ -110,7 +153,7 @@ export const blog = {
             _sys_slug: { eq: slug },
           },
         },
-        item: postFragment,
+        item: postSelection,
       },
     },
   }),
@@ -157,51 +200,30 @@ export const blog = {
 };
 
 /* -------------------------------------------------------------------------------------------------
- * Legal Fragments & Queries
+ * Legal pages
  * -----------------------------------------------------------------------------------------------*/
-
-const legalPostMetaFragment = fragmentOn("LegalPagesItem", {
-  _slug: true,
-  _title: true,
-  description: true,
-});
-
-const legalPostFragment = fragmentOn("LegalPagesItem", {
-  ...legalPostMetaFragment,
-  body: {
-    plainText: true,
-    json: {
-      content: true,
-      toc: true,
-    },
-    readingTime: true,
-  },
-});
-
-export type LegalPostMeta = fragmentOn.infer<typeof legalPostMetaFragment> & CmsPostFields;
-export type LegalPost = fragmentOn.infer<typeof legalPostFragment> & CmsPostFields;
 
 export const legal = {
   postsMetaQuery: {
     legalPages: {
-      items: legalPostMetaFragment,
+      items: legalPostMetaSelection,
     },
-  } satisfies QueryGenqlSelection,
+  },
 
   postsQuery: {
     legalPages: {
-      items: legalPostFragment,
+      items: legalPostSelection,
     },
-  } satisfies QueryGenqlSelection,
+  },
 
   latestPostQuery: {
     legalPages: {
       __args: {
         orderBy: "_sys_createdAt__DESC" as const,
       },
-      item: legalPostFragment,
+      item: legalPostSelection,
     },
-  } satisfies QueryGenqlSelection,
+  },
 
   postQuery: (slug: string) => ({
     legalPages: {
@@ -210,7 +232,7 @@ export const legal = {
           _sys_slug: { eq: slug },
         },
       },
-      item: legalPostFragment,
+      item: legalPostSelection,
     },
   }),
 
@@ -227,7 +249,7 @@ export const legal = {
     }
   },
 
-  getPosts: async (): Promise<LegalPost[]> => {
+  getPosts: async (): Promise<LegalPostMeta[]> => {
     if (!basehub) {
       return [];
     }

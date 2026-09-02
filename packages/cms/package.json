@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "basehub dev",
-    "build": "if [ -n \"$BASEHUB_TOKEN\" ]; then basehub build; else echo '[cms] BASEHUB_TOKEN not set \u2014 keeping committed stub types'; fi",
+    "build": "if [ -n \"$BASEHUB_TOKEN\" ] && basehub build; then echo '[cms] types regenerated from BaseHub'; else echo '[cms] using committed stub types (no token or regeneration failed)'; fi",
     "analyze": "basehub",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
