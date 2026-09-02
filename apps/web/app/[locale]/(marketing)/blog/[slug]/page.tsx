@@ -11,12 +11,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Sidebar } from "@/components/sidebar";
-import { env } from "@/env";
+import { getSiteUrl } from "@/lib/site-url";
 
-const protocol = env.VERCEL_PROJECT_PRODUCTION_URL?.startsWith("https")
-  ? "https"
-  : "http";
-const url = new URL(`${protocol}://${env.VERCEL_PROJECT_PRODUCTION_URL}`);
+const url = new URL(getSiteUrl());
 
 interface BlogPostProperties {
   readonly params: Promise<{

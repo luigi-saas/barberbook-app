@@ -15,9 +15,18 @@ const connectionString = keys().DATABASE_URL;
 const isLocal =
   connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
 
-const adapter = isLocal
-  ? new PrismaPg({ connectionString })
-  : new PrismaNeon({ connectionString });
+// Neon's HTTP/WebSocket driver only speaks to Neon endpoints. Everything
+// else (Render, RDS, Supabase, local Postgres) uses the standard pg adapter.
+const isNeon = /neon\.(tech|build|com)/i.test(connectionString);
+
+const adapter = isNeon
+  ? new PrismaNeon({ connectionString })
+  : new PrismaPg({
+      connectionString,
+      // Managed providers (Render, RDS, Supabase…) enforce TLS; local
+      // sockets and the embedded dev server don't.
+      ...(isLocal ? {} : { ssl: { rejectUnauthorized: false } }),
+    });
 
 export const database = globalForPrisma.prisma || new PrismaClient({ adapter });
 
