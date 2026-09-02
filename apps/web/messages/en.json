@@ -171,13 +171,21 @@
           "customer": {
             "title": "Find Your Master",
             "description": "Discover curated grooming lounges, browse portfolios of elite artisans, and secure your next appointment in seconds.",
-            "features": ["Verified Artisan Portfolios", "Seamless Instant Booking", "Exclusive Loyalty Rituals"],
+            "features": [
+              "Verified Artisan Portfolios",
+              "Seamless Instant Booking",
+              "Exclusive Loyalty Rituals"
+            ],
             "cta": "Find a Barber"
           },
           "owner": {
             "title": "Scale Your Craft",
             "description": "Join Morocco's premier network of grooming professionals. Manage your shop, optimize schedules, and grow your clientele.",
-            "features": ["Advanced Shop Management", "Smart Scheduling & Reminders", "Integrated Growth Analytics"],
+            "features": [
+              "Advanced Shop Management",
+              "Smart Scheduling & Reminders",
+              "Integrated Growth Analytics"
+            ],
             "cta": "Register Your Shop"
           }
         },
@@ -402,6 +410,37 @@
           "login": "Sign in",
           "createAccount": "Create account"
         }
+      },
+      "auth": {
+        "brand": {
+          "titleLogin": "Welcome back.",
+          "titleSignup": "Join BarberBook.",
+          "subtitle": "Book Morocco's best barbers in seconds. No calls, no waiting.",
+          "tagline": "The art of grooming, the Moroccan way."
+        },
+        "login": {
+          "title": "Sign in",
+          "subtitle": "Choose how to continue.",
+          "footer": "No account yet?",
+          "cta": "Create one"
+        },
+        "signup": {
+          "title": "Create account",
+          "subtitle": "Choose how to start.",
+          "footer": "Already have an account?",
+          "cta": "Sign in"
+        },
+        "customer": {
+          "title": "I'm a customer",
+          "description": "Book a barber directly — no account needed, 30 seconds.",
+          "cta": "Book now"
+        },
+        "owner": {
+          "title": "I'm a shop owner or barber",
+          "description": "Access your dashboard: schedule, clients and stats.",
+          "cta": "Go to dashboard"
+        },
+        "backHome": "Back to home"
       }
     },
     "blog": {

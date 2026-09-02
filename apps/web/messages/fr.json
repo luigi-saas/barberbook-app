@@ -155,13 +155,21 @@
           "customer": {
             "title": "Trouvez Votre Maître",
             "description": "Découvrez des salons de coiffure curatés, parcourez les portfolios d'artisans d'élite et réservez votre prochain rendez-vous en quelques secondes.",
-            "features": ["Portfolios d'Artisans Vérifiés", "Réservation Instantanée", "Rituels de Fidélité Exclusifs"],
+            "features": [
+              "Portfolios d'Artisans Vérifiés",
+              "Réservation Instantanée",
+              "Rituels de Fidélité Exclusifs"
+            ],
             "cta": "Trouver un Barbier"
           },
           "owner": {
             "title": "Développez Votre Art",
             "description": "Rejoignez le premier réseau marocain de professionnels du soin. Gérez votre salon, optimisez les horaires et développez votre clientèle.",
-            "features": ["Gestion Avancée du Salon", "Planification Intelligente", "Analyses de Croissance Intégrées"],
+            "features": [
+              "Gestion Avancée du Salon",
+              "Planification Intelligente",
+              "Analyses de Croissance Intégrées"
+            ],
             "cta": "Inscrire Votre Salon"
           }
         },
@@ -386,6 +394,37 @@
           "login": "Se connecter",
           "createAccount": "Créer un compte"
         }
+      },
+      "auth": {
+        "brand": {
+          "titleLogin": "Content de vous revoir.",
+          "titleSignup": "Rejoignez BarberBook.",
+          "subtitle": "Réservez chez les meilleurs barbiers du Maroc en quelques secondes. Sans appels, sans attente.",
+          "tagline": "L'art de la coiffure, à la marocaine."
+        },
+        "login": {
+          "title": "Connexion",
+          "subtitle": "Choisissez comment continuer.",
+          "footer": "Pas encore de compte ?",
+          "cta": "Créer un compte"
+        },
+        "signup": {
+          "title": "Créer un compte",
+          "subtitle": "Choisissez comment commencer.",
+          "footer": "Vous avez déjà un compte ?",
+          "cta": "Se connecter"
+        },
+        "customer": {
+          "title": "Je suis client",
+          "description": "Réservez directement chez un barbier — sans compte, en 30 secondes.",
+          "cta": "Réserver maintenant"
+        },
+        "owner": {
+          "title": "Je suis patron de barbier ou barbier",
+          "description": "Accédez à votre tableau de bord : agenda, clients et statistiques.",
+          "cta": "Aller au tableau de bord"
+        },
+        "backHome": "Retour à l'accueil"
       }
     }
   }
