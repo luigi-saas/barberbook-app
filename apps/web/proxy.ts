@@ -1,4 +1,3 @@
-import { authMiddleware } from "@repo/auth/proxy";
 import { parseError } from "@repo/observability/error";
 import { secure } from "@repo/security";
 import {
@@ -94,12 +93,11 @@ const publicChain = async (request: NextRequest, event: NextFetchEvent) => {
   return middlewareResponse || headersResponse;
 };
 
-// Clerk only wraps the chain when it is fully configured (server key present).
-// The guest experience is public: clerkMiddleware never invokes its callback
-// without a publishable key, and a publishable-only setup misbehaves in
-// production — both left every unprefixed route 404-ing.
-export default (process.env.CLERK_SECRET_KEY
-  ? authMiddleware(async (_auth, request, event) =>
-      publicChain(request as unknown as NextRequest, event)
-    )
-  : publicChain) as unknown as NextProxy;
+// The proxy chain runs standalone: every page is currently public (guest
+// booking flow). Wrapping it in clerkMiddleware is only correct when Clerk is
+// fully configured AND its callback actually runs — on Vercel deployments with
+// a publishable key but no/invalid secret, clerkMiddleware never invokes the
+// callback and every unprefixed route 404s. Re-introduce Clerk here only when
+// building authenticated features, and verify `/` redirects on a real
+// deployment before promoting it.
+export default publicChain as unknown as NextProxy;

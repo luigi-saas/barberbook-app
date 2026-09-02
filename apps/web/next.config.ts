@@ -18,26 +18,24 @@ nextConfig.images?.remotePatterns?.push({
   hostname: "assets.basehub.com",
 });
 
-if (process.env.NODE_ENV === "production") {
-  const redirects: NextConfig["redirects"] = async () => [
-    {
-      source: "/legal",
-      destination: "/legal/privacy",
-      statusCode: 301,
-    },
-    {
-      // Safety net for the localeless root: middleware normally redirects
-      // `/` to the detected locale, but if the middleware chain is not
-      // active (e.g. Clerk is only partially configured), this keeps the
-      // root page alive instead of 404-ing.
-      source: "/",
-      destination: "/fr",
-      statusCode: 307,
-    },
-  ];
+const redirects: NextConfig["redirects"] = async () => [
+  {
+    source: "/legal",
+    destination: "/legal/privacy",
+    statusCode: 301,
+  },
+  {
+    // Safety net for the localeless root: middleware normally redirects `/`
+    // to the detected locale, but if the middleware chain is not active on
+    // some deployment, this keeps the root page alive instead of 404-ing.
+    // (A real root page in app/page.tsx backs this up.)
+    source: "/",
+    destination: "/fr",
+    statusCode: 307,
+  },
+];
 
-  nextConfig.redirects = redirects;
-}
+nextConfig.redirects = redirects;
 
 if (env.VERCEL) {
   nextConfig = withSentry(nextConfig);
