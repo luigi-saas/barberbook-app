@@ -1,17 +1,7 @@
 import { database } from "@repo/database";
 
 export const GET = async () => {
-  const newPage = await database.page.create({
-    data: {
-      name: "cron-temp",
-    },
-  });
-
-  await database.page.delete({
-    where: {
-      id: newPage.id,
-    },
-  });
+  await database.user.findFirst({ select: { id: true } });
 
   return new Response("OK", { status: 200 });
 };

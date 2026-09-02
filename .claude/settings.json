@@ -1,0 +1,22 @@
+{
+  "skills": ["next-forge"],
+  "permissions": {
+    "allow": [
+      "Bash(bun run *)",
+      "Bash(bun --bun *)",
+      "Bash(npx *)",
+      "Bash(git status)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git branch *)",
+      "Bash(find * -type f *)",
+      "Bash(ls *)",
+      "Bash(cat *)"
+    ],
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)",
+      "Bash(rm -rf *)"
+    ]
+  }
+}

@@ -1,0 +1,392 @@
+{
+  "web": {
+    "global": {
+      "primaryCta": "Réserver un appel",
+      "secondaryCta": "Inscrivez-vous"
+    },
+    "header": {
+      "home": "Accueil",
+      "product": {
+        "title": "Produit",
+        "description": "Gérer une petite entreprise aujourd'hui est déjà difficile.",
+        "pricing": "Tarification"
+      },
+      "blog": "Blog",
+      "docs": "Docs",
+      "contact": "Contact",
+      "signIn": "Se connecter",
+      "signUp": "Commencer"
+    },
+    "home": {
+      "meta": {
+        "title": "Transformez vos opérations commerciales aujourd'hui",
+        "description": "Dans le monde rapide d'aujourd'hui, votre entreprise mérite mieux que des systèmes de trading obsolètes. Notre plateforme innovante rationalise les opérations, réduit la complexité et aide les petites entreprises à prospérer dans l'économie moderne."
+      },
+      "hero": {
+        "announcement": "Lisez notre dernier article"
+      },
+      "cases": {
+        "title": "Histoires de succès inspirantes à travers le monde"
+      },
+      "features": {
+        "title": "Outils puissants pour les entreprises modernes",
+        "description": "Découvrez comment nos fonctionnalités de pointe peuvent révolutionner vos opérations quotidiennes.",
+        "items": [
+          {
+            "title": "Opérations rationalisées",
+            "description": "Notre plateforme rationalise les opérations, réduit la complexité et aide les petites entreprises à prospérer dans l'économie moderne."
+          },
+          {
+            "title": "Analytique en temps réel",
+            "description": "Obtenez des informations instantanées sur la performance de votre entreprise grâce à des outils d'analyse et de reporting complets."
+          },
+          {
+            "title": "Flux de travail automatisés",
+            "description": "Gagnez du temps et réduisez les erreurs grâce à une automatisation intelligente qui gère les tâches répétitives pour vous."
+          },
+          {
+            "title": "Transactions sécurisées",
+            "description": "Soyez tranquille en sachant que vos opérations commerciales sont protégées par une sécurité et un cryptage de niveau entreprise."
+          }
+        ]
+      },
+      "stats": {
+        "title": "Résultats réels, impact réel",
+        "description": "Rejoignez des milliers d'entreprises qui ont transformé leurs opérations avec notre plateforme. Nos solutions ont aidé les entreprises à réduire les frais administratifs de 60 % et à augmenter l'efficacité commerciale de 45 % en moyenne.",
+        "items": [
+          {
+            "title": "Utilisateurs actifs mensuels",
+            "metric": "100000",
+            "delta": "10",
+            "type": "unité"
+          },
+          {
+            "title": "Utilisateurs actifs quotidiens",
+            "metric": "10000",
+            "delta": "-5",
+            "type": "unité"
+          },
+          {
+            "title": "Revenus récurrents mensuels",
+            "metric": "100000",
+            "delta": "20",
+            "type": "devise"
+          },
+          {
+            "title": "Coût par acquisition",
+            "metric": "100",
+            "delta": "-10",
+            "type": "devise"
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "Témoignages de notre communauté florissante",
+        "items": [
+          {
+            "title": "Meilleure décision",
+            "description": "Notre objectif était de rationaliser le commerce des PME, le rendant plus facile et plus rapide que jamais, et nous l'avons fait ensemble.",
+            "author": {
+              "name": "Hayden Bleasel",
+              "image": "https://github.com/haydenbleasel.png"
+            }
+          },
+          {
+            "title": "Révolutionnaire",
+            "description": "Cette plateforme a révolutionné la façon dont nous gérons nos opérations quotidiennes. Les gains d'efficacité ont été remarquables.",
+            "author": {
+              "name": "Lee Robinson",
+              "image": "https://github.com/leerob.png"
+            }
+          }
+        ]
+      },
+      "faq": {
+        "title": "Questions fréquentes, réponses d'experts",
+        "description": "Obtenez des réponses rapides à vos questions les plus urgentes concernant notre plateforme. Nous avons compilé tout ce que vous devez savoir pour transformer vos opérations commerciales.",
+        "cta": "Des questions ? Contactez-nous",
+        "items": [
+          {
+            "question": "Qu'est-ce que la plateforme ?",
+            "answer": "La plateforme est une solution de trading qui vous permet de trader en toute confiance."
+          },
+          {
+            "question": "Quelle est la sécurité de la plateforme ?",
+            "answer": "Notre plateforme utilise des mesures de sécurité de niveau entreprise, incluant le chiffrement de bout en bout et l'authentification multifacteur."
+          },
+          {
+            "question": "Quelles fonctionnalités de trading sont disponibles ?",
+            "answer": "La plateforme offre des outils complets incluant des données de marché en temps réel, des graphiques avancés et des stratégies de trading automatisées."
+          },
+          {
+            "question": "Comment fonctionne la tarification ?",
+            "answer": "Nous proposons des niveaux de tarification flexibles conçus pour évoluer avec les besoins de votre entreprise."
+          },
+          {
+            "question": "Quel type de support proposez-vous ?",
+            "answer": "Notre équipe de support dédiée est disponible 24h/24 et 7j/7 via plusieurs canaux incluant le chat en direct, l'email et le téléphone."
+          }
+        ]
+      },
+      "cta": {
+        "title": "Commencez votre transformation commerciale",
+        "description": "Rejoignez des milliers d'entreprises avant-gardistes qui ont déjà modernisé leurs opérations. Notre plateforme offre les outils, le support et l'efficacité dont vous avez besoin pour réussir."
+      },
+      "onboarding": {
+        "nav": {
+          "story": "Notre Histoire",
+          "services": "Services",
+          "gallery": "Galerie",
+          "locations": "Adresses",
+          "cta": "Prendre Rendez-vous"
+        },
+        "hero": {
+          "badge": "Héritage & Précision",
+          "title1": "L'Art du",
+          "title2": "Grooming",
+          "title3": "Marocain",
+          "description": "Entrez dans un monde où les traditions ancestrales rencontrent le luxe contemporain. BarberBook.ma met en relation les gentlemen exigeants avec les meilleurs maîtres barbiers du Royaume.",
+          "primaryCta": "Élevez Votre Rituel",
+          "secondaryCta": "Explorer les Services"
+        },
+        "splitPaths": {
+          "title": "Choisissez Votre Expérience",
+          "description": "Des parcours sur mesure pour les gentlemen modernes en quête d'excellence et les artisans visionnaires qui bâtissent leur héritage.",
+          "customer": {
+            "title": "Trouvez Votre Maître",
+            "description": "Découvrez des salons de coiffure curatés, parcourez les portfolios d'artisans d'élite et réservez votre prochain rendez-vous en quelques secondes.",
+            "features": ["Portfolios d'Artisans Vérifiés", "Réservation Instantanée", "Rituels de Fidélité Exclusifs"],
+            "cta": "Trouver un Barbier"
+          },
+          "owner": {
+            "title": "Développez Votre Art",
+            "description": "Rejoignez le premier réseau marocain de professionnels du soin. Gérez votre salon, optimisez les horaires et développez votre clientèle.",
+            "features": ["Gestion Avancée du Salon", "Planification Intelligente", "Analyses de Croissance Intégrées"],
+            "cta": "Inscrire Votre Salon"
+          }
+        },
+        "whyChoose": {
+          "title1": "Pourquoi Choisir",
+          "title2": "L'Artisan Moderne",
+          "ritualsCount": "50k+",
+          "ritualsLabel": "Rituels Réalisés",
+          "ratingCount": "4.9/5",
+          "ratingLabel": "Satisfaction Client",
+          "features": [
+            {
+              "title": "Qualité Curatée",
+              "description": "Nous sélectionnons chaque salon pour garantir le respect de nos normes rigoureuses d'hygiène, d'hospitalité et de savoir-faire."
+            },
+            {
+              "title": "Zéro Temps d'Attente",
+              "description": "Notre concierge digital s'assure que votre fauteuil est prêt dès votre arrivée. Respecter votre temps est notre priorité."
+            },
+            {
+              "title": "L'Héritage Avant Tout",
+              "description": "Allier les rituels de coiffure marocains traditionnels à la précision ergonomique moderne pour une expérience unique."
+            }
+          ]
+        },
+        "functionality": {
+          "title": "Fonctionnalité Raffinée",
+          "description": "Chaque détail conçu pour la facilité et l'élégance.",
+          "mirrorCalendarTitle": "Le Calendrier Miroir",
+          "mirrorCalendarDescription": "Une interface de réservation aussi claire que votre reflet.",
+          "smartReminders": "Rappels Intelligents",
+          "smartRemindersDescription": "Ne manquez jamais un rituel grâce aux notifications programmées.",
+          "secureCheckout": "Paiement Sécurisé",
+          "secureCheckoutDescription": "Paiements rapides et chiffrés pour votre tranquillité d'esprit.",
+          "loungeFinderTitle": "Localisateur de Salon",
+          "loungeFinderDescription": "Découvrez le sanctuaire le plus proche pour vos besoins de soin à travers le Royaume."
+        }
+      }
+    },
+    "guest": {
+      "nav": {
+        "findBarbers": "Trouver un Barbier",
+        "services": "Services",
+        "packages": "Offres",
+        "about": "À propos",
+        "login": "Connexion",
+        "signUp": "S'inscrire"
+      },
+      "footer": {
+        "tagline": "Connecter les gentlemen exigeants avec les meilleurs salons de soin à travers le Royaume du Maroc.",
+        "company": {
+          "title": "Entreprise",
+          "terms": "Conditions d'utilisation",
+          "privacy": "Politique de confidentialité",
+          "contact": "Nous contacter"
+        },
+        "forBarbers": {
+          "title": "Pour les Barbiers",
+          "partner": "Devenir Partenaire",
+          "academy": "École de Barbier",
+          "software": "Logiciel"
+        },
+        "newsletter": {
+          "title": "Newsletter",
+          "placeholder": "Adresse e-mail",
+          "cta": "S'abonner"
+        },
+        "copyright": "© 2024 BarberBook.ma — Excellence du Grooming Marocain"
+      },
+      "explore": {
+        "title": "Explorer les Salons",
+        "subtitle": "Découvrir",
+        "searchPlaceholder": "Rechercher par nom ou ville…",
+        "search": "Rechercher",
+        "cityFilter": "Toutes les villes",
+        "serviceFilter": "Tous les services",
+        "startingFrom": "À partir de",
+        "viewProfile": "Voir le Profil",
+        "services": {
+          "all": "Tous les services",
+          "haircut": "Coupe",
+          "beard": "Taille de barbe",
+          "shave": "Rasage traditionnel",
+          "facial": "Rituel visage",
+          "combo": "Combo premium"
+        },
+        "filters": {
+          "title": "Filtres",
+          "rating": "Note",
+          "distance": "Distance",
+          "distanceNear": "À proximité",
+          "price": "Fourchette de prix (MAD)",
+          "availableToday": "Disponible aujourd'hui",
+          "apply": "Appliquer les filtres",
+          "reset": "Réinitialiser"
+        },
+        "noResults": "Aucun salon trouvé pour votre recherche.",
+        "shopCount": "{count} salons trouvés"
+      },
+      "shop": {
+        "services": "Services",
+        "team": "Équipe",
+        "gallery": "Galerie",
+        "reviews": "Avis",
+        "bookSlot": "Réserver un créneau",
+        "selectBarber": "Choisir un barbier",
+        "selectDate": "Choisir une date",
+        "selectTime": "Choisir une heure",
+        "confirmBooking": "Confirmer la réservation",
+        "loginToContinue": "Se connecter pour continuer",
+        "openNow": "Ouvert maintenant",
+        "closedNow": "Fermé",
+        "rating": "Note",
+        "reviews_count": "{count} avis",
+        "located": "Situé à"
+      },
+      "search": {
+        "resultsFor": "Résultats pour :",
+        "sortBy": "Trier par :",
+        "relevance": "Pertinence",
+        "distance": "Distance",
+        "rating": "Note",
+        "price": "Prix",
+        "noResults": "Aucun résultat trouvé pour votre recherche.",
+        "showingCount": "{count} résultats trouvés",
+        "previous": "Précédent",
+        "next": "Suivant"
+      },
+      "barber": {
+        "specialty": "Spécialités",
+        "at": "chez",
+        "portfolio": "Portfolio",
+        "viewAll": "Voir tout",
+        "bookWithBarber": "Réservez un rendez-vous avec ce barbier en visitant la page du salon.",
+        "viewShop": "Voir le salon & Réserver",
+        "bio": "À propos",
+        "reviews": "Avis",
+        "topRated": "Top Noté",
+        "vision": "La Vision",
+        "expertise": "Expertise",
+        "nextAvailability": "Prochaine Disponibilité",
+        "serviceFrom": "Service À Partir De",
+        "selectAndContinue": "Choisir & Continuer"
+      },
+      "booking": {
+        "stepService": "Service",
+        "stepBarber": "Barbier",
+        "stepDateTime": "Date & Heure",
+        "stepSummary": "Résumé",
+        "selectService": "Choisissez votre service",
+        "selectServiceSubtitle": "Chaque service est conçu avec précision et tradition marocaine.",
+        "selectBarberTitle": "Choisissez Votre Artiste",
+        "selectBarberSubtitle": "Nos maîtres barbiers sont experts dans leur art. Choisissez-en un pour créer votre look.",
+        "selectDateTime": "Sélectionner Date & Heure",
+        "selectDateTimeSubtitle": "Trouvez le moment qui vous convient. Notre réservation de style conciergerie garantit un timing parfait.",
+        "duration": "Durée",
+        "price": "Prix",
+        "continue": "Continuer",
+        "continueToBarber": "Continuer vers le Barbier",
+        "continueToTime": "Continuer vers l'Horaire",
+        "confirmAppointment": "Confirmer le Rendez-vous",
+        "back": "Retour",
+        "returnToServices": "Retour aux Services",
+        "anyAvailableTitle": "N'importe quel Artisan Disponible",
+        "anyAvailableDesc": "Idéal pour ceux qui valorisent le temps. Nous vous associerons au prochain maître barbier disponible.",
+        "yearsExp": "Ans d'Expérience",
+        "availableSlots": "Créneaux Disponibles",
+        "liveAvailability": "Disponibilité en direct",
+        "fullyBooked": "Complet",
+        "noSlotsTitle": "Aucun créneau disponible pour cette date",
+        "noSlotsDesc": "Le barbier sélectionné est complet pour le {day} Nov.",
+        "slotBooked": "Réservé",
+        "arrivalNote": "Durée estimée du service : 45 minutes. Veuillez arriver 10 minutes avant.",
+        "waitlistTitle": "Rejoindre la Liste d'Attente",
+        "waitlistDesc": "Nous vous notifierons via WhatsApp 45 minutes avant si un créneau se libère suite à une annulation.",
+        "joinWaitlist": "Rejoindre la Liste",
+        "orExploreAlternatives": "Ou explorer des alternatives",
+        "changeBarber": "Changer de Maître Barbier",
+        "selectTimeToConfirm": "Veuillez sélectionner un créneau disponible pour procéder à votre réservation.",
+        "secureBookingTitle": "Réservation Sécurisée",
+        "secureBookingText": "Vos données sont cryptées et sécurisées.",
+        "flexibilityPolicyTitle": "Politique de Flexibilité",
+        "flexibilityPolicyText": "Annulez ou reportez gratuitement jusqu'à 24 heures avant votre rituel.",
+        "termsPrefix": "En confirmant, vous acceptez nos",
+        "termsLink": "Conditions d'utilisation",
+        "cancellationSuffix": "et notre politique d'annulation de 24h.",
+        "categories": {
+          "classic": "Coupe Classique",
+          "beard": "Barbe",
+          "care": "Soin",
+          "ritual": "Rituel Complet"
+        },
+        "sidebar": {
+          "title": "Votre Séance",
+          "serviceLabel": "Service",
+          "barberLabel": "Maître Barbier",
+          "timeLabel": "Heure Sélectionnée",
+          "total": "Montant Total",
+          "vat": "TVA marocaine incluse",
+          "selectService": "Sélectionnez un service…",
+          "selectBarber": "Sélectionnez un barbier…",
+          "selectTime": "Aucune heure sélectionnée",
+          "topRated": "Artisan Mieux Noté"
+        },
+        "summary": {
+          "title": "Confirmer votre Réservation",
+          "subtitle": "Vérifiez les détails de votre séance ci-dessous et connectez-vous pour confirmer.",
+          "receiptLabel": "Récapitulatif de la Réservation",
+          "authPrompt": "Pour sécuriser votre rendez-vous, veuillez vous connecter ou créer un compte.",
+          "signInToConfirm": "Se connecter pour Confirmer",
+          "noAccount": "Vous n'avez pas de compte ?",
+          "signUpHere": "Inscrivez-vous ici",
+          "or": "ou",
+          "continueAsGuest": "Continuer en tant qu'Invité",
+          "shopLabel": "Salon",
+          "barberLabel": "Barbier",
+          "serviceLabel": "Service",
+          "dateLabel": "Date",
+          "timeLabel": "Heure",
+          "priceLabel": "Prix",
+          "total": "Total",
+          "login": "Se connecter",
+          "createAccount": "Créer un compte"
+        }
+      }
+    }
+  }
+}
