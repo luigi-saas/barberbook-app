@@ -1,29 +1,24 @@
 import { auth } from "@repo/auth/server";
-import { database } from "@repo/database";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { env } from "@/env";
-import { AvatarStack } from "./components/avatar-stack";
-import { Cursors } from "./components/cursors";
 import { Header } from "./components/header";
 
-const title = "Acme Inc";
-const description = "My application.";
-
-const CollaborationProvider = dynamic(() =>
-  import("./components/collaboration-provider").then(
-    (mod) => mod.CollaborationProvider
-  )
-);
+const title = "BarberBook — Dashboard";
+const description = "Merchant operating system for barbershops in Morocco.";
 
 export const metadata: Metadata = {
   title,
   description,
 };
 
+/**
+ * Dashboard shell placeholder. The merchant OS (calendar, services, team,
+ * CRM) is Phase 2 of docs/Roadmap.md — this page proves the auth wiring and
+ * gives the deployment a working landing surface in the meantime.
+ * The previous next-forge demo queried a stub `Page` model that no longer
+ * exists in the Prisma schema (32-model BarberBook schema replaced it).
+ */
 const App = async () => {
-  const pages = await database.page.findMany();
   const { orgId } = await auth();
 
   if (!orgId) {
@@ -32,23 +27,18 @@ const App = async () => {
 
   return (
     <>
-      <Header page="Data Fetching" pages={["Building Your Application"]}>
-        {env.LIVEBLOCKS_SECRET && (
-          <CollaborationProvider orgId={orgId}>
-            <AvatarStack />
-            <Cursors />
-          </CollaborationProvider>
-        )}
+      <Header page="Overview" pages={["Getting Started"]}>
+        <></>
       </Header>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          {pages.map((page) => (
-            <div className="aspect-video rounded-xl bg-muted/50" key={page.id}>
-              {page.name}
-            </div>
-          ))}
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 p-4">
+        <div className="flex min-h-[50vh] w-full max-w-2xl flex-col items-center justify-center gap-4 rounded-xl border bg-muted/30 p-10 text-center">
+          <h1 className="font-bold text-2xl">Merchant dashboard coming soon</h1>
+          <p className="max-w-md text-muted-foreground">
+            This is BarberBook&apos;s shop-owner operating system in the making:
+            booking calendar, services, team and customer CRM (Phase 2 of the
+            roadmap). The public booking experience is live on the web app.
+          </p>
         </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </div>
     </>
   );

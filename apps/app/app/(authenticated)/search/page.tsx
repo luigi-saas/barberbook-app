@@ -1,5 +1,4 @@
 import { auth } from "@repo/auth/server";
-import { database } from "@repo/database";
 import { notFound, redirect } from "next/navigation";
 import { Header } from "../components/header";
 
@@ -20,15 +19,12 @@ export const generateMetadata = async ({
   };
 };
 
+/**
+ * Placeholder search: the demo `Page` model was removed with the BarberBook
+ * schema migration. Merchant-side search lands with the Phase 2 dashboard.
+ */
 const SearchPage = async ({ searchParams }: SearchPageProperties) => {
   const { q } = await searchParams;
-  const pages = await database.page.findMany({
-    where: {
-      name: {
-        contains: q,
-      },
-    },
-  });
   const { orgId } = await auth();
 
   if (!orgId) {
@@ -41,16 +37,14 @@ const SearchPage = async ({ searchParams }: SearchPageProperties) => {
 
   return (
     <>
-      <Header page="Search" pages={["Building Your Application"]} />
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          {pages.map((page) => (
-            <div className="aspect-video rounded-xl bg-muted/50" key={page.id}>
-              {page.name}
-            </div>
-          ))}
+      <Header page="Search" pages={["Getting Started"]}>
+        <></>
+      </Header>
+      <div className="flex flex-1 items-center justify-center p-4">
+        <div className="flex min-h-[40vh] w-full max-w-2xl items-center justify-center rounded-xl border bg-muted/30 p-10 text-center text-muted-foreground">
+          No results for &quot;{q}&quot; — search arrives with the Phase 2
+          dashboard.
         </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </div>
     </>
   );
