@@ -1,23 +1,23 @@
 # ============================================================================
-# Render Blueprint — BarberBook.ma
+# Render Blueprint — BarberBook.ma (FREE TIER)
 #
 # Provisions the three Next.js services that used to live on Vercel:
 #   barberbook-web  ← apps/web  (marketing + guest booking flow)
 #   barberbook-app  ← apps/app  (merchant dashboard)
-#   barberbook-api  ← apps/api  (webhooks + cron endpoints)
-#   barberbook-cron ← keep-alive cron (replaces apps/api/vercel.json crons)
+#   barberbook-api  ← apps/api  (webhooks + cron endpoints; its build applies
+#                     the Prisma schema to the database)
 #
-# DATABASE: Render Blueprints cannot provision FREE Postgres (paid `basic`
-# can). Two options:
-#   A) Free: Render Dashboard → New + → PostgreSQL → Free → create
-#      `barberbook-db`, copy the "Internal Database URL", paste it into the
-#      DATABASE_URL env var of barberbook-app and barberbook-api when Render
-#      prompts for sync:false values.
-#   B) Paid in-file: add this block back and reference it from DATABASE_URL
-#      (see docs/Render.md for the snippet).
-# Full guide: docs/Render.md
+# DATABASE: create manually (Blueprints cannot provision free Postgres):
+#   Render Dashboard → New + → Postgres → Free, region Frankfurt
+#   → copy "Internal Database URL" → paste as DATABASE_URL when prompted.
+#
+# FREE TIER REALITIES (docs/Render.md has details and the escalation path):
+#   - services sleep after ~15 min idle (cold start 30-60s on next visit)
+#   - 512 MB RAM: `next build` MAY OOM on free instances. If a build dies
+#     with "Killed"/OOM, ask for the GitHub Actions image-build pipeline —
+#     it builds on GH's 7 GB runners and Render only runs the prebuilt image.
+#   - free Postgres expires after 30 days (upgrade to keep data)
 # ============================================================================
-
 services:
   # ---------------------------------------------------------------------------
   # Web — public marketing site + guest booking flow (what customers see)
@@ -26,7 +26,7 @@ services:
     name: barberbook-web
     runtime: node
     region: frankfurt # closest Render region to Morocco (Casablanca)
-    plan: starter # ⚠️ free tier (512MB) may OOM during `next build`;
+    plan: free # 512MB RAM: see docs/Render.md "Free tier realities";
     #   see docs/Render.md "Build memory" for options.
     buildCommand: |
       npm install -g bun@1
@@ -55,7 +55,7 @@ services:
     name: barberbook-app
     runtime: node
     region: frankfurt
-    plan: starter
+    plan: free
     buildCommand: |
       npm install -g bun@1
       bun install
@@ -93,7 +93,7 @@ services:
     name: barberbook-api
     runtime: node
     region: frankfurt
-    plan: starter
+    plan: free
     buildCommand: |
       npm install -g bun@1
       bun install
@@ -126,17 +126,3 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
-
-  # ---------------------------------------------------------------------------
-  # Cron — replaces Vercel cron jobs (apps/api/vercel.json). Pings the API
-  # daily so the DB stays active and services stay warm. Delete this service
-  # if you don't want it.
-  # ---------------------------------------------------------------------------
-  - type: cron
-    name: barberbook-cron
-    runtime: node
-    region: frankfurt
-    plan: starter
-    schedule: "0 1 * * *" # daily 01:00 UTC (same as the Vercel cron)
-    buildCommand: echo "cron runner — no build required"
-    startCommand: curl -fsS https://barberbook-api.onrender.com/cron/keep-alive

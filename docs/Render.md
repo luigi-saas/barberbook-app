@@ -93,25 +93,33 @@ Svix) is optional and off until you set real keys.
           property: connectionString
   ```
 
-## ⚠️ Build memory (read before choosing plans)
+## Free tier realities (no payment info needed)
 
-Next.js 16 + Turbopack needs roughly **1.5–2 GB RAM to build** this app.
-Render's Free **and Starter** instances have 512 MB, which can OOM during the
-first build. Options, cheapest-first:
+The Blueprint now provisions all three services on Render's **free** plan —
+no card required. Know what you're signing up for:
 
-1. **Try Starter anyway** — filtered builds (`--filter web`) build one app, not
-   the whole monorepo; if it fits, you're done at ~$7/service.
-2. **Standard (2 GB) for the first deploy**, then **Suspend/resize down**.
-   Subsequent deploys reuse the build cache and usually fit in less memory.
-3. **Build on GitHub Actions, run on Render** (most cost-efficient): a GH
-   workflow builds a Docker image (runners have 7 GB, free for public repos)
-   and pushes to GHCR; the Render service becomes *"Deploy an existing image"*.
-   Free-tier Render can then RUN the prebuilt image (runtime fits in 512 MB
-   for this app). Ask if you want this pipeline scaffolded.
+- **Sleep**: free web services spin down after ~15 min idle; the next visit
+  waits ~30–60 s for a cold start. Fine for demos, bad for production.
+- **Build memory**: free instances have 512 MB RAM, and the build runs on the
+  same instance. Next.js 16 + Turbopack typically wants more — if the first
+  build dies with `Killed` / OOM / exit 137, the workaround is the **GitHub
+  Actions image pipeline**: GH runners (7 GB, free for this repo's minutes)
+  build Docker images, push to GHCR, and Render switches to
+  `runtime: image` + `plan: free` to just *run* them (runtime fits in 512 MB).
+  Ask and it gets scaffolded.
+- **Free Postgres expires after 30 days.** Data is not migratable afterwards —
+  upgrade the DB to Basic (~$6/mo) or dump/restore before then.
+- **Shared instance hours**: the free plan includes 750 instance-hours/month
+  across services; three always-on services need ~2,200 h. Sleeping services
+  don't consume hours, so light demo usage fits; sustained traffic across all
+  three will not.
 
-Also note: Free web services **sleep after 15 min idle** (cold start ~30–60 s).
-The `barberbook-cron` keep-alive ping prevents DB expiry surprises; upgrade
-plans don't sleep.
+## ⚠️ Build memory (paid path)
+
+If you'd rather have reliable builds and always-on services, keep `plan:
+starter` in `render.yaml` (Starter ≈ $7/service/mo; Render requires a card on
+file for any paid instance, prorated by the second). Standard (2 GB) removes
+all build-memory risk for the first deploy; you can resize down afterwards.
 
 ## Custom domain (barberbook.ma)
 
