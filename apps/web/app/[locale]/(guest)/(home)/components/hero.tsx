@@ -22,7 +22,7 @@ export const Hero = async ({ dictionary }: HeroProps) => {
           {latestPost && (
             <div>
               <Button asChild className="gap-4" size="sm" variant="secondary">
-                <Link href={`/blog/${latestPost._slug}`}>
+                <Link href={`/blog/${latestPost._slug ?? ""}`}>
                   {dictionary.web.home.hero.announcement}{" "}
                   <MoveRight className="h-4 w-4" />
                 </Link>

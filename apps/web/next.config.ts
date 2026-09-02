@@ -10,6 +10,9 @@ const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 let nextConfig: NextConfig = withToolbar(withLogging(config));
 
+// Allow the sandbox preview host in dev
+nextConfig.allowedDevOrigins = ["*.e2b.app"];
+
 nextConfig.images?.remotePatterns?.push({
   protocol: "https",
   hostname: "assets.basehub.com",
@@ -21,6 +24,15 @@ if (process.env.NODE_ENV === "production") {
       source: "/legal",
       destination: "/legal/privacy",
       statusCode: 301,
+    },
+    {
+      // Safety net for the localeless root: middleware normally redirects
+      // `/` to the detected locale, but if the middleware chain is not
+      // active (e.g. Clerk is only partially configured), this keeps the
+      // root page alive instead of 404-ing.
+      source: "/",
+      destination: "/fr",
+      statusCode: 307,
     },
   ];
 

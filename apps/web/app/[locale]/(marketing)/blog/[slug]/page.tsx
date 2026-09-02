@@ -35,16 +35,16 @@ export const generateMetadata = async ({
   }
 
   return createMetadata({
-    title: post._title,
-    description: post.description,
-    image: post.image.url,
+    title: post._title ?? "",
+    description: post.description ?? "",
+    image: post.image?.url ?? "",
   });
 };
 
 export const generateStaticParams = async (): Promise<{ slug: string }[]> => {
   const posts = await blog.getPosts();
 
-  return posts.map(({ _slug }) => ({ slug: _slug }));
+  return posts.map(({ _slug }) => ({ slug: _slug ?? "" }));
 };
 
 const BlogPost = async ({ params }: BlogPostProperties) => {

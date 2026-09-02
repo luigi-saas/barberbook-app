@@ -21,8 +21,45 @@ interface HeaderProps {
   dictionary: Dictionary;
 }
 
-const MobileMenu = () => {
+// Module-level so MobileMenu can share it (was previously scoped to Header)
+const buildNavigationItems = (dictionary: Dictionary) => {
+  const items = [
+    {
+      title: dictionary.web.header.home,
+      href: "/",
+      description: "",
+    },
+    {
+      title: dictionary.web.header.product.title,
+      description: dictionary.web.header.product.description,
+      items: [
+        {
+          title: dictionary.web.header.product.pricing,
+          href: "/pricing",
+        },
+      ],
+    },
+    {
+      title: dictionary.web.header.blog,
+      href: "/blog",
+      description: "",
+    },
+  ];
+
+  if (env.NEXT_PUBLIC_DOCS_URL) {
+    items.push({
+      title: dictionary.web.header.docs,
+      href: env.NEXT_PUBLIC_DOCS_URL,
+      description: "",
+    });
+  }
+
+  return items;
+};
+
+const MobileMenu = ({ dictionary }: HeaderProps) => {
   const [isOpen, setOpen] = useState(false);
+  const navigationItems = buildNavigationItems(dictionary);
   return (
     <div className="flex w-12 shrink items-end justify-end lg:hidden">
       <Button onClick={() => setOpen(!isOpen)} variant="ghost">
@@ -74,36 +111,7 @@ const MobileMenu = () => {
 };
 
 export const Header = ({ dictionary }: HeaderProps) => {
-  const navigationItems = [
-    {
-      title: dictionary.web.header.home,
-      href: "/",
-      description: "",
-    },
-    {
-      title: dictionary.web.header.product.title,
-      description: dictionary.web.header.product.description,
-      items: [
-        {
-          title: dictionary.web.header.product.pricing,
-          href: "/pricing",
-        },
-      ],
-    },
-    {
-      title: dictionary.web.header.blog,
-      href: "/blog",
-      description: "",
-    },
-  ];
-
-  if (env.NEXT_PUBLIC_DOCS_URL) {
-    navigationItems.push({
-      title: dictionary.web.header.docs,
-      href: env.NEXT_PUBLIC_DOCS_URL,
-      description: "",
-    });
-  }
+  const navigationItems = buildNavigationItems(dictionary);
 
   return (
     <header className="sticky top-0 left-0 z-40 w-full border-b bg-background">
@@ -198,7 +206,7 @@ export const Header = ({ dictionary }: HeaderProps) => {
             </Link>
           </Button>
         </div>
-        <MobileMenu />
+        <MobileMenu dictionary={dictionary} />
       </div>
     </header>
   );

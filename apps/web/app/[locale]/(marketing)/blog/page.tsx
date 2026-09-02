@@ -43,7 +43,7 @@ const BlogIndex = async ({ params }: BlogProps) => {
             </h4>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <Feed queries={[blog.postsQuery]}>
+                  <Feed queries={[blog.postsQuery]}>
               {async ([data]) => {
                 "use server";
 
@@ -51,7 +51,7 @@ const BlogIndex = async ({ params }: BlogProps) => {
                   return null;
                 }
 
-                return data.blog.posts.items.map((post, index) => (
+                return data.blog.posts.items.map((post: any, index: number) => (
                   <Link
                     className={cn(
                       "flex cursor-pointer flex-col gap-4 hover:opacity-75",

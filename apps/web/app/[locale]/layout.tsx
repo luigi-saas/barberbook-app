@@ -2,26 +2,15 @@ import "./styles.css";
 import { AnalyticsProvider } from "@repo/analytics/provider";
 import { Toolbar as CMSToolbar } from "@repo/cms/components/toolbar";
 import { DesignSystemProvider } from "@repo/design-system";
+import "@fontsource-variable/manrope";
+import "@fontsource-variable/cairo";
 import { fonts } from "@repo/design-system/lib/fonts";
 import { cn } from "@repo/design-system/lib/utils";
 import { Toolbar } from "@repo/feature-flags/components/toolbar";
 import type { Dictionary } from "@repo/internationalization";
-import { Cairo, Manrope } from "next/font/google";
 import type { ReactNode } from "react";
 import { setRequestLocale } from "next-intl/server";
 import NextIntlProvider from "./NextIntlProvider";
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const cairo = Cairo({
-  subsets: ["arabic", "latin"],
-  variable: "--font-cairo",
-  display: "swap",
-});
 
 const locales = ['fr', 'en', 'ar'];
 
@@ -42,7 +31,7 @@ const RootLayout = async ({ children, params }: RootLayoutProperties) => {
 
   return (
     <html
-      className={cn(fonts, manrope.variable, cairo.variable, "scroll-smooth")}
+      className={cn(fonts, "scroll-smooth")}
       lang={locale}
       suppressHydrationWarning
     >

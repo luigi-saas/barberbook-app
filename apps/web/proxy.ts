@@ -8,7 +8,7 @@ import {
 } from "@repo/security/proxy";
 import { createNEMO } from "@rescale/nemo";
 import createIntlMiddleware from "next-intl/middleware";
-import { type NextProxy, type NextRequest, NextResponse } from "next/server";
+import { type NextFetchEvent, type NextProxy, type NextRequest, NextResponse } from "next/server";
 import { env } from "@/env";
 
 const intlMiddleware = createIntlMiddleware({
@@ -59,10 +59,21 @@ const composedMiddleware = createNEMO(
 );
 
 // Public chain: i18n redirect, security headers, Arcjet
-const publicChain = async (request: NextRequest, event: NextRequestEvent) => {
+const publicChain = async (request: NextRequest, event: NextFetchEvent) => {
   // i18n: redirect / → /fr (or detected locale) before anything else
   const intlResponse = intlMiddleware(request as unknown as Parameters<typeof intlMiddleware>[0]);
   if (intlResponse) {
+    // Keep the Location relative so redirects survive hosts/CDNs/proxies
+    // that do not forward the original Host (sandbox previews, etc.)
+    const location = intlResponse.headers.get("location");
+    if (location) {
+      try {
+        const url = new URL(location);
+        intlResponse.headers.set("location", `${url.pathname}${url.search}`);
+      } catch {
+        // already relative
+      }
+    }
     return intlResponse;
   }
 
@@ -75,15 +86,12 @@ const publicChain = async (request: NextRequest, event: NextRequestEvent) => {
   return middlewareResponse || headersResponse;
 };
 
-type NextRequestEvent = {
-  request: NextRequest;
-};
-
-// Clerk only wraps the chain when it is configured. The guest experience is
-// public: without a publishable key, clerkMiddleware never invokes its
-// callback, which left every unprefixed route 404-ing.
-export default (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+// Clerk only wraps the chain when it is fully configured (server key present).
+// The guest experience is public: clerkMiddleware never invokes its callback
+// without a publishable key, and a publishable-only setup misbehaves in
+// production — both left every unprefixed route 404-ing.
+export default (process.env.CLERK_SECRET_KEY
   ? authMiddleware(async (_auth, request, event) =>
-      publicChain(request as unknown as NextRequest, event as unknown as NextRequestEvent)
+      publicChain(request as unknown as NextRequest, event)
     )
   : publicChain) as unknown as NextProxy;

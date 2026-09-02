@@ -10,6 +10,18 @@ const basehub = BASEHUB_TOKEN
   ? basehubClient({ token: BASEHUB_TOKEN })
   : undefined;
 
+/**
+ * Untyped passthrough for hand-written query objects. The generated BaseHub
+ * types (token builds) and our committed stub types disagree on the exact
+ * PumpQuery generic, so the query functions go through this boundary.
+ */
+const rawQuery = async (query: unknown): Promise<any> => {
+  if (!basehub) {
+    return undefined;
+  }
+  return (basehub.query as (q: unknown) => Promise<any>)(query);
+};
+
 /* -------------------------------------------------------------------------------------------------
  * Common Fragments
  * -----------------------------------------------------------------------------------------------*/
@@ -54,8 +66,21 @@ const postFragment = fragmentOn("PostsItem", {
   },
 });
 
-export type PostMeta = fragmentOn.infer<typeof postMetaFragment>;
-export type Post = fragmentOn.infer<typeof postFragment>;
+/**
+ * BaseHub only exposes `_slug` / `_title` in its generated types (produced at
+ * build time when BASEHUB_TOKEN is configured). Intersect them as optional so
+ * tokenless builds (local dev, CI without secrets) still type-check.
+ */
+type CmsPostFields = {
+  _slug?: string;
+  _title?: string;
+  date?: string;
+  description?: string;
+  image?: { url?: string; alt?: string; width?: number; height?: number };
+};
+
+export type PostMeta = fragmentOn.infer<typeof postMetaFragment> & CmsPostFields;
+export type Post = fragmentOn.infer<typeof postFragment> & CmsPostFields;
 
 export const blog = {
   postsQuery: {
@@ -96,7 +121,7 @@ export const blog = {
     }
 
     try {
-      const data = await basehub.query(blog.postsQuery);
+      const data = await rawQuery(blog.postsQuery);
       return data.blog.posts.items;
     } catch {
       return [];
@@ -109,7 +134,7 @@ export const blog = {
     }
 
     try {
-      const data = await basehub.query(blog.latestPostQuery);
+      const data = await rawQuery(blog.latestPostQuery);
       return data.blog.posts.item;
     } catch {
       return null;
@@ -123,7 +148,7 @@ export const blog = {
 
     try {
       const query = blog.postQuery(slug);
-      const data = await basehub.query(query);
+      const data = await rawQuery(query);
       return data.blog.posts.item;
     } catch {
       return null;
@@ -153,8 +178,8 @@ const legalPostFragment = fragmentOn("LegalPagesItem", {
   },
 });
 
-export type LegalPostMeta = fragmentOn.infer<typeof legalPostMetaFragment>;
-export type LegalPost = fragmentOn.infer<typeof legalPostFragment>;
+export type LegalPostMeta = fragmentOn.infer<typeof legalPostMetaFragment> & CmsPostFields;
+export type LegalPost = fragmentOn.infer<typeof legalPostFragment> & CmsPostFields;
 
 export const legal = {
   postsMetaQuery: {
@@ -195,7 +220,7 @@ export const legal = {
     }
 
     try {
-      const data = await basehub.query(legal.postsMetaQuery);
+      const data = await rawQuery(legal.postsMetaQuery);
       return data.legalPages.items;
     } catch {
       return [];
@@ -208,7 +233,7 @@ export const legal = {
     }
 
     try {
-      const data = await basehub.query(legal.postsQuery);
+      const data = await rawQuery(legal.postsQuery);
       return data.legalPages.items;
     } catch {
       return [];
@@ -221,7 +246,7 @@ export const legal = {
     }
 
     try {
-      const data = await basehub.query(legal.latestPostQuery);
+      const data = await rawQuery(legal.latestPostQuery);
       return data.legalPages.item;
     } catch {
       return null;
@@ -235,7 +260,7 @@ export const legal = {
 
     try {
       const query = legal.postQuery(slug);
-      const data = await basehub.query(query);
+      const data = await rawQuery(query);
       return data.legalPages.item;
     } catch {
       return null;

@@ -2,6 +2,11 @@
 
 /* BarberBook brand tokens */
 :root {
+  /* Self-hosted fonts (fontsource) — replaces next/font/google so builds
+     never require network access to fonts.googleapis.com */
+  --font-manrope: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-cairo: "Cairo Variable", ui-sans-serif, system-ui, sans-serif;
+
   --bb-gold: #775a19;
   --bb-gold-container: #c5a059;
   --bb-gold-muted: rgba(197, 160, 89, 0.2);

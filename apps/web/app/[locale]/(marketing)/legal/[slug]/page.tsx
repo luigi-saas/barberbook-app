@@ -26,15 +26,15 @@ export const generateMetadata = async ({
   }
 
   return createMetadata({
-    title: post._title,
-    description: post.description,
+    title: post._title ?? "",
+    description: post.description ?? "",
   });
 };
 
 export const generateStaticParams = async (): Promise<{ slug: string }[]> => {
   const posts = await legal.getPosts();
 
-  return posts.map(({ _slug }) => ({ slug: _slug }));
+  return posts.map(({ _slug }) => ({ slug: _slug ?? "" }));
 };
 
 const LegalPage = async ({ params }: LegalPageProperties) => {
