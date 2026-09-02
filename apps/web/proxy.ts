@@ -63,15 +63,23 @@ const publicChain = async (request: NextRequest, event: NextFetchEvent) => {
   // i18n: redirect / → /fr (or detected locale) before anything else
   const intlResponse = intlMiddleware(request as unknown as Parameters<typeof intlMiddleware>[0]);
   if (intlResponse) {
-    // Keep the Location relative so redirects survive hosts/CDNs/proxies
-    // that do not forward the original Host (sandbox previews, etc.)
+    // Rebuild the redirect URL when the request passed through a proxy that
+    // forwards the original host (sandbox previews, CDNs). next-intl derives
+    // the URL from the Host header, which behind such proxies is the internal
+    // one. Stays absolute: relative Locations crash the Next dev server.
     const location = intlResponse.headers.get("location");
-    if (location) {
+    const forwardedHost = request.headers.get("x-forwarded-host");
+    if (location && forwardedHost) {
       try {
-        const url = new URL(location);
-        intlResponse.headers.set("location", `${url.pathname}${url.search}`);
+        const url = new URL(location, request.url);
+        if (url.host !== forwardedHost) {
+          url.protocol = request.headers.get("x-forwarded-proto") ?? "https";
+          url.host = forwardedHost;
+          url.port = "";
+          intlResponse.headers.set("location", url.toString());
+        }
       } catch {
-        // already relative
+        // keep original location
       }
     }
     return intlResponse;
