@@ -1,8 +1,9 @@
 # Deploying BarberBook.ma on Render
 
 This repo is Render-ready via a **Blueprint** (`render.yaml` at the repo root).
-It replaces the three Vercel projects + Neon with four Render services and a
-managed Postgres.
+It replaces the three Vercel projects. The Postgres database is created
+manually in Render's dashboard (Render Blueprints can't provision the free
+Postgres tier — see "Database" below).
 
 ## What moves where
 
@@ -12,34 +13,50 @@ managed Postgres.
 | `barberbook-app` (dashboard project) | **barberbook-app** web service | `apps/app` | merchant dashboard (needs Clerk keys) |
 | `barberbook-app` (api project) | **barberbook-api** web service | `apps/api` | webhooks + cron routes; its build runs `prisma db push` |
 | Vercel cron (`vercel.json`) | **barberbook-cron** cron job | — | daily keep-alive ping (delete if unwanted) |
-| Neon Postgres | **barberbook-db** Postgres | — | connection string is injected automatically |
+| Neon Postgres | **PostgreSQL** instance (manual, free tier) | — | paste its Internal URL as `DATABASE_URL` |
 
 Already handled in code (no Vercel lock-in):
 
 - `packages/database` — picks the Neon driver only for `*.neon.tech` hosts; any
   standard Postgres (Render, RDS, Supabase, local) uses `adapter-pg` with TLS.
-- `robots.ts` / `sitemap.ts` / blog JSON-LD — canonical host comes from
+- `robots.txt` / `sitemap.xml` / blog JSON-LD — canonical host comes from
   `VERCEL_PROJECT_PRODUCTION_URL` → `NEXT_PUBLIC_WEB_URL` → localhost fallback,
   so they work on any platform.
 - Analytics/CMS/feature-flags keys are optional and self-disable when unset.
+
+## Database (5 minutes, before or during setup)
+
+Render's free Postgres **cannot** be created from a Blueprint, so:
+
+1. Render Dashboard → **New + → Postgres** → name it `barberbook-db`, region
+   **Frankfurt**, plan **Free** → Create.
+2. On the database page, copy the **Internal Database URL**.
+3. You'll paste this URL when the Blueprint setup prompts for the
+   `DATABASE_URL` fields of `barberbook-app` and `barberbook-api`
+   (they're marked "sync: false").
+
+> Free databases expire after 30 days — fine for validation, upgrade to
+> Basic (~$6/mo) before real shops onboard. Alternatively keep Neon for now
+> and paste your existing Neon URL instead.
 
 ## Quick start (Blueprint, ~10 minutes)
 
 1. **Push this branch to GitHub** (already done from the workspace).
 2. Render Dashboard → **New + → Blueprint** → select `luigi-saas/barberbook-app`
-   → when asked for a branch, pick the branch containing `render.yaml`
-   (currently `arena/01a06225-barberbook-app`; switch to `main` after merging).
-3. Render shows the services from `render.yaml`. For the `sync: false` vars,
-   fill in real values (see matrix below). Copy any you already have from the
-   Vercel project settings before deleting them there.
+   → branch with `render.yaml` (currently
+   `arena/01a06225-barberbook-app`; switch to `main` after merging).
+3. Render lists 4 services. Fill the `sync: false` vars per the matrix below
+   (DATABASE_URL = the Internal Database URL from the step above).
 4. **Apply** → first builds start. The API build applies the Prisma schema to
-   the new Postgres automatically.
+   the database automatically.
 5. Check `https://barberbook-web.onrender.com/fr` (or the URL Render assigned).
 
 ### Environment variables to fill in the dashboard
 
 | Service | Variable | Where to get it |
 |---|---|---|
+| `barberbook-app` | `DATABASE_URL` | Render DB **Internal Database URL** (or Neon URL) |
+| `barberbook-api` | `DATABASE_URL` | same URL |
 | `barberbook-app` | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Vercel project env vars (Clerk dashboard) |
 | `barberbook-app` | `CLERK_SECRET_KEY` | idem — also add `barberbook-app.onrender.com` to Clerk's allowed origins |
 | `barberbook-api` | `CLERK_SECRET_KEY`, `CLERK_WEBHOOK_SECRET` | idem — update the Clerk webhook target URL to the Render API URL |
@@ -51,14 +68,30 @@ Svix) is optional and off until you set real keys.
 
 ## Postgres notes
 
-- **Free plan databases expire after 30 days** — fine for a smoke test, then
-  upgrade `barberbook-db` to Starter before onboarding real shops.
-- Services connect with the **external** connection string Render injects
-  (`fromDatabase: connectionString`); TLS is enforced and handled by the
-  adapter. For lower latency you can switch the `DATABASE_URL` values to the
-  **internal** URL Render shows on the database page.
+- Services connect with the **internal** connection string (paste it into
+  `DATABASE_URL`); TLS is enforced and handled by the adapter automatically.
 - Schema changes: edit `packages/database/prisma/schema.prisma` → the next
   `barberbook-api` deploy applies them (`prisma db push` in its build command).
+- Prefer everything-in-file? Swap the manual DB for a paid one in the
+  Blueprint by adding:
+
+  ```yaml
+  databases:
+    - name: barberbook-db
+      databaseName: barberbook
+      user: barberbook
+      region: frankfurt
+      plan: basic # ~$6/mo — free is NOT allowed in Blueprints
+  ```
+
+  and replacing the two `DATABASE_URL` `sync: false` entries with:
+
+  ```yaml
+      - key: DATABASE_URL
+        fromDatabase:
+          name: barberbook-db
+          property: connectionString
+  ```
 
 ## ⚠️ Build memory (read before choosing plans)
 

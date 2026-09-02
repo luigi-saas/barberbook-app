@@ -1,38 +1,32 @@
 # ============================================================================
 # Render Blueprint — BarberBook.ma
 #
-# Provisions the full platform that used to live on Vercel:
+# Provisions the three Next.js services that used to live on Vercel:
 #   barberbook-web  ← apps/web  (marketing + guest booking flow)
-#   barberbook-app  ← apps/app  (merchant dashboard, port 3000 on Vercel)
+#   barberbook-app  ← apps/app  (merchant dashboard)
 #   barberbook-api  ← apps/api  (webhooks + cron endpoints)
-#   barberbook-db   ← managed PostgreSQL (replaces Neon)
 #   barberbook-cron ← keep-alive cron (replaces apps/api/vercel.json crons)
 #
-# Create it: Render Dashboard → "New +" → "Blueprint" → select this repo and
-# the branch with render.yaml. Render reads this file and asks you to confirm.
-# Full step-by-step guide + cost notes: docs/Render.md
-#
-# NOTE: onrender.com subdomains below assume the service names are free.
-#       If Render assigns different URLs, update every NEXT_PUBLIC_* var.
+# DATABASE: Render Blueprints cannot provision FREE Postgres (paid `basic`
+# can). Two options:
+#   A) Free: Render Dashboard → New + → PostgreSQL → Free → create
+#      `barberbook-db`, copy the "Internal Database URL", paste it into the
+#      DATABASE_URL env var of barberbook-app and barberbook-api when Render
+#      prompts for sync:false values.
+#   B) Paid in-file: add this block back and reference it from DATABASE_URL
+#      (see docs/Render.md for the snippet).
+# Full guide: docs/Render.md
 # ============================================================================
-
-databases:
-  - name: barberbook-db
-    databaseName: barberbook
-    user: barberbook
-    region: frankfurt # closest Render region to Morocco (Casablanca)
-    plan: free # ⚠️ Render free Postgres EXPIRES AFTER 30 DAYS — upgrade to
-    #    starter (~$6/mo) before real data goes in.
 
 services:
   # ---------------------------------------------------------------------------
-  # Web — public marketing site + guest booking flow (this is what customers see)
+  # Web — public marketing site + guest booking flow (what customers see)
   # ---------------------------------------------------------------------------
   - type: web
     name: barberbook-web
     runtime: node
-    region: frankfurt
-    plan: starter # ⚠️ free tier (512MB) will likely OOM during `next build`;
+    region: frankfurt # closest Render region to Morocco (Casablanca)
+    plan: starter # ⚠️ free tier (512MB) may OOM during `next build`;
     #   see docs/Render.md "Build memory" for options.
     buildCommand: |
       npm install -g bun@1
@@ -44,7 +38,7 @@ services:
         value: "22"
       - key: NEXT_TELEMETRY_DISABLED
         value: "1"
-      # Legacy next-forge var: canonical host for robots/sitemap/metadata.
+      # Canonical host for robots/sitemap/metadata (legacy next-forge var).
       - key: VERCEL_PROJECT_PRODUCTION_URL
         value: barberbook-web.onrender.com
       - key: NEXT_PUBLIC_WEB_URL
@@ -80,12 +74,12 @@ services:
         value: https://barberbook-web.onrender.com
       - key: NEXT_PUBLIC_API_URL
         value: https://barberbook-api.onrender.com
+      # Paste the Postgres "Internal Database URL" (Render DB, or your Neon
+      # URL to keep it for now). See header comment, option A.
       - key: DATABASE_URL
-        fromDatabase:
-          name: barberbook-db
-          property: connectionString
-      # Dashboard auth (Clerk). Fill real values in the Render dashboard,
-      # or copy them from the Vercel project before decommissioning it.
+        sync: false
+      # Dashboard auth (Clerk). Copy from the Vercel project before deleting
+      # it, and add barberbook-app.onrender.com to Clerk's allowed origins.
       - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
         sync: false
       - key: CLERK_SECRET_KEY
@@ -120,9 +114,7 @@ services:
       - key: NEXT_PUBLIC_API_URL
         value: https://barberbook-api.onrender.com
       - key: DATABASE_URL
-        fromDatabase:
-          name: barberbook-db
-          property: connectionString
+        sync: false # same Internal Database URL as barberbook-app
       # Integrations are optional (graceful degradation) — add when needed:
       - key: CLERK_SECRET_KEY
         sync: false
@@ -136,9 +128,9 @@ services:
         sync: false
 
   # ---------------------------------------------------------------------------
-  # Cron — replaces Vercel cron jobs (apps/api/vercel.json). Pings the API so
-  # free Postgres/Neon-style idle limits don't kill the DB and services stay
-  # warm. Delete this service if you don't want it (cron jobs are paid).
+  # Cron — replaces Vercel cron jobs (apps/api/vercel.json). Pings the API
+  # daily so the DB stays active and services stay warm. Delete this service
+  # if you don't want it.
   # ---------------------------------------------------------------------------
   - type: cron
     name: barberbook-cron
