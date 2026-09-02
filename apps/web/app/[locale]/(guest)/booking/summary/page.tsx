@@ -35,7 +35,14 @@ const SummaryPage = async ({ params, searchParams }: SummaryPageProps) => {
     return (
       <main className="min-h-screen bg-bb-cream">
         <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-20">
-          <BookingStepper currentStep={4} />
+          <BookingStepper
+          currentStep={4}
+          hrefs={[
+            `/${locale}/booking?service=${serviceId ?? ''}`,
+            `/${locale}/booking/barber?service=${serviceId ?? ''}`,
+            `/${locale}/booking/time?service=${serviceId ?? ''}&date=${date ?? ''}`,
+          ]}
+        />
           <p className="mt-12 text-center text-sm text-bb-on-surface-muted">
             {t('selectTimeToConfirm')}
           </p>

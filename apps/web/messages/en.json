@@ -232,7 +232,9 @@
         "packages": "Packages",
         "about": "About",
         "login": "Login",
-        "signUp": "Sign Up"
+        "signUp": "Sign Up",
+        "bookNow": "Book now",
+        "pricing": "Pricing"
       },
       "footer": {
         "tagline": "Connecting discerning gentlemen with the finest grooming studios across the Kingdom of Morocco.",
@@ -430,7 +432,8 @@
           "notes": "Notes for your barber (optional)",
           "payAtShop": "Pay at the shop",
           "submitting": "Booking…",
-          "confirm": "Confirm booking"
+          "confirm": "Confirm booking",
+          "phoneHint": "We'll send your confirmation by WhatsApp."
         },
         "errors": {
           "slotTaken": "That slot was just taken. Pick another one.",
@@ -446,6 +449,18 @@
           "referenceNote": "Keep your #BB reference — it identifies your booking at the shop.",
           "notFoundTitle": "Booking not found",
           "notFoundText": "This reference doesn't exist or was removed."
+        },
+        "cal": {
+          "add": "Add to calendar",
+          "google": "Google Calendar",
+          "ics": "Download .ics"
+        },
+        "ref": {
+          "copy": "Copy reference",
+          "copied": "Copied!"
+        },
+        "shop": {
+          "map": "Get directions"
         }
       },
       "auth": {

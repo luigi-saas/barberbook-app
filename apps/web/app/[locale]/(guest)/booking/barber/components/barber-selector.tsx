@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import type { BarberWithServices } from '@/lib/booking';
+import { BookingActionBar } from '../../components/booking-action-bar';
 import { BookingSessionSidebar } from '../../components/booking-session-sidebar';
 
 interface BarberSelectorProps {
@@ -145,7 +146,14 @@ export function BarberSelector({ locale, serviceId, barbers, shopId }: BarberSel
       </div>
 
       {/* Right sidebar */}
+      <BookingActionBar
+        enabled={Boolean(selectedId)}
+        ctaHref={`/${locale}/booking/time?barber=${selectedId}${serviceParam}`}
+        ctaLabel="continueToTime"
+        summary={selectedBarber ? selectedBarber.name : selectedId === 'any' ? undefined : undefined}
+      />
       <BookingSessionSidebar
+        className="hidden lg:block"
         barber={
           selectedBarber
             ? { name: selectedBarber.name, avatarUrl: selectedBarber.avatarUrl }
@@ -159,7 +167,7 @@ export function BarberSelector({ locale, serviceId, barbers, shopId }: BarberSel
             className={cn(
               'w-full py-4 rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2',
               selectedId
-                ? 'bg-bb-espresso-gold text-white shadow-[0_8px_20px_rgba(119,90,25,0.25)] hover:scale-[0.98]'
+                ? 'bg-bb-espresso-gold text-white shadow-[0_8px_20px_-8px_rgba(119,90,25,0.45)] hover:bg-bb-espresso-gold-deep'
                 : 'bg-bb-cream-border text-bb-on-surface-muted cursor-not-allowed pointer-events-none',
             )}
             aria-disabled={!selectedId}

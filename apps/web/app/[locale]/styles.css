@@ -14,27 +14,28 @@
   --bb-surface: #fcf9f8;
   --bb-surface-variant: #f6f3f2;
   --bb-surface-elevated: #f0eded;
-  --bb-on-surface-muted: #4e4639;
+  --bb-on-surface-muted: #5d5344;
   --bb-outline: #d1c5b4;
   --bb-success: #2b6954;
   --bb-success-container: #adedd3;
   --bb-error: #ba1a1a;
   --bb-error-container: #ffdad6;
-  --bb-radius-card: 1.5rem;
-  --bb-radius-button: 1rem;
-  --bb-shadow-card: 0px 12px 40px 0px rgba(28, 27, 27, 0.06);
-  --bb-shadow-button: 0px 10px 15px -3px rgba(119, 90, 25, 0.2), 0px 4px 6px -4px rgba(119, 90, 25, 0.2);
+  --bb-radius-card: 1.25rem;
+  --bb-radius-button: 0.875rem;
+  --bb-shadow-card: 0 1px 2px rgba(28, 27, 27, 0.04), 0 12px 32px -16px rgba(28, 27, 27, 0.1);
+  --bb-shadow-button: 0 8px 20px -8px rgba(119, 90, 25, 0.35);
 
   /* Onboarding / Welcome palette */
   --bb-espresso: #2b140f;
   --bb-espresso-gold: #996321;
-  --bb-cream: #f5f2ed;
-  --bb-cream-border: #e5ded6;
+  --bb-espresso-gold-deep: #7d521c;
+  --bb-cream: #faf8f4;
+  --bb-cream-border: #ebe4d9;
   --bb-tan: #bfa78c;
   --bb-warm-muted: rgba(43, 20, 15, 0.6);
   --bb-warm-muted-light: rgba(43, 20, 15, 0.1);
-  --bb-radius-xl: 3rem;
-  --bb-shadow-onboarding: 0px 12px 40px 0px rgba(43, 20, 15, 0.05);
+  --bb-radius-xl: 1.75rem;
+  --bb-shadow-onboarding: 0 1px 2px rgba(43, 20, 15, 0.04), 0 16px 40px -20px rgba(43, 20, 15, 0.12);
 }
 
 @theme inline {
@@ -58,9 +59,54 @@
   --font-arabic: var(--font-cairo), ui-sans-serif, system-ui, sans-serif;
   --color-bb-espresso: var(--bb-espresso);
   --color-bb-espresso-gold: var(--bb-espresso-gold);
+  --color-bb-espresso-gold-deep: var(--bb-espresso-gold-deep);
   --color-bb-cream: var(--bb-cream);
   --color-bb-cream-border: var(--bb-cream-border);
   --color-bb-tan: var(--bb-tan);
+}
+
+/* -------------------------------------------------------------------------------------------------
+ * Global polish — typography rendering, focus, selection, motion, scrollbars
+ * -----------------------------------------------------------------------------------------------*/
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Tighter, more professional display headings */
+.font-display {
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--bb-gold-muted);
+  color: var(--bb-espresso);
+}
+
+:focus-visible {
+  outline: 2px solid var(--bb-espresso-gold);
+  outline-offset: 2px;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Cairo for Arabic locale — applied automatically via lang attribute */

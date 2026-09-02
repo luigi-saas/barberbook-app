@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import { formatShopTime, getBookingByReference } from '@/lib/booking';
+import { CopyReference } from './components/copy-reference';
 import { BookingStepper } from '../components/booking-stepper';
 
 interface ConfirmedPageProps {
@@ -70,6 +71,9 @@ const ConfirmedPage = async ({ params, searchParams }: ConfirmedPageProps) => {
             <p className="mt-4 inline-block px-6 py-2 rounded-full bg-bb-espresso text-bb-cream font-display font-bold tracking-widest text-lg">
               #BB-{booking.reference}
             </p>
+            <div className="flex justify-center">
+              <CopyReference reference={booking.reference} />
+            </div>
           </div>
 
           {/* Receipt */}
@@ -132,16 +136,52 @@ const ConfirmedPage = async ({ params, searchParams }: ConfirmedPageProps) => {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={`/${locale}/booking`}
-              className="px-8 py-4 bg-bb-espresso-gold text-white rounded-2xl font-bold text-center hover:scale-[0.98] transition-transform"
+              className="px-8 py-4 bg-bb-espresso-gold text-white rounded-2xl font-bold text-center hover:bg-bb-espresso-gold-deep transition-colors"
             >
               {t('confirmed.newBooking')}
             </Link>
             <Link
               href={`/${locale}/explore`}
-              className="px-8 py-4 border-2 border-bb-espresso-gold/20 text-bb-espresso-gold rounded-2xl font-bold text-center hover:bg-bb-gold-muted/20 transition-all"
+              className="px-8 py-4 border-2 border-bb-cream-border text-bb-espresso rounded-2xl font-bold text-center hover:bg-bb-cream transition-colors"
             >
               {t('confirmed.backHome')}
             </Link>
+          </div>
+
+          {/* Calendar + directions */}
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center text-sm">
+            <a
+              href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+                `${booking.serviceName} — ${booking.shopName}`,
+              )}&dates=${booking.scheduledAt.toISOString().replace(/[-:]/g, "").split(".")[0]}Z/${booking.endsAt
+                .toISOString()
+                .replace(/[-:]/g, "")
+                .split(".")[0]}Z&location=${encodeURIComponent(`${booking.shopAddress}, ${booking.shopCity}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-bb-cream-border bg-white px-5 py-3 font-semibold text-bb-espresso transition hover:bg-bb-cream"
+            >
+              <span className="material-symbols-outlined text-[18px] text-bb-espresso-gold">event</span>
+              {t('cal.google')}
+            </a>
+            <a
+              href={`/api/bookings/${booking.reference}/ics`}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-bb-cream-border bg-white px-5 py-3 font-semibold text-bb-espresso transition hover:bg-bb-cream"
+            >
+              <span className="material-symbols-outlined text-[18px] text-bb-espresso-gold">download</span>
+              {t('cal.ics')}
+            </a>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                `${booking.shopName} ${booking.shopAddress} ${booking.shopCity}`,
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-bb-cream-border bg-white px-5 py-3 font-semibold text-bb-espresso transition hover:bg-bb-cream"
+            >
+              <span className="material-symbols-outlined text-[18px] text-bb-espresso-gold">near_me</span>
+              {t('shop.map')}
+            </a>
           </div>
 
           <p className="mt-8 text-center text-xs text-bb-on-surface-muted/60">

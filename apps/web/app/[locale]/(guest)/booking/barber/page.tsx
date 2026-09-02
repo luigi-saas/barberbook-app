@@ -11,6 +11,7 @@ interface BarberPageProps {
 const BarberPage = async ({ params, searchParams }: BarberPageProps) => {
   const { locale } = await params;
   const { service, shop: shopParam } = await searchParams;
+  const shopQuery = shopParam ? `&shop=${shopParam}` : '';
   setRequestLocale(locale);
 
   const shop = shopParam ? (await getShop(shopParam)) ?? (await getPrimaryShop()) : await getPrimaryShop();
@@ -18,10 +19,13 @@ const BarberPage = async ({ params, searchParams }: BarberPageProps) => {
 
   return (
     <main className="min-h-screen bg-bb-cream">
-      <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-20">
+      <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-32 lg:pb-20">
         {/* Stepper */}
         <div className="mb-12">
-          <BookingStepper currentStep={2} />
+          <BookingStepper
+          currentStep={2}
+          hrefs={[`/${locale}/booking${service ? `?service=${service}` : ''}${shopQuery}`]}
+        />
         </div>
 
         {/* Two-column content */}

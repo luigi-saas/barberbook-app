@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import type { ServiceCard } from '@/lib/booking';
+import { BookingActionBar } from './booking-action-bar';
 import { BookingSessionSidebar } from './booking-session-sidebar';
 
 const FALLBACK_IMAGE = '/images/svc-classic-cut.jpg';
@@ -152,7 +153,14 @@ export function ServiceSelector({ locale, services, shopId }: ServiceSelectorPro
       </div>
 
       {/* Right sidebar */}
+      <BookingActionBar
+        enabled={Boolean(selectedService)}
+        ctaHref={`/${locale}/booking/barber?service=${selectedId}${shopParam}`}
+        ctaLabel="continueToBarber"
+        summary={selectedService ? `${selectedService.name} · ${selectedService.price}` : undefined}
+      />
       <BookingSessionSidebar
+        className="hidden lg:block"
         service={
           selectedService
             ? {
@@ -169,7 +177,7 @@ export function ServiceSelector({ locale, services, shopId }: ServiceSelectorPro
             className={cn(
               'w-full py-4 rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2',
               selectedId
-                ? 'bg-bb-espresso-gold text-white shadow-[0_8px_20px_rgba(119,90,25,0.25)] hover:scale-[0.98]'
+                ? 'bg-bb-espresso-gold text-white shadow-[0_8px_20px_-8px_rgba(119,90,25,0.45)] hover:bg-bb-espresso-gold-deep'
                 : 'bg-bb-cream-border text-bb-on-surface-muted cursor-not-allowed pointer-events-none',
             )}
             aria-disabled={!selectedId}

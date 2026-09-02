@@ -216,7 +216,9 @@
         "packages": "Offres",
         "about": "À propos",
         "login": "Connexion",
-        "signUp": "S'inscrire"
+        "signUp": "S'inscrire",
+        "bookNow": "Réserver",
+        "pricing": "Tarifs"
       },
       "footer": {
         "tagline": "Connecter les gentlemen exigeants avec les meilleurs salons de soin à travers le Royaume du Maroc.",
@@ -414,7 +416,8 @@
           "notes": "Notes pour le barbier (optionnel)",
           "payAtShop": "Paiement au salon",
           "submitting": "Réservation…",
-          "confirm": "Confirmer la réservation"
+          "confirm": "Confirmer la réservation",
+          "phoneHint": "Nous vous envoyons une confirmation par WhatsApp."
         },
         "errors": {
           "slotTaken": "Ce créneau vient d'être pris. Choisissez-en un autre.",
@@ -430,6 +433,18 @@
           "referenceNote": "Conservez votre référence #BB — elle identifie votre réservation au salon.",
           "notFoundTitle": "Réservation introuvable",
           "notFoundText": "Cette référence n'existe pas ou a été supprimée."
+        },
+        "cal": {
+          "add": "Ajouter au calendrier",
+          "google": "Google Agenda",
+          "ics": "Télécharger .ics"
+        },
+        "ref": {
+          "copy": "Copier la référence",
+          "copied": "Copié !"
+        },
+        "shop": {
+          "map": "Voir l'itinéraire"
         }
       },
       "auth": {

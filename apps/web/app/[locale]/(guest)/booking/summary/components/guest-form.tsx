@@ -109,40 +109,52 @@ export function GuestForm(props: GuestFormProps) {
 
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
-              <input
-                className={inputClass}
-                placeholder={t('form.firstName')}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                minLength={2}
-                autoComplete="given-name"
-              />
-              <input
-                className={inputClass}
-                placeholder={t('form.lastName')}
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                autoComplete="family-name"
-              />
+              <label className="block">
+                <span className="mb-1.5 block text-xs font-semibold text-bb-espresso">{t('form.firstName')}</span>
+                <input
+                  className={inputClass}
+                  placeholder="Yassine"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                  minLength={2}
+                  autoComplete="given-name"
+                />
+              </label>
+              <label className="block">
+                <span className="mb-1.5 block text-xs font-semibold text-bb-espresso">{t('form.lastName')}</span>
+                <input
+                  className={inputClass}
+                  placeholder="El Mansouri"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  autoComplete="family-name"
+                />
+              </label>
             </div>
-            <input
-              className={inputClass}
-              placeholder={t('form.phone')}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-              type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-            />
-            <textarea
-              className={cn(inputClass, 'min-h-[80px] resize-none')}
-              placeholder={t('form.notes')}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              maxLength={500}
-            />
+            <label className="block">
+              <span className="mb-1.5 block text-xs font-semibold text-bb-espresso">{t('form.phone')}</span>
+              <input
+                className={inputClass}
+                placeholder="+212 6 12 34 56 78"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+              />
+              <span className="mt-1 block text-[11px] text-bb-on-surface-muted">{t('form.phoneHint')}</span>
+            </label>
+            <label className="block">
+              <span className="mb-1.5 block text-xs font-semibold text-bb-espresso">{t('form.notes')}</span>
+              <textarea
+                className={cn(inputClass, 'min-h-[80px] resize-none')}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                maxLength={500}
+              />
+            </label>
           </div>
 
           {error && (
@@ -166,7 +178,7 @@ export function GuestForm(props: GuestFormProps) {
             className={cn(
               'w-full py-4 rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2',
               valid && !submitting
-                ? 'bg-bb-espresso-gold text-white shadow-[0_8px_20px_rgba(119,90,25,0.25)] hover:scale-[0.98]'
+                ? 'bg-bb-espresso-gold text-white shadow-[0_8px_20px_-8px_rgba(119,90,25,0.45)] hover:bg-bb-espresso-gold-deep'
                 : 'bg-bb-cream-border text-bb-on-surface-muted cursor-not-allowed',
             )}
           >

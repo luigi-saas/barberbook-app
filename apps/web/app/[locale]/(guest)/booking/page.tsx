@@ -16,7 +16,7 @@ const BookingPage = async ({ params }: BookingPageProps) => {
 
   return (
     <main className="min-h-screen bg-bb-cream">
-      <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-20">
+      <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-32 lg:pb-20">
         {/* Stepper */}
         <div className="mb-12">
           <BookingStepper currentStep={1} />

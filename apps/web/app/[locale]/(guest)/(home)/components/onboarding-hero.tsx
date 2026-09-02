@@ -10,7 +10,7 @@ export function OnboardingHero() {
   const t = useTranslations('web.home.onboarding.hero');
 
   return (
-    <section className="relative flex h-[1070px] w-full items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[640px] h-[92vh] max-h-[920px] w-full items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
@@ -25,9 +25,11 @@ export function OnboardingHero() {
 
       {/* Gradient overlay — cream fade from left */}
       <div className="absolute inset-0 bg-gradient-to-r from-bb-cream via-bb-cream/90 to-transparent" />
+      {/* Bottom fade into next section */}
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bb-cream to-transparent" />
 
       {/* Content */}
-      <div className="relative z-10 grid w-full max-w-[1280px] grid-cols-2 gap-12 px-8">
+      <div className="relative z-10 grid w-full max-w-[1280px] grid-cols-1 gap-12 px-6 lg:grid-cols-2 lg:px-8">
         <div className="flex flex-col gap-8 self-center">
           {/* Badge */}
           <div className="inline-flex w-fit items-center rounded-full bg-[rgba(74,90,62,0.1)] px-4 py-1.5">
@@ -37,7 +39,7 @@ export function OnboardingHero() {
           </div>
 
           {/* Headline */}
-          <h1 className="font-display text-[72px] font-bold leading-[1] tracking-[-0.025em] text-bb-espresso">
+          <h1 className="font-display text-5xl font-bold leading-[1.05] text-bb-espresso sm:text-6xl lg:text-[64px]">
             {t('title1')}
             <br />
             <span className="italic text-bb-espresso-gold">{t('title2')}</span>
@@ -46,7 +48,7 @@ export function OnboardingHero() {
           </h1>
 
           {/* Body */}
-          <p className="max-w-[512px] font-sans text-xl leading-relaxed text-bb-espresso/70">
+          <p className="max-w-[512px] font-sans text-lg leading-relaxed text-bb-espresso/70">
             {t('description')}
           </p>
 
@@ -56,9 +58,9 @@ export function OnboardingHero() {
               href="/booking"
               className={cn(
                 'flex items-center gap-2 rounded-full bg-bb-espresso px-10 py-4',
-                'font-sans text-lg font-bold text-bb-cream',
-                'shadow-[0px_20px_25px_-5px_rgba(0,0,0,0.1),0px_8px_10px_-6px_rgba(0,0,0,0.1)]',
-                'transition hover:opacity-90',
+                'font-sans text-base font-bold text-bb-cream sm:text-lg',
+                'shadow-[0_8px_20px_-8px_rgba(119,90,25,0.45)]',
+                'transition hover:bg-bb-espresso-gold-deep bg-bb-espresso-gold',
               )}
             >
               {t('primaryCta')}

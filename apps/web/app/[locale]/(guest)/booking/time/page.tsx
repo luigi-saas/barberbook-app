@@ -28,7 +28,13 @@ const TimePage = async ({ params, searchParams }: TimePageProps) => {
     return (
       <main className="min-h-screen bg-bb-cream">
         <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-20">
-          <BookingStepper currentStep={3} />
+          <BookingStepper
+          currentStep={3}
+          hrefs={[
+            `/${locale}/booking?service=${serviceId}`,
+            `/${locale}/booking/barber?service=${serviceId}${barber ? `&barber=${barber}` : ''}`,
+          ]}
+        />
           <p className="mt-12 text-center text-sm text-bb-on-surface-muted">
             Choisissez d&apos;abord un service.
           </p>
@@ -49,7 +55,13 @@ const TimePage = async ({ params, searchParams }: TimePageProps) => {
       <div className="mx-auto max-w-screen-xl px-6 pt-12 pb-20">
         {/* Stepper */}
         <div className="mb-12">
-          <BookingStepper currentStep={3} />
+          <BookingStepper
+          currentStep={3}
+          hrefs={[
+            `/${locale}/booking?service=${serviceId}`,
+            `/${locale}/booking/barber?service=${serviceId}${barber ? `&barber=${barber}` : ''}`,
+          ]}
+        />
         </div>
 
         {/* Two-column content */}

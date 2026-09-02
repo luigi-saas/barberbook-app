@@ -17,13 +17,12 @@ export function GuestNav() {
 
   const links = [
     { label: t('findBarbers'), href: `/${locale}/explore` },
-    { label: t('services'), href: '#services' },
-    { label: t('packages'), href: '#packages' },
-    { label: t('about'), href: '#about' },
+    { label: t('bookNow'), href: `/${locale}/booking` },
+    { label: t('pricing'), href: `/${locale}/pricing` },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-bb-cream/70 backdrop-blur-xl shadow-[0_12px_40px_rgba(28,27,27,0.06)]">
+    <header className="sticky top-0 z-50 w-full bg-bb-cream/70 backdrop-blur-xl border-b border-bb-cream-border/70">
       <div className="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-6 lg:px-8">
         {/* Logo + desktop nav */}
         <div className="flex items-center gap-10">
