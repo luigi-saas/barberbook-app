@@ -1,20 +1,41 @@
 import { cn } from '@repo/design-system/lib/utils';
 import { MapPin, Star } from 'lucide-react';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 
 interface ShopHeroProps {
   shopName: string;
   city: string;
   rating: number;
+  reviewCount: number;
   isOpen: boolean;
+  coverUrl: string;
   locale: string;
 }
 
-export async function ShopHero({ shopName, city, rating, isOpen, locale }: ShopHeroProps) {
+export async function ShopHero({
+  shopName,
+  city,
+  rating,
+  reviewCount,
+  isOpen,
+  coverUrl,
+  locale,
+}: ShopHeroProps) {
   const t = await getTranslations({ locale, namespace: 'web.guest.shop' });
 
   return (
     <div className="relative h-[480px] w-full overflow-hidden bg-bb-espresso">
+      {/* Cover image */}
+      <Image
+        src={coverUrl}
+        alt={shopName}
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-bb-espresso via-bb-espresso/60 to-transparent" />
 
@@ -53,7 +74,7 @@ export async function ShopHero({ shopName, city, rating, isOpen, locale }: ShopH
                 {rating.toFixed(1)}
               </span>
               <span className="font-sans text-xs text-bb-cream/60">
-                ({t('reviews_count', { count: 128 })})
+                ({t('reviews_count', { count: reviewCount })})
               </span>
             </div>
           </div>

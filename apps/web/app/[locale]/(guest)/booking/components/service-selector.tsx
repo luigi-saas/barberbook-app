@@ -1,108 +1,49 @@
 'use client';
 
 import { cn } from '@repo/design-system/lib/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import type { ServiceCard } from '@/lib/booking';
 import { BookingSessionSidebar } from './booking-session-sidebar';
 
-interface Service {
-  id: string;
-  name: string;
-  description: string;
-  duration: string;
-  price: string;
-  tier: string;
-  imageUrl: string;
-  category: string;
-}
-
-const SERVICES: Service[] = [
-  {
-    id: 'c1',
-    name: 'Signature Royal Cut',
-    description: 'Precision haircut crafted to your face shape using traditional Moroccan techniques.',
-    duration: '45 min',
-    price: '250 MAD',
-    tier: 'Premium Service',
-    imageUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=120&q=80',
-    category: 'classic',
-  },
-  {
-    id: 'c2',
-    name: 'Classic Cut & Style',
-    description: 'A clean, sharp cut with expert styling. The foundation of the barbershop experience.',
-    duration: '30 min',
-    price: '150 MAD',
-    tier: 'Classic Service',
-    imageUrl: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=120&q=80',
-    category: 'classic',
-  },
-  {
-    id: 'b1',
-    name: 'Royal Beard Grooming',
-    description: 'Full beard sculpt, hot towel, and premium argan oil finish.',
-    duration: '45 min',
-    price: '450 MAD',
-    tier: 'Premium Service',
-    imageUrl: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=120&q=80',
-    category: 'beard',
-  },
-  {
-    id: 'b2',
-    name: 'Traditional Shave',
-    description: 'Straight-razor shave with traditional lather and essential oils.',
-    duration: '30 min',
-    price: '200 MAD',
-    tier: 'Classic Service',
-    imageUrl: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=120&q=80',
-    category: 'beard',
-  },
-  {
-    id: 's1',
-    name: 'Argan Facial Ritual',
-    description: 'Deep cleanse, exfoliation, and hydrating Moroccan argan oil mask.',
-    duration: '60 min',
-    price: '350 MAD',
-    tier: 'Spa Service',
-    imageUrl: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=120&q=80',
-    category: 'care',
-  },
-  {
-    id: 'r1',
-    name: 'Full Grooming Ritual',
-    description: 'The complete experience: cut, beard, and facial care.',
-    duration: '90 min',
-    price: '650 MAD',
-    tier: 'Signature Experience',
-    imageUrl: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=120&q=80',
-    category: 'ritual',
-  },
-];
-
-const CATEGORIES = [
-  { key: 'all', label: 'All Services' },
-  { key: 'classic', label: 'Classic Cut' },
-  { key: 'beard', label: 'Beard' },
-  { key: 'care', label: 'Care' },
-  { key: 'ritual', label: 'Full Ritual' },
-];
+const FALLBACK_IMAGE = '/images/svc-classic-cut.jpg';
 
 interface ServiceSelectorProps {
   locale: string;
+  services: ServiceCard[];
+  shopId?: string;
 }
 
-export function ServiceSelector({ locale }: ServiceSelectorProps) {
+export function ServiceSelector({ locale, services, shopId }: ServiceSelectorProps) {
   const t = useTranslations('web.guest.booking');
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedId, setSelectedId] = useState('');
 
+  const categories = useMemo(() => {
+    const cats: { key: string; label: string }[] = [
+      { key: 'all', label: t('categories.all' as Parameters<typeof t>[0]) },
+    ];
+    for (const s of services) {
+      if (!cats.some((c) => c.key === s.category)) {
+        cats.push({
+          key: s.category,
+          label: t(`categories.${s.category}` as Parameters<typeof t>[0]),
+        });
+      }
+    }
+    return cats;
+  }, [services, t]);
+
   const filtered =
     activeCategory === 'all'
-      ? SERVICES
-      : SERVICES.filter((s) => s.category === activeCategory);
+      ? services
+      : services.filter((s) => s.category === activeCategory);
 
-  const selectedService = SERVICES.find((s) => s.id === selectedId);
+  const selectedService = services.find((s) => s.id === selectedId);
+
+  const shopParam = shopId ? `&shop=${shopId}` : '';
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 flex-1">
@@ -120,7 +61,7 @@ export function ServiceSelector({ locale }: ServiceSelectorProps) {
 
         {/* Category tabs */}
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <button
               key={cat.key}
               type="button"
@@ -154,11 +95,13 @@ export function ServiceSelector({ locale }: ServiceSelectorProps) {
                 )}
               >
                 {/* Thumbnail */}
-                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-bb-surface-variant">
-                  <img
+                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-bb-surface-variant relative">
+                  <Image
                     src={service.imageUrl}
                     alt={service.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="64px"
+                    className="object-cover"
                   />
                 </div>
 
@@ -222,7 +165,7 @@ export function ServiceSelector({ locale }: ServiceSelectorProps) {
         totalAmount={selectedService?.price}
         primaryAction={
           <Link
-            href={selectedId ? `/${locale}/booking/barber?service=${selectedId}` : '#'}
+            href={selectedId ? `/${locale}/booking/barber?service=${selectedId}${shopParam}` : '#'}
             className={cn(
               'w-full py-4 rounded-2xl font-bold text-lg transition flex items-center justify-center gap-2',
               selectedId

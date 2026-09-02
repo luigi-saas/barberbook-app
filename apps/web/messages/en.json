@@ -300,7 +300,11 @@
         "closedNow": "Closed",
         "rating": "Rating",
         "reviews_count": "{count} reviews",
-        "located": "Located in"
+        "located": "Located in",
+        "hours": "Hours",
+        "closedDay": "Closed",
+        "selectService": "Choose a service",
+        "nextStepHint": "Next: barber & time slot"
       },
       "search": {
         "resultsFor": "Results for:",
@@ -376,7 +380,8 @@
           "classic": "Classic Cut",
           "beard": "Beard",
           "care": "Care",
-          "ritual": "Full Ritual"
+          "ritual": "Full Ritual",
+          "all": "All services"
         },
         "sidebar": {
           "title": "Your Session",
@@ -409,6 +414,38 @@
           "total": "Total",
           "login": "Sign in",
           "createAccount": "Create account"
+        },
+        "periods": {
+          "morning": "Morning",
+          "midday": "Midday",
+          "afternoon": "Afternoon",
+          "evening": "Evening"
+        },
+        "form": {
+          "title": "Your details",
+          "subtitle": "Confirm your booking in 30 seconds — no account needed.",
+          "firstName": "First name *",
+          "lastName": "Last name",
+          "phone": "Phone (WhatsApp) *",
+          "notes": "Notes for your barber (optional)",
+          "payAtShop": "Pay at the shop",
+          "submitting": "Booking…",
+          "confirm": "Confirm booking"
+        },
+        "errors": {
+          "slotTaken": "That slot was just taken. Pick another one.",
+          "generic": "Something went wrong. Please try again."
+        },
+        "confirmed": {
+          "title": "Booking confirmed!",
+          "subtitle": "Your slot is reserved. Please arrive 5 minutes early.",
+          "paymentLabel": "Payment",
+          "payAtShop": "paid at the shop",
+          "newBooking": "New booking",
+          "backHome": "Explore more shops",
+          "referenceNote": "Keep your #BB reference — it identifies your booking at the shop.",
+          "notFoundTitle": "Booking not found",
+          "notFoundText": "This reference doesn't exist or was removed."
         }
       },
       "auth": {

@@ -1,7 +1,7 @@
 import { useTranslations } from 'next-intl';
 
-const BARBER_WORKING_IMAGE = 'https://www.figma.com/api/mcp/asset/c21d07c1-4eb1-4a8f-a6ff-358632d6c148';
-const CLASSIC_TOOLS_IMAGE = 'https://www.figma.com/api/mcp/asset/0cd567e2-364e-4362-9a32-78a385a2094a';
+const BARBER_WORKING_IMAGE = '/images/svc-royal-cut.jpg';
+const CLASSIC_TOOLS_IMAGE = '/images/svc-traditional-shave.jpg';
 
 const FEATURE_ICONS = [
   /* scissors */

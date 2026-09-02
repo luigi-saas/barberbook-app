@@ -284,7 +284,11 @@
         "closedNow": "Fermé",
         "rating": "Note",
         "reviews_count": "{count} avis",
-        "located": "Situé à"
+        "located": "Situé à",
+        "hours": "Horaires",
+        "closedDay": "Fermé",
+        "selectService": "Choisir un service",
+        "nextStepHint": "Étape suivante : barbier & créneau"
       },
       "search": {
         "resultsFor": "Résultats pour :",
@@ -360,7 +364,8 @@
           "classic": "Coupe Classique",
           "beard": "Barbe",
           "care": "Soin",
-          "ritual": "Rituel Complet"
+          "ritual": "Rituel Complet",
+          "all": "Tous les services"
         },
         "sidebar": {
           "title": "Votre Séance",
@@ -393,6 +398,38 @@
           "total": "Total",
           "login": "Se connecter",
           "createAccount": "Créer un compte"
+        },
+        "periods": {
+          "morning": "Matin",
+          "midday": "Midi",
+          "afternoon": "Après-midi",
+          "evening": "Soir"
+        },
+        "form": {
+          "title": "Vos coordonnées",
+          "subtitle": "Confirmez votre réservation en 30 secondes — sans compte.",
+          "firstName": "Prénom *",
+          "lastName": "Nom",
+          "phone": "Téléphone (WhatsApp) *",
+          "notes": "Notes pour le barbier (optionnel)",
+          "payAtShop": "Paiement au salon",
+          "submitting": "Réservation…",
+          "confirm": "Confirmer la réservation"
+        },
+        "errors": {
+          "slotTaken": "Ce créneau vient d'être pris. Choisissez-en un autre.",
+          "generic": "Une erreur est survenue. Réessayez."
+        },
+        "confirmed": {
+          "title": "Réservation confirmée !",
+          "subtitle": "Votre créneau est réservé. Présentez-vous 5 minutes avant l'heure.",
+          "paymentLabel": "Paiement",
+          "payAtShop": "à régler au salon",
+          "newBooking": "Nouvelle réservation",
+          "backHome": "Découvrir d'autres salons",
+          "referenceNote": "Conservez votre référence #BB — elle identifie votre réservation au salon.",
+          "notFoundTitle": "Réservation introuvable",
+          "notFoundText": "Cette référence n'existe pas ou a été supprimée."
         }
       },
       "auth": {

@@ -1,5 +1,6 @@
 import { cn } from '@repo/design-system/lib/utils';
 import { MapPin, Star } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 type BookingStatus = 'confirmed' | 'pending';
@@ -53,10 +54,12 @@ export function BBShopCard({
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden">
-        <img
+        <Image
           src={imageUrl}
           alt={imageAlt}
-          className="size-full object-cover"
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+          className="object-cover"
         />
         {/* Rating badge */}
         <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 backdrop-blur-sm">

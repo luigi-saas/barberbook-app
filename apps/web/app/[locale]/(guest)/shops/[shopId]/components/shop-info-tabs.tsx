@@ -2,31 +2,36 @@
 
 import { cn } from '@repo/design-system/lib/utils';
 import { Scissors, Star } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import type { BarberCard, ServiceCard } from '@/lib/booking';
 
-type TabKey = 'services' | 'team' | 'gallery' | 'reviews';
+type TabKey = 'services' | 'team' | 'gallery' | 'hours';
 
-const MOCK_SERVICES = [
-  { id: '1', name: 'Coupe Classique', duration: 30, price: 80 },
-  { id: '2', name: 'Barbe Complète', duration: 20, price: 60 },
-  { id: '3', name: 'Soin du Visage', duration: 45, price: 120 },
-  { id: '4', name: 'Rituel Complet', duration: 75, price: 200 },
-];
+interface ShopInfoTabsProps {
+  locale: string;
+  shopId: string;
+  services: ServiceCard[];
+  barbers: BarberCard[];
+  gallery: string[];
+  openingHours: {
+    dayOfWeek: string;
+    openTime: string;
+    closeTime: string;
+    isClosed: boolean;
+  }[];
+}
 
-const MOCK_BARBERS = [
-  { id: '1', name: 'Hassan Idrissi', specialty: ['Coupe', 'Barbe'] },
-  { id: '2', name: 'Youssef Benali', specialty: ['Soin', 'Coupe'] },
-  { id: '3', name: 'Karim Tazi', specialty: ['Rituel', 'Barbe'] },
-];
-
-const MOCK_REVIEWS = [
-  { id: '1', author: 'Mehdi A.', rating: 5, comment: 'Excellent service, ambiance très agréable.', date: 'Jan 2025' },
-  { id: '2', author: 'Omar B.', rating: 4, comment: 'Très bon barbier, je recommande.', date: 'Déc 2024' },
-  { id: '3', author: 'Amine K.', rating: 5, comment: 'Le meilleur salon de Casablanca!', date: 'Nov 2024' },
-];
-
-export function ShopInfoTabs() {
+export function ShopInfoTabs({
+  locale,
+  shopId,
+  services,
+  barbers,
+  gallery,
+  openingHours,
+}: ShopInfoTabsProps) {
   const t = useTranslations('web.guest.shop');
   const [activeTab, setActiveTab] = useState<TabKey>('services');
 
@@ -34,8 +39,27 @@ export function ShopInfoTabs() {
     { key: 'services', label: t('services') },
     { key: 'team', label: t('team') },
     { key: 'gallery', label: t('gallery') },
-    { key: 'reviews', label: t('reviews') },
+    { key: 'hours', label: t('hours') },
   ];
+
+  const dayOrder = [
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
+    'SUNDAY',
+  ];
+  const dayLabels: Record<string, string> = {
+    MONDAY: locale === 'ar' ? 'الاثنين' : locale === 'en' ? 'Monday' : 'Lundi',
+    TUESDAY: locale === 'ar' ? 'الثلاثاء' : locale === 'en' ? 'Tuesday' : 'Mardi',
+    WEDNESDAY: locale === 'ar' ? 'الأربعاء' : locale === 'en' ? 'Wednesday' : 'Mercredi',
+    THURSDAY: locale === 'ar' ? 'الخميس' : locale === 'en' ? 'Thursday' : 'Jeudi',
+    FRIDAY: locale === 'ar' ? 'الجمعة' : locale === 'en' ? 'Friday' : 'Vendredi',
+    SATURDAY: locale === 'ar' ? 'السبت' : locale === 'en' ? 'Saturday' : 'Samedi',
+    SUNDAY: locale === 'ar' ? 'الأحد' : locale === 'en' ? 'Sunday' : 'Dimanche',
+  };
 
   return (
     <div>
@@ -61,7 +85,7 @@ export function ShopInfoTabs() {
       {/* Services tab */}
       {activeTab === 'services' && (
         <div className="flex flex-col gap-3">
-          {MOCK_SERVICES.map((service) => (
+          {services.map((service) => (
             <div
               key={service.id}
               className="flex items-center justify-between rounded-2xl bg-white p-5 shadow-sm"
@@ -74,21 +98,19 @@ export function ShopInfoTabs() {
                   <p className="font-sans text-base font-semibold text-bb-espresso">
                     {service.name}
                   </p>
-                  <p className="font-sans text-sm text-bb-espresso/50">
-                    {service.duration} min
-                  </p>
+                  <p className="font-sans text-sm text-bb-espresso/50">{service.duration}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <span className="font-display text-lg font-bold text-bb-espresso">
-                  {service.price} MAD
+                  {service.price}
                 </span>
-                <button
-                  type="button"
+                <Link
+                  href={`/${locale}/booking/barber?service=${service.id}&shop=${shopId}`}
                   className="rounded-full bg-bb-espresso px-5 py-2 font-sans text-sm font-semibold text-bb-cream transition hover:opacity-90"
                 >
                   Réserver
-                </button>
+                </Link>
               </div>
             </div>
           ))}
@@ -98,18 +120,30 @@ export function ShopInfoTabs() {
       {/* Team tab */}
       {activeTab === 'team' && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {MOCK_BARBERS.map((barber) => (
+          {barbers.map((barber) => (
             <div
               key={barber.id}
               className="flex flex-col items-center gap-3 rounded-2xl bg-white p-6 text-center shadow-sm"
             >
-              <div className="size-20 rounded-full bg-bb-cream-border" />
+              {barber.avatarUrl ? (
+                <Image
+                  src={barber.avatarUrl}
+                  alt={barber.name}
+                  width={80}
+                  height={80}
+                  className="size-20 rounded-full object-cover"
+                />
+              ) : (
+                <div className="flex size-20 items-center justify-center rounded-full bg-bb-gold-muted font-display text-xl font-black text-bb-espresso-gold">
+                  {barber.initials}
+                </div>
+              )}
               <div>
                 <p className="font-sans text-base font-semibold text-bb-espresso">
                   {barber.name}
                 </p>
                 <div className="mt-2 flex flex-wrap justify-center gap-1.5">
-                  {barber.specialty.map((s) => (
+                  {barber.skills.slice(0, 3).map((s) => (
                     <span
                       key={s}
                       className="rounded-full bg-bb-cream px-3 py-1 font-sans text-xs font-medium text-bb-espresso/70"
@@ -127,42 +161,48 @@ export function ShopInfoTabs() {
       {/* Gallery tab */}
       {activeTab === 'gallery' && (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="aspect-square rounded-2xl bg-bb-cream-border"
-            />
+          {gallery.map((src, i) => (
+            <div key={src + i} className="relative aspect-square overflow-hidden rounded-2xl">
+              <Image
+                src={src}
+                alt={`Gallery ${i + 1}`}
+                fill
+                sizes="(max-width: 640px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </div>
           ))}
         </div>
       )}
 
-      {/* Reviews tab */}
-      {activeTab === 'reviews' && (
-        <div className="flex flex-col gap-4">
-          {MOCK_REVIEWS.map((review) => (
-            <div
-              key={review.id}
-              className="rounded-2xl bg-white p-5 shadow-sm"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="size-9 rounded-full bg-bb-cream-border" />
-                  <span className="font-sans text-sm font-semibold text-bb-espresso">
-                    {review.author}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: review.rating }).map((_, i) => (
-                    <Star key={i} className="size-3.5 fill-bb-espresso-gold text-bb-espresso-gold" />
-                  ))}
-                  <span className="ml-1 font-sans text-xs text-bb-espresso/50">
-                    {review.date}
-                  </span>
-                </div>
+      {/* Hours tab */}
+      {activeTab === 'hours' && (
+        <div className="flex flex-col gap-2">
+          {dayOrder.map((day) => {
+            const hours = openingHours.find((h) => h.dayOfWeek === day);
+            return (
+              <div
+                key={day}
+                className="flex items-center justify-between rounded-2xl bg-white px-5 py-3.5 shadow-sm"
+              >
+                <span className="font-sans text-sm font-semibold text-bb-espresso">
+                  {dayLabels[day]}
+                </span>
+                <span
+                  className={cn(
+                    'font-sans text-sm',
+                    !hours || hours.isClosed
+                      ? 'text-bb-espresso/40'
+                      : 'font-medium text-bb-espresso',
+                  )}
+                >
+                  {!hours || hours.isClosed
+                    ? t('closedDay')
+                    : `${hours.openTime} – ${hours.closeTime}`}
+                </span>
               </div>
-              <p className="font-sans text-sm text-bb-espresso/70">{review.comment}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

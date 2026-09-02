@@ -94,7 +94,7 @@ export function OnboardingSplitPaths() {
             description={t('customer.description')}
             features={customerFeatures}
             ctaLabel={t('customer.cta')}
-            ctaHref="/find-barber"
+            ctaHref="/explore"
             variant="primary"
           />
           <PathCard
@@ -108,7 +108,7 @@ export function OnboardingSplitPaths() {
             description={t('owner.description')}
             features={ownerFeatures}
             ctaLabel={t('owner.cta')}
-            ctaHref="/register-shop"
+            ctaHref="/sign-up"
             variant="outline"
           />
         </div>

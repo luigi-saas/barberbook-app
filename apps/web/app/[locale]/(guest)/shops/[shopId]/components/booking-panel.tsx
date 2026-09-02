@@ -4,32 +4,19 @@ import { cn } from '@repo/design-system/lib/utils';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useState } from 'react';
+import type { ServiceCard } from '@/lib/booking';
 
-const BARBERS = [
-  { id: '1', name: 'Hassan' },
-  { id: '2', name: 'Youssef' },
-  { id: '3', name: 'Karim' },
-];
+interface BookingPanelProps {
+  locale: string;
+  shopId: string;
+  services: ServiceCard[];
+}
 
-const DATE_CHIPS = [
-  { label: 'Lun', date: '27' },
-  { label: 'Mar', date: '28' },
-  { label: 'Mer', date: '29' },
-  { label: 'Jeu', date: '30' },
-  { label: 'Ven', date: '31' },
-];
-
-const TIME_SLOTS = [
-  '09:00', '09:30', '10:00', '10:30',
-  '11:00', '11:30', '14:00', '14:30',
-  '15:00', '15:30', '16:00', '16:30',
-];
-
-export function BookingPanel() {
+export function BookingPanel({ locale, shopId, services }: BookingPanelProps) {
   const t = useTranslations('web.guest.shop');
-  const [selectedBarber, setSelectedBarber] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedId, setSelectedId] = useState('');
+
+  const selected = services.find((s) => s.id === selectedId);
 
   return (
     <div className="rounded-[40px] bg-white p-8 shadow-[var(--bb-shadow-onboarding)] flex flex-col gap-6">
@@ -37,115 +24,72 @@ export function BookingPanel() {
         {t('bookSlot')}
       </h2>
 
-      {/* Select barber */}
+      {/* Select service */}
       <div>
         <p className="mb-3 font-sans text-sm font-semibold uppercase tracking-[0.1em] text-bb-espresso/50">
-          {t('selectBarber')}
+          {t('selectService')}
         </p>
-        <div className="flex gap-3">
-          {BARBERS.map((barber) => (
+        <div className="flex flex-col gap-2">
+          {services.map((service) => (
             <button
-              key={barber.id}
+              key={service.id}
               type="button"
-              onClick={() => setSelectedBarber(barber.id)}
-              className="flex flex-col items-center gap-1.5"
+              onClick={() => setSelectedId(service.id)}
+              className={cn(
+                'flex items-center justify-between rounded-2xl px-4 py-3 text-left transition border-2',
+                selectedId === service.id
+                  ? 'border-bb-espresso bg-bb-cream'
+                  : 'border-transparent bg-bb-cream hover:bg-bb-cream-border',
+              )}
             >
-              <div
-                className={cn(
-                  'size-12 rounded-full bg-bb-cream-border border-2 transition',
-                  selectedBarber === barber.id
-                    ? 'border-bb-espresso'
-                    : 'border-transparent',
-                )}
-              />
-              <span
-                className={cn(
-                  'font-sans text-xs font-medium transition',
-                  selectedBarber === barber.id
-                    ? 'text-bb-espresso font-semibold'
-                    : 'text-bb-espresso/50',
-                )}
-              >
-                {barber.name}
+              <span>
+                <span className="block font-sans text-sm font-semibold text-bb-espresso">
+                  {service.name}
+                </span>
+                <span className="block font-sans text-xs text-bb-espresso/50">
+                  {service.duration}
+                </span>
+              </span>
+              <span className="font-sans text-sm font-bold text-bb-espresso whitespace-nowrap">
+                {service.price}
               </span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Select date */}
-      <div>
-        <p className="mb-3 font-sans text-sm font-semibold uppercase tracking-[0.1em] text-bb-espresso/50">
-          {t('selectDate')}
-        </p>
-        <div className="flex gap-2">
-          {DATE_CHIPS.map((chip) => (
-            <button
-              key={chip.date}
-              type="button"
-              onClick={() => setSelectedDate(chip.date)}
-              className={cn(
-                'flex flex-col items-center gap-0.5 rounded-2xl px-3 py-2.5 transition',
-                selectedDate === chip.date
-                  ? 'bg-bb-espresso text-bb-cream'
-                  : 'bg-bb-cream text-bb-espresso hover:bg-bb-cream-border',
-              )}
-            >
-              <span className="font-sans text-xs font-medium">{chip.label}</span>
-              <span className="font-sans text-sm font-bold">{chip.date}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Select time */}
-      <div>
-        <p className="mb-3 font-sans text-sm font-semibold uppercase tracking-[0.1em] text-bb-espresso/50">
-          {t('selectTime')}
-        </p>
-        <div className="grid grid-cols-4 gap-2">
-          {TIME_SLOTS.map((slot) => (
-            <button
-              key={slot}
-              type="button"
-              onClick={() => setSelectedTime(slot)}
-              className={cn(
-                'rounded-xl px-2 py-2 font-sans text-xs font-medium transition',
-                selectedTime === slot
-                  ? 'bg-bb-espresso text-bb-cream'
-                  : 'bg-bb-cream text-bb-espresso hover:bg-bb-cream-border',
-              )}
-            >
-              {slot}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Summary */}
-      {(selectedDate || selectedTime) && (
+      {selected && (
         <div className="rounded-2xl bg-bb-cream p-4">
           <p className="font-sans text-sm text-bb-espresso/60">
-            Coupe Classique — 80 MAD
+            {selected.name} — {selected.price}
           </p>
-          {selectedDate && selectedTime && (
-            <p className="mt-1 font-sans text-sm font-semibold text-bb-espresso">
-              {selectedDate} Avr · {selectedTime}
-            </p>
-          )}
+          <p className="mt-1 font-sans text-sm font-semibold text-bb-espresso">
+            {t('nextStepHint')}
+          </p>
         </div>
       )}
 
       {/* CTA */}
-      <button
-        type="button"
-        className="w-full rounded-full bg-bb-espresso py-4 font-sans text-base font-semibold text-bb-cream transition hover:opacity-90"
+      <Link
+        href={
+          selected
+            ? `/${locale}/booking/barber?service=${selected.id}&shop=${shopId}`
+            : `/${locale}/booking?shop=${shopId}`
+        }
+        aria-disabled={!selected}
+        className={cn(
+          'w-full rounded-full py-4 text-center font-sans text-base font-semibold transition',
+          selected
+            ? 'bg-bb-espresso text-bb-cream hover:opacity-90'
+            : 'bg-bb-espresso/40 text-bb-cream pointer-events-none',
+        )}
       >
         {t('confirmBooking')}
-      </button>
+      </Link>
 
       <Link
-        href="/sign-in"
+        href={`/${locale}/sign-in`}
         className="text-center font-sans text-sm text-bb-espresso/50 hover:text-bb-espresso transition"
       >
         {t('loginToContinue')}

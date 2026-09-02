@@ -1,9 +1,10 @@
 import { cn } from '@repo/design-system/lib/utils';
 import { ArrowRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 
-const HERO_IMAGE = 'https://www.figma.com/api/mcp/asset/b384f12c-fa7f-40e4-ae27-277458872ef2';
+const HERO_IMAGE = '/images/hero-royal.jpg';
 
 export function OnboardingHero() {
   const t = useTranslations('web.home.onboarding.hero');
@@ -12,9 +13,12 @@ export function OnboardingHero() {
     <section className="relative flex h-[1070px] w-full items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img
+        <Image
           src={HERO_IMAGE}
           alt="Premium barbershop interior"
+          fill
+          priority
+          sizes="100vw"
           className="size-full object-cover object-center"
         />
       </div>
@@ -61,7 +65,7 @@ export function OnboardingHero() {
               <ArrowRight className="size-4" />
             </Link>
             <Link
-              href="/services"
+              href="/explore"
               className={cn(
                 'rounded-full border border-bb-espresso/10 bg-white/50 px-[41px] py-4',
                 'font-sans text-lg font-bold text-bb-espresso backdrop-blur-[6px]',

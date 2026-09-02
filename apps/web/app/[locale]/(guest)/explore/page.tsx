@@ -1,75 +1,22 @@
 import { BBShopCard } from '@/components/ui/bb-shop-card';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { listShops } from '@/lib/booking';
 import { ExploreFilters } from './components/explore-filters';
+import { ExplorePagination } from './components/explore-pagination';
 import { ExploreSearchBar } from './components/explore-search-bar';
 import { ExploreServiceChips } from './components/explore-service-chips';
-import { ExplorePagination } from './components/explore-pagination';
 
 interface ExplorePageProps {
   params: Promise<{ locale: string }>;
 }
 
-const MOCK_SHOPS = [
-  {
-    id: '1',
-    name: 'The Royal Cut',
-    location: 'Gauthier, Casablanca',
-    rating: 4.9,
-    reviewCount: 124,
-    price: '150 MAD',
-    imageUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80',
-  },
-  {
-    id: '2',
-    name: 'Heritage Grooming',
-    location: 'Maarif, Casablanca',
-    rating: 4.8,
-    reviewCount: 89,
-    price: '120 MAD',
-    imageUrl: 'https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600&q=80',
-  },
-  {
-    id: '3',
-    name: 'Atlas Barbering',
-    location: 'Hivernage, Marrakech',
-    rating: 4.7,
-    reviewCount: 210,
-    price: '100 MAD',
-    imageUrl: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80',
-  },
-  {
-    id: '4',
-    name: 'Elite Lounge',
-    location: 'Agdal, Rabat',
-    rating: 5.0,
-    reviewCount: 45,
-    price: '200 MAD',
-    imageUrl: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&q=80',
-  },
-  {
-    id: '5',
-    name: 'Andalucia Barbier',
-    location: 'Centre, Tanger',
-    rating: 4.8,
-    reviewCount: 67,
-    price: '90 MAD',
-    imageUrl: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=600&q=80',
-  },
-  {
-    id: '6',
-    name: 'Souss Elite Cut',
-    location: 'Talborjt, Agadir',
-    rating: 4.5,
-    reviewCount: 38,
-    price: '80 MAD',
-    imageUrl: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=600&q=80',
-  },
-];
-
 const ExplorePage = async ({ params }: ExplorePageProps) => {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('web.guest.explore');
+
+  const shops = await listShops();
+  const totalPages = Math.max(1, Math.ceil(shops.length / 9));
 
   return (
     <main className="min-h-screen bg-bb-cream">
@@ -107,7 +54,7 @@ const ExplorePage = async ({ params }: ExplorePageProps) => {
               {/* Mobile filter button */}
               <div className="mb-6 flex items-center justify-between lg:hidden">
                 <p className="font-sans text-sm text-bb-espresso/60">
-                  {t('shopCount', { count: MOCK_SHOPS.length })}
+                  {t('shopCount', { count: shops.length })}
                 </p>
                 <button
                   type="button"
@@ -119,10 +66,10 @@ const ExplorePage = async ({ params }: ExplorePageProps) => {
 
               {/* Desktop shop count */}
               <p className="hidden lg:block font-sans text-sm text-bb-espresso/60 mb-6">
-                {t('shopCount', { count: MOCK_SHOPS.length })}
+                {t('shopCount', { count: shops.length })}
               </p>
 
-              {MOCK_SHOPS.length === 0 ? (
+              {shops.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-24 text-center">
                   <p className="font-display text-xl font-semibold text-bb-espresso/40">
                     {t('noResults')}
@@ -130,25 +77,25 @@ const ExplorePage = async ({ params }: ExplorePageProps) => {
                 </div>
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                  {MOCK_SHOPS.map((shop) => (
+                  {shops.map((shop) => (
                     <BBShopCard
                       key={shop.id}
                       name={shop.name}
-                      location={shop.location}
+                      location={shop.city}
                       rating={shop.rating}
                       reviewCount={shop.reviewCount}
-                      price={shop.price}
+                      price={shop.minPrice}
                       priceLabel={t('startingFrom')}
-                      imageUrl={shop.imageUrl}
+                      imageUrl={shop.coverUrl}
                       imageAlt={shop.name}
                       viewProfileLabel={t('viewProfile')}
-                      viewProfileHref={`/${locale}/shops/${shop.id}`}
+                      viewProfileHref={`/${locale}/shops/${shop.slug}`}
                     />
                   ))}
                 </div>
               )}
 
-              <ExplorePagination totalPages={12} />
+              <ExplorePagination totalPages={totalPages} />
             </div>
           </div>
         </div>

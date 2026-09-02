@@ -47,6 +47,10 @@ services:
         value: https://barberbook-app.onrender.com
       - key: NEXT_PUBLIC_API_URL
         value: https://barberbook-api.onrender.com
+      # The guest booking flow writes bookings straight to Postgres.
+      # Paste the same "Internal Database URL" as the app/api services.
+      - key: DATABASE_URL
+        sync: false
 
   # ---------------------------------------------------------------------------
   # Dashboard — merchant operating system (the SaaS wedge, Phase 2 rebuild)
@@ -98,7 +102,14 @@ services:
       npm install -g bun@1
       bun install
       bunx prisma generate --schema=packages/database/prisma/schema.prisma
-      bunx prisma db push --schema=packages/database/prisma/schema.prisma --skip-generate
+      # Apply schema + demo content. Both no-op safely when DATABASE_URL is
+      # not set yet (first deploy before the DB is pasted in).
+      if [ -n "$DATABASE_URL" ]; then
+        bunx prisma db push --schema=packages/database/prisma/schema.prisma --skip-generate
+        bunx tsx scripts/seed-demo.mjs
+      else
+        echo "[api] DATABASE_URL not set — skipping db push + seed"
+      fi
       bun run build --filter api
     startCommand: cd apps/api && bun run start
     healthCheckPath: /health
