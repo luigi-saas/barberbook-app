@@ -139,4 +139,4 @@ services:
     plan: starter
     schedule: "0 1 * * *" # daily 01:00 UTC (same as the Vercel cron)
     buildCommand: echo "cron runner — no build required"
-    command: curl -fsS https://barberbook-api.onrender.com/cron/keep-alive
+    startCommand: curl -fsS https://barberbook-api.onrender.com/cron/keep-alive
