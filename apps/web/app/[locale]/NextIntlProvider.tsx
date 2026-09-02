@@ -13,7 +13,11 @@ export default function NextIntlProviderWrapper({
   messages: Record<string, unknown>;
 }) {
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+      timeZone="Africa/Casablanca"
+    >
       {children}
     </NextIntlClientProvider>
   );

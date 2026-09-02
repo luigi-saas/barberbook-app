@@ -58,9 +58,9 @@ const composedMiddleware = createNEMO(
   }
 );
 
-// Clerk middleware wraps other middleware in its callback
-export default authMiddleware(async (_auth, request, event) => {
-  // i18n: redirect / → /en (or detected locale) before anything else
+// Public chain: i18n redirect, security headers, Arcjet
+const publicChain = async (request: NextRequest, event: NextRequestEvent) => {
+  // i18n: redirect / → /fr (or detected locale) before anything else
   const intlResponse = intlMiddleware(request as unknown as Parameters<typeof intlMiddleware>[0]);
   if (intlResponse) {
     return intlResponse;
@@ -70,10 +70,20 @@ export default authMiddleware(async (_auth, request, event) => {
   const headersResponse = securityHeaders();
 
   // Run composed middleware (arcjet)
-  const middlewareResponse = await composedMiddleware(
-    request as unknown as NextRequest,
-    event
-  );
+  const middlewareResponse = await composedMiddleware(request, event);
 
   return middlewareResponse || headersResponse;
-}) as unknown as NextProxy;
+};
+
+type NextRequestEvent = {
+  request: NextRequest;
+};
+
+// Clerk only wraps the chain when it is configured. The guest experience is
+// public: without a publishable key, clerkMiddleware never invokes its
+// callback, which left every unprefixed route 404-ing.
+export default (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  ? authMiddleware(async (_auth, request, event) =>
+      publicChain(request as unknown as NextRequest, event as unknown as NextRequestEvent)
+    )
+  : publicChain) as unknown as NextProxy;

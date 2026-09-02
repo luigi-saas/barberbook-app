@@ -60,7 +60,7 @@ const RootLayout = async ({ children, params }: RootLayoutProperties) => {
             </NextIntlProvider>
           </DesignSystemProvider>
           <Toolbar />
-          <CMSToolbar />
+          {process.env.BASEHUB_TOKEN ? <CMSToolbar /> : null}
         </AnalyticsProvider>
       </body>
     </html>

@@ -10,7 +10,10 @@ interface HeroProps {
 }
 
 export const Hero = async ({ dictionary }: HeroProps) => {
-  const latestPost = await blog.getLatestPost();
+  // CMS is optional: fall back to no announcement when BaseHub is not configured
+  const latestPost = await blog
+    .getLatestPost()
+    .catch(() => undefined);
 
   return (
     <div className="w-full">
