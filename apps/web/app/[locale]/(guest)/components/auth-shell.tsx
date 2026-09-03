@@ -9,11 +9,13 @@ interface AuthShellProperties {
 /**
  * Shared shell for /login and /sign-up.
  *
- * Customer accounts are Phase 1 of the roadmap (Clerk <-> UserRole mapping):
- * until that lands, the page offers the two paths that work today — guest
- * booking (no account needed) and the shop dashboard (Clerk lives there).
- * When real customer auth arrives, replace the body with <SignIn />/<SignUp />
- * from Clerk, keeping this shell.
+ * Customer sign-in today = phone-based: the phone number IS the identity —
+ * submitting it opens the customer's bookings (the same lookup the My
+ * Bookings page performs). No password, no Clerk needed on the guest app.
+ *
+ * Clerk customer accounts (Clerk <-> UserRole mapping) stay Phase 1: when
+ * they land, replace the phone form with <SignIn />/<SignUp /> keeping this
+ * shell. Shop owners keep the direct link to the Clerk-powered dashboard.
  */
 export const AuthShell = async ({ locale, mode }: AuthShellProperties) => {
   const t = await getTranslations({ locale, namespace: "web.guest.auth" });
@@ -44,7 +46,43 @@ export const AuthShell = async ({ locale, mode }: AuthShellProperties) => {
             <p className="text-bb-warm-muted">{isLogin ? t("login.subtitle") : t("signup.subtitle")}</p>
           </div>
 
+          {/* Customer sign-in: phone → my bookings (works with zero config) */}
+          {isLogin && (
+            <form
+              method="get"
+              action={`/${locale}/bookings`}
+              className="space-y-4 rounded-2xl border border-bb-cream-border bg-white p-6 shadow-sm"
+            >
+              <label
+                htmlFor="phone"
+                className="block font-sans text-sm font-semibold uppercase tracking-[0.1em] text-bb-espresso/60"
+              >
+                {t("phone.label")}
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+                autoComplete="tel"
+                placeholder={t("phone.placeholder")}
+                className="w-full rounded-xl bg-bb-surface-variant px-4 py-3 font-sans text-base text-bb-espresso outline-none transition placeholder:text-bb-espresso/40 focus:ring-2 focus:ring-bb-espresso/20"
+              />
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-bb-espresso py-3 font-sans text-sm font-semibold text-bb-cream transition hover:opacity-90"
+              >
+                {t("phone.submit")}
+              </button>
+              <p className="text-center text-xs text-bb-warm-muted">{t("phone.hint")}</p>
+            </form>
+          )}
+
           <div className="space-y-4">
+            <p className="text-center text-xs font-semibold uppercase tracking-[0.1em] text-bb-warm-muted">
+              {isLogin ? t("or") : t("customer.title")}
+            </p>
+
             <Link
               href={`/${locale}/explore`}
               className="block rounded-2xl border border-bb-cream-border bg-white p-5 shadow-sm transition-all hover:border-bb-gold hover:shadow-md"

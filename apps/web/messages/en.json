@@ -498,7 +498,14 @@
           "description": "Access your dashboard: schedule, clients and stats.",
           "cta": "Go to dashboard"
         },
-        "backHome": "Back to home"
+        "backHome": "Back to home",
+        "phone": {
+          "label": "Phone number",
+          "placeholder": "+212 6 12 34 56 78",
+          "submit": "Log in",
+          "hint": "No password needed: your phone number is your ID."
+        },
+        "or": "or continue without an account"
       },
       "bookings": {
         "title": "My bookings",

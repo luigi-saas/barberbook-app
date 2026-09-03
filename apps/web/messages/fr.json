@@ -482,7 +482,14 @@
           "description": "Accédez à votre tableau de bord : agenda, clients et statistiques.",
           "cta": "Aller au tableau de bord"
         },
-        "backHome": "Retour à l'accueil"
+        "backHome": "Retour à l'accueil",
+        "phone": {
+          "label": "Numéro de téléphone",
+          "placeholder": "+212 6 12 34 56 78",
+          "submit": "Me connecter",
+          "hint": "Pas de mot de passe : votre numéro est votre identifiant."
+        },
+        "or": "ou continuer sans compte"
       },
       "bookings": {
         "title": "Mes réservations",
