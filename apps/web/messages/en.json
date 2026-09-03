@@ -318,7 +318,9 @@
         "noResults": "No results found for your search.",
         "showingCount": "{count} results found",
         "previous": "Previous",
-        "next": "Next"
+        "next": "Next",
+        "noResultsHint": "Try another name, city or service — e.g. \"beard Casablanca\".",
+        "browseAll": "Browse all shops"
       },
       "barber": {
         "specialty": "Specialties",
@@ -493,6 +495,26 @@
           "cta": "Go to dashboard"
         },
         "backHome": "Back to home"
+      },
+      "bookings": {
+        "title": "My bookings",
+        "subtitle": "Find and manage your appointments with your phone number.",
+        "phoneLabel": "Your phone (the one you booked with)",
+        "phonePlaceholder": "+212 6 12 34 56 78",
+        "lookup": "See my bookings",
+        "upcoming": "Upcoming",
+        "past": "History",
+        "none": "No bookings found for this number.",
+        "noneHint": "No booking yet? Find your shop in 2 minutes.",
+        "bookNow": "Book now",
+        "cancel": "Cancel",
+        "cancelled": "Your booking has been cancelled.",
+        "cancelError": "Cancellation not possible (already past or too close to the appointment).",
+        "cancelConfirm": "Cancel this booking? This action is final.",
+        "statusLabel": "Status",
+        "with": "with",
+        "at": "at",
+        "phoneHint": "Your data stays private — only the shop can see it."
       }
     },
     "blog": {
@@ -528,7 +550,8 @@
         "blog": "Blog",
         "contact": "Contact",
         "login": "Log in",
-        "signUp": "Become a partner"
+        "signUp": "Become a partner",
+        "myBookings": "My bookings"
       },
       "footer": {
         "tagline": "The booking platform for Moroccan barbershops. Instant confirmation, zero phone calls.",
@@ -542,7 +565,8 @@
         "bookingLabel": "Book now",
         "pricingLabel": "Pricing",
         "blogLabel": "Blog",
-        "contactLabel": "Contact"
+        "contactLabel": "Contact",
+        "bookingsLabel": "My bookings"
       }
     },
     "pricing": {

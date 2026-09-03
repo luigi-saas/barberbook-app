@@ -51,6 +51,8 @@ import {
   ShareIcon,
   SquareTerminalIcon,
   Trash2Icon,
+  ScissorsIcon,
+  UsersIcon,
 } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -72,6 +74,18 @@ const data = {
       url: "/",
       icon: SquareTerminalIcon,
       isActive: true,
+      items: [] as { title: string; url: string }[],
+    },
+    {
+      title: "Services",
+      url: "/services",
+      icon: ScissorsIcon,
+      items: [] as { title: string; url: string }[],
+    },
+    {
+      title: "Barbers",
+      url: "/barbers",
+      icon: UsersIcon,
       items: [] as { title: string; url: string }[],
     },
     {

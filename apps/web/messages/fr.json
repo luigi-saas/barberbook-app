@@ -302,7 +302,9 @@
         "noResults": "Aucun résultat trouvé pour votre recherche.",
         "showingCount": "{count} résultats trouvés",
         "previous": "Précédent",
-        "next": "Suivant"
+        "next": "Suivant",
+        "noResultsHint": "Essayez un autre nom, une ville ou un service — par exemple « barbe Casablanca ».",
+        "browseAll": "Voir tous les salons"
       },
       "barber": {
         "specialty": "Spécialités",
@@ -477,6 +479,26 @@
           "cta": "Aller au tableau de bord"
         },
         "backHome": "Retour à l'accueil"
+      },
+      "bookings": {
+        "title": "Mes réservations",
+        "subtitle": "Retrouvez et gérez vos rendez-vous avec votre numéro de téléphone.",
+        "phoneLabel": "Votre téléphone (celui de la réservation)",
+        "phonePlaceholder": "+212 6 12 34 56 78",
+        "lookup": "Voir mes réservations",
+        "upcoming": "À venir",
+        "past": "Historique",
+        "none": "Aucune réservation trouvée pour ce numéro.",
+        "noneHint": "Vous n'avez pas encore réservé ? Trouvez votre salon en 2 minutes.",
+        "bookNow": "Réserver maintenant",
+        "cancel": "Annuler",
+        "cancelled": "Votre réservation a été annulée.",
+        "cancelError": "Annulation impossible (déjà passée ou trop proche du rendez-vous).",
+        "cancelConfirm": "Annuler cette réservation ? Cette action est définitive.",
+        "statusLabel": "Statut",
+        "with": "chez",
+        "at": "au salon",
+        "phoneHint": "Vos données restent privées — seul le salon concerné y accède."
       }
     },
     "marketing": {
@@ -488,7 +510,8 @@
         "blog": "Blog",
         "contact": "Contact",
         "login": "Connexion",
-        "signUp": "Devenir partenaire"
+        "signUp": "Devenir partenaire",
+        "myBookings": "Mes réservations"
       },
       "footer": {
         "tagline": "La plateforme de réservation des barbiers marocains. Confirmation instantanée, zéro appel.",
@@ -502,7 +525,8 @@
         "bookingLabel": "Réserver",
         "pricingLabel": "Tarifs",
         "blogLabel": "Blog",
-        "contactLabel": "Contact"
+        "contactLabel": "Contact",
+        "bookingsLabel": "Mes réservations"
       }
     },
     "pricing": {

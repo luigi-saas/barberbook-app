@@ -56,6 +56,7 @@ export type ShopSummary = {
   rating: number;
   reviewCount: number;
   minPrice: string;
+  serviceNames: string[];
 };
 
 export type ShopDetail = ShopSummary & {
@@ -192,6 +193,9 @@ const toShopSummary = (
     rating,
     reviewCount: ratings.length,
     minPrice: prices.length ? `${Math.min(...prices)} MAD` : "—",
+    serviceNames: (shop.services ?? [])
+      .map((s) => ("name" in s ? String((s as { name: unknown }).name) : ""))
+      .filter(Boolean),
   };
 };
 
@@ -255,6 +259,32 @@ export const listShops = cache(async (): Promise<ShopSummary[]> => {
   });
   return shops.map(toShopSummary);
 });
+
+/**
+ * Accent/case-insensitive normalization for search ("Fès" → "fes",
+ * "Coupe " → "coupe").
+ */
+export const normalize = (value: string): string =>
+  value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .trim();
+
+export const searchShops = cache(
+  async (query: string): Promise<ShopSummary[]> => {
+    const shops = await listShops();
+    const q = normalize(query);
+    if (!q) return shops;
+    const terms = q.split(/\s+/);
+    return shops.filter((shop) => {
+      const haystack = normalize(
+        [shop.name, shop.city, shop.description, ...shop.serviceNames].join(" "),
+      );
+      return terms.every((term) => haystack.includes(term));
+    });
+  },
+);
 
 export const listServices = cache(async (shopId: string): Promise<ServiceCard[]> => {
   const services = await database.service.findMany({
@@ -595,3 +625,97 @@ export const getBookingByReference = cache(async (ref: string) => {
     customerNotes: booking.customerNotes ?? undefined,
   };
 });
+
+
+/* -------------------------------------------------------------------------------------------------
+ * My bookings (customer lookup by phone) + cancellation
+ * -------------------------------------------------------------------------------------------------*/
+
+export type CustomerBooking = {
+  reference: string;
+  status: string;
+  scheduledAt: Date;
+  endsAt: Date;
+  shopName: string;
+  shopCity: string;
+  barberName: string;
+  serviceName: string;
+  price: number;
+  canCancel: boolean;
+};
+
+const digitsOf = (phone: string) => phone.replace(/\D/g, "");
+const phoneSuffix = (phone: string) => digitsOf(phone).slice(-9);
+
+export const listBookingsByPhone = cache(
+  async (phone: string): Promise<{ upcoming: CustomerBooking[]; past: CustomerBooking[] }> => {
+    const suffix = phoneSuffix(phone);
+    if (suffix.length < 6) return { upcoming: [], past: [] };
+
+    const rows = await database.booking.findMany({
+      where: { customer: { phone: { not: null } } },
+      orderBy: { scheduledAt: "desc" },
+      take: 300,
+      include: {
+        customer: { select: { phone: true } },
+        shop: true,
+        barber: { include: { user: true } },
+        services: { include: { service: true } },
+      },
+    });
+
+    const now = Date.now();
+    const mine = rows
+      .filter((b) => digitsOf(b.customer.phone ?? "").endsWith(suffix))
+      .map((b): CustomerBooking => {
+        const service = b.services[0];
+        return {
+          reference: b.id.slice(-8).toUpperCase(),
+          status: b.status,
+          scheduledAt: b.scheduledAt,
+          endsAt: b.endsAt,
+          shopName: b.shop.name,
+          shopCity: b.shop.city ?? "",
+          barberName: `${b.barber.user.firstName} ${b.barber.user.lastName}`,
+          serviceName: service?.service.name ?? "",
+          price: service ? service.price.toNumber() : 0,
+          canCancel:
+            (b.status === "PENDING" || b.status === "CONFIRMED") &&
+            b.scheduledAt.getTime() > now + 2 * 60 * 60 * 1000,
+        };
+      });
+
+    return {
+      upcoming: mine
+        .filter((b) => b.scheduledAt.getTime() >= now && b.status !== "CANCELLED")
+        .sort((a, b) => a.scheduledAt.getTime() - b.scheduledAt.getTime()),
+      past: mine.filter((b) => b.scheduledAt.getTime() < now || b.status === "CANCELLED"),
+    };
+  },
+);
+
+export type CancelResult = "ok" | "not_found" | "too_late";
+
+export const cancelBookingByReference = async (
+  ref: string,
+  phone: string,
+): Promise<CancelResult> => {
+  const suffix = phoneSuffix(phone);
+  const bookings = await database.booking.findMany({
+    where: { id: { endsWith: ref.toLowerCase() } },
+    include: { customer: true },
+    take: 1,
+  });
+  const booking = bookings[0];
+  if (!booking) return "not_found";
+  if (!digitsOf(booking.customer.phone ?? "").endsWith(suffix)) return "not_found";
+  const active = ["PENDING", "CONFIRMED", "IN_PROGRESS"] as const;
+  if (!active.includes(booking.status as (typeof active)[number])) return "not_found";
+  if (booking.scheduledAt.getTime() <= Date.now() + 2 * 60 * 60 * 1000) return "too_late";
+
+  await database.booking.update({
+    where: { id: booking.id },
+    data: { status: "CANCELLED", cancellationReason: "Annulée par le client" },
+  });
+  return "ok";
+};

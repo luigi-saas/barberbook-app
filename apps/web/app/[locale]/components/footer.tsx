@@ -10,6 +10,7 @@ export const Footer = async () => {
       links: [
         { label: t("exploreLabel"), href: "/explore" },
         { label: t("bookingLabel"), href: "/booking" },
+        { label: t("bookingsLabel"), href: "/bookings" },
         { label: t("pricingLabel"), href: "/pricing" },
       ],
     },

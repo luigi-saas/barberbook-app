@@ -1,6 +1,8 @@
-import { BBShopCard } from '@/components/ui/bb-shop-card';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { listShops } from '@/lib/booking';
+import { BBEmptyState } from '@/components/ui/bb-empty-state';
+import { BBLinkButton } from '@/components/ui/bb-button';
+import { BBShopCard } from '@/components/ui/bb-shop-card';
+import { searchShops } from '@/lib/booking';
 import { SearchSortBar } from './components/search-sort-bar';
 
 // Live shop/availability data — never bake into a static build.
@@ -17,35 +19,31 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
   setRequestLocale(locale);
   const t = await getTranslations('web.guest.search');
 
-  const query = (q ?? '').trim().toLowerCase();
-  const all = (await listShops().catch((error: unknown) => {
-    console.error("[search] database unavailable:", error instanceof Error ? error.message : error);
+  const results = await searchShops(q ?? '').catch((error: unknown) => {
+    console.error('[search] database unavailable:', error instanceof Error ? error.message : error);
     return [];
-  })) ?? [];
-  const results = query
-    ? all.filter(
-        (s) =>
-          s.name.toLowerCase().includes(query) ||
-          s.city.toLowerCase().includes(query) ||
-          s.description.toLowerCase().includes(query),
-      )
-    : all;
+  });
 
   return (
     <main className="min-h-screen bg-bb-cream">
       <div className="mx-auto max-w-[1280px] px-6 py-12">
         <SearchSortBar />
-        <p className="font-sans text-sm text-bb-espresso/60 mt-6 mb-6">
+        <p className="mt-6 mb-6 font-sans text-sm text-bb-espresso/60">
           {results.length} {results.length === 1 ? 'résultat' : 'résultats'}
-          {query ? ` pour « ${q} »` : ''}
+          {q?.trim() ? ` pour « ${q.trim()} »` : ''}
         </p>
 
         {results.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <p className="font-display text-xl font-semibold text-bb-espresso/40">
-              {t('noResults')}
-            </p>
-          </div>
+          <BBEmptyState
+            icon="search_off"
+            title={t('noResults')}
+            text={t('noResultsHint')}
+            action={
+              <BBLinkButton href={`/${locale}/explore`} variant="primary" size="md">
+                {t('browseAll')}
+              </BBLinkButton>
+            }
+          />
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {results.map((shop) => (
@@ -54,6 +52,7 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
                 name={shop.name}
                 location={shop.city}
                 rating={shop.rating}
+                reviewCount={shop.reviewCount}
                 imageUrl={shop.coverUrl}
                 imageAlt={shop.name}
                 price={shop.minPrice}

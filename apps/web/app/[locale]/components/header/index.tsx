@@ -17,6 +17,7 @@ export function Header() {
 
   const links = [
     { label: t("explore"), href: `/${locale}/explore` },
+    { label: t("myBookings"), href: `/${locale}/bookings` },
     { label: t("pricing"), href: `/${locale}/pricing` },
     { label: t("blog"), href: `/${locale}/blog` },
     { label: t("contact"), href: `/${locale}/contact` },

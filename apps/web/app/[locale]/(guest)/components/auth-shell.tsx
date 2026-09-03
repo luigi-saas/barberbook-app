@@ -24,10 +24,7 @@ export const AuthShell = async ({ locale, mode }: AuthShellProperties) => {
     <main className="flex min-h-screen flex-col bg-bb-cream lg:flex-row">
       {/* Brand panel */}
       <div className="relative hidden flex-1 flex-col justify-between overflow-hidden bg-bb-espresso p-12 text-bb-cream lg:flex">
-        <Link href={`/${locale}`} className="font-display text-2xl font-extrabold tracking-tight">
-          Barber<span className="text-bb-gold">Book</span>
-          <span className="ml-1 align-super text-xs">.ma</span>
-        </Link>
+        <span className="sr-only">BarberBook.ma</span>
         <div className="space-y-4">
           <h2 className="font-display text-4xl font-extrabold leading-tight tracking-tight">
             {isLogin ? t("brand.titleLogin") : t("brand.titleSignup")}
@@ -40,13 +37,6 @@ export const AuthShell = async ({ locale, mode }: AuthShellProperties) => {
       {/* Form panel */}
       <div className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="w-full max-w-md space-y-8">
-          <div className="space-y-2 lg:hidden">
-            <Link href={`/${locale}`} className="font-display text-2xl font-extrabold text-bb-espresso">
-              Barber<span className="text-bb-gold">Book</span>
-              <span className="ml-1 align-super text-xs">.ma</span>
-            </Link>
-          </div>
-
           <div className="space-y-1">
             <h1 className="font-display text-3xl font-extrabold tracking-tight text-bb-espresso">
               {isLogin ? t("login.title") : t("signup.title")}
