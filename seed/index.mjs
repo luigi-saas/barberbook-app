@@ -10,13 +10,14 @@
  * db-setup.mjs (service boot) calls this automatically when the database
  * has no shops yet — pass SEED_FORCE=1 to reseed a populated database.
  */
-import { db } from "./lib/db.mjs";
+import { db, verifyDatabaseAccess } from "./lib/db.mjs";
 import { seedAccounts } from "./seeders/accounts.mjs";
 import { seedShops } from "./seeders/shops.mjs";
 import { seedHistory } from "./seeders/history.mjs";
 
 async function main() {
   console.log("[seed] start");
+  await verifyDatabaseAccess();
 
   await seedAccounts(); // owners + barbers
   await seedShops(); // shops, hours, categories, services, roster

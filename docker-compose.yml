@@ -1,0 +1,22 @@
+# Local development database — same credentials the seed and apps fall back
+# to (postgres / postgres / barberbook on localhost:5432).
+#
+#   docker compose up -d        # start
+#   npm run db:setup            # create schema + seed demo content
+#   docker compose down         # stop (data survives in the pgdata volume)
+#
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: barberbook-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: barberbook
+    ports:
+      - "5432:5432" # change the LEFT side if 5432 is taken on your machine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

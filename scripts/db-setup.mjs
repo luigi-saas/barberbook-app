@@ -17,47 +17,14 @@
  * Run: node scripts/db-setup.mjs
  */
 import { execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
 import pg from "pg";
+import {
+  classifyDbError,
+  describeTarget,
+  loadEnvFallback,
+} from "../seed/lib/env.mjs";
 
 const log = (...args) => console.log("[db-setup]", ...args);
-
-/** host/db for logs — never prints credentials. */
-function describeTarget(url) {
-  try {
-    const parsed = new URL(url);
-    return `${parsed.hostname}${parsed.port ? `:${parsed.port}` : ""}/${parsed.pathname.replace(/^\//, "")} (user: ${parsed.username || "?"})`;
-  } catch {
-    return "UNPARSEABLE DATABASE_URL — expected postgresql://USER:PASSWORD@HOST:5432/DBNAME";
-  }
-}
-
-// Plain `node` doesn't load .env files (Render injects real env vars, local
-// runs rely on files). loadEnvFile never overrides already-set variables.
-function loadEnvFallback() {
-  if (process.env.DATABASE_URL) return;
-  const repoRoot = new globalThis.URL("..", import.meta.url).pathname;
-  for (const candidate of [
-    `${repoRoot}.env`,
-    `${repoRoot}.env.local`,
-    `${repoRoot}apps/web/.env`,
-    `${repoRoot}apps/web/.env.local`,
-    `${repoRoot}apps/app/.env`,
-    `${repoRoot}apps/app/.env.local`,
-    `${repoRoot}apps/api/.env`,
-    `${repoRoot}apps/api/.env.local`,
-  ]) {
-    if (existsSync(candidate)) {
-      try {
-        process.loadEnvFile(candidate);
-        log(`loaded DATABASE_URL from ${candidate.replace(repoRoot, "")}`);
-        return;
-      } catch {
-        /* ignore malformed files */
-      }
-    }
-  }
-}
 
 async function main() {
   loadEnvFallback();
@@ -78,12 +45,7 @@ async function main() {
     await client.connect();
     await client.end();
   } catch (error) {
-    const text = error?.message || String(error);
-    const kind = /28P01|password authentication failed|credentials .* not valid|Authentication failed/i.test(text)
-      ? "auth"
-      : /ECONNREFUSED|ENOTFOUND|ETIMEDOUT|timeout|terminating|expired|does not exist/i.test(text)
-        ? "network"
-        : "other";
+    const kind = classifyDbError(error);
     if (kind === "auth") {
       log("❌──────────────────────────────────────────────────────────────────");
       log("❌ DATABASE_URL was REJECTED — invalid credentials.");
@@ -98,7 +60,7 @@ async function main() {
       log("❌ cannot REACH the database host:", target);
       log("❌ Check: database service is Running (not suspended/expired), hostname and port copied exactly (Internal Database URL for Render DBs).");
     } else {
-      log("database probe failed — continuing:", text.slice(0, 200));
+      log("database probe failed — continuing:", (error?.message || String(error)).slice(0, 200));
     }
     return; // nothing else can succeed — leave boot to Next.js
   }

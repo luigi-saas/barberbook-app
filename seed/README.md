@@ -7,10 +7,21 @@ idempotency guarantees, now one file per domain.
 ## Run
 
 ```bash
-DATABASE_URL=postgres://… bunx tsx seed/index.mjs   # explicit
-bun run db:seed                                     # repo root script
-node scripts/db-setup.mjs                           # boot path: schema + seed
+# One-time local setup (Mac/Linux):
+docker compose up -d        # local Postgres — postgres/postgres/barberbook
+npm run db:setup            # create the schema + seed demo content
+
+# Afterwards, re-seed anytime (idempotent — upserts only):
+npm run db:seed
+
+# Explicit environment (CI, staging…):
+DATABASE_URL=postgres://… npm run db:setup
 ```
+
+`DATABASE_URL` is read from the environment, then from `.env`,
+`.env.local` and the per-app env files. With no database running, the
+seed prints an actionable banner (ECONNREFUSED → "docker compose up -d",
+empty database → "npm run db:setup") instead of a raw Prisma stack trace.
 
 On Render, `db-setup.mjs` runs automatically at every service start and
 seeds **only when the database has no shops** (so it never touches real
