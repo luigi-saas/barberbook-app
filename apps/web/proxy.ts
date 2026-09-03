@@ -1,3 +1,4 @@
+import { authMiddleware } from "@repo/auth/proxy";
 import { parseError } from "@repo/observability/error";
 import { secure } from "@repo/security";
 import {
@@ -100,4 +101,16 @@ const publicChain = async (request: NextRequest, event: NextFetchEvent) => {
 // callback and every unprefixed route 404s. Re-introduce Clerk here only when
 // building authenticated features, and verify `/` redirects on a real
 // deployment before promoting it.
-export default publicChain as unknown as NextProxy;
+// Clerk: the header calls auth() for sign-in state on every request. Without
+// clerkMiddleware, Clerk logs "can't detect usage of clerkMiddleware()" and
+// flags fall back to defaults. Wrap ONLY when fully configured (both keys —
+// the same proven config as the dashboard app): with a publishable key but a
+// missing/invalid secret, clerkMiddleware never invokes the callback and
+// unprefixed routes 404. Keyless local runs keep the public chain.
+const usesClerk = Boolean(
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY
+);
+
+export default (
+  usesClerk ? authMiddleware((_, request, event) => publicChain(request, event)) : publicChain
+) as unknown as NextProxy;

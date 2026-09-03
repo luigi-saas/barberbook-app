@@ -5,7 +5,7 @@
  * Run:  DATABASE_URL=... bunx tsx scripts/seed-demo.mjs
  */
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../packages/database/generated/client";
+import { PrismaClient } from "../packages/database/generated/client.ts";
 
 const adapter = new PrismaPg({
   connectionString:
