@@ -290,7 +290,8 @@
         "hours": "Horaires",
         "closedDay": "Fermé",
         "selectService": "Choisir un service",
-        "nextStepHint": "Étape suivante : barbier & créneau"
+        "nextStepHint": "Étape suivante : barbier & créneau",
+        "noReviews": "Pas encore d'avis — soyez le premier !"
       },
       "search": {
         "resultsFor": "Résultats pour :",
@@ -304,7 +305,10 @@
         "previous": "Précédent",
         "next": "Suivant",
         "noResultsHint": "Essayez un autre nom, une ville ou un service — par exemple « barbe Casablanca ».",
-        "browseAll": "Voir tous les salons"
+        "browseAll": "Voir tous les salons",
+        "dbDownTitle": "Les salons sont momentanément indisponibles",
+        "dbDownText": "Un souci technique côté base de données. Réessayez dans un instant.",
+        "retry": "Réessayer"
       },
       "barber": {
         "specialty": "Spécialités",

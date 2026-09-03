@@ -56,6 +56,7 @@ export type ShopSummary = {
   rating: number;
   reviewCount: number;
   minPrice: string;
+  minPriceValue: number;
   serviceNames: string[];
 };
 
@@ -193,6 +194,7 @@ const toShopSummary = (
     rating,
     reviewCount: ratings.length,
     minPrice: prices.length ? `${Math.min(...prices)} MAD` : "—",
+    minPriceValue: prices.length ? Math.min(...prices) : Number.MAX_SAFE_INTEGER,
     serviceNames: (shop.services ?? [])
       .map((s) => ("name" in s ? String((s as { name: unknown }).name) : ""))
       .filter(Boolean),
@@ -719,3 +721,32 @@ export const cancelBookingByReference = async (
   });
   return "ok";
 };
+
+
+/* -------------------------------------------------------------------------------------------------
+ * Shop reviews (Design.md — Reviews list)
+ * -------------------------------------------------------------------------------------------------*/
+
+export type ShopReview = {
+  author: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+};
+
+export const listShopReviews = cache(
+  async (shopId: string): Promise<ShopReview[]> => {
+    const reviews = await database.review.findMany({
+      where: { shopId, status: "VISIBLE", comment: { not: null } },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+      include: { author: { select: { firstName: true, lastName: true } } },
+    });
+    return reviews.map((review) => ({
+      author: `${review.author.firstName} ${review.author.lastName.charAt(0)}.`,
+      rating: review.rating,
+      comment: review.comment ?? "",
+      createdAt: review.createdAt,
+    }));
+  },
+);

@@ -306,7 +306,8 @@
         "hours": "Hours",
         "closedDay": "Closed",
         "selectService": "Choose a service",
-        "nextStepHint": "Next: barber & time slot"
+        "nextStepHint": "Next: barber & time slot",
+        "noReviews": "No reviews yet — be the first!"
       },
       "search": {
         "resultsFor": "Results for:",
@@ -320,7 +321,10 @@
         "previous": "Previous",
         "next": "Next",
         "noResultsHint": "Try another name, city or service — e.g. \"beard Casablanca\".",
-        "browseAll": "Browse all shops"
+        "browseAll": "Browse all shops",
+        "dbDownTitle": "Shops are temporarily unavailable",
+        "dbDownText": "A database issue on our side. Please try again in a moment.",
+        "retry": "Retry"
       },
       "barber": {
         "specialty": "Specialties",

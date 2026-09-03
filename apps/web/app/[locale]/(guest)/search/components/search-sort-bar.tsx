@@ -2,31 +2,40 @@
 
 import { cn } from '@repo/design-system/lib/utils';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useParams, useSearchParams } from 'next/navigation';
 
-type SortKey = 'relevance' | 'distance' | 'rating' | 'price';
+type SortKey = 'relevance' | 'rating' | 'price';
 
+/** Working sort (Design.md — Search results): updates the ?sort= param. */
 export function SearchSortBar() {
   const t = useTranslations('web.guest.search');
-  const [activeSort, setActiveSort] = useState<SortKey>('relevance');
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const locale = params.locale as string;
+  const activeSort = (searchParams.get('sort') ?? 'relevance') as SortKey;
+  const q = searchParams.get('q') ?? '';
 
   const sorts: { key: SortKey; label: string }[] = [
     { key: 'relevance', label: t('relevance') },
-    { key: 'distance', label: t('distance') },
     { key: 'rating', label: t('rating') },
     { key: 'price', label: t('price') },
   ];
 
+  const href = (key: SortKey) => {
+    const query = new URLSearchParams();
+    if (q) query.set('q', q);
+    if (key !== 'relevance') query.set('sort', key);
+    const qs = query.toString();
+    return `/${locale}/search${qs ? `?${qs}` : ''}`;
+  };
+
   return (
-    <div className="flex items-center gap-2 flex-wrap">
-      <span className="font-sans text-sm text-bb-espresso/50 mr-1">
-        {t('sortBy')}
-      </span>
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="mr-1 font-sans text-sm text-bb-espresso/50">{t('sortBy')}</span>
       {sorts.map((sort) => (
-        <button
+        <a
           key={sort.key}
-          type="button"
-          onClick={() => setActiveSort(sort.key)}
+          href={href(sort.key)}
           className={cn(
             'rounded-full px-5 py-2 font-sans text-sm font-medium transition',
             activeSort === sort.key
@@ -35,7 +44,7 @@ export function SearchSortBar() {
           )}
         >
           {sort.label}
-        </button>
+        </a>
       ))}
     </div>
   );

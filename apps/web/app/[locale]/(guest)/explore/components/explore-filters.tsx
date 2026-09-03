@@ -1,122 +1,103 @@
 'use client';
 
 import { BBButton } from '@/components/ui/bb-button';
-import { BBCheckbox } from '@/components/ui/bb-input';
-import { cn } from '@repo/design-system/lib/utils';
-import { Star } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
+/**
+ * Real filters (Design.md — Filter / sort modal): rating + price navigate to
+ * /search with query params the server applies. Distance / "available today"
+ * need geo + live slots and arrive with the marketplace phase.
+ */
 export function ExploreFilters() {
   const t = useTranslations('web.guest.explore');
+  const params = useParams();
+  const locale = params.locale as string;
   const [minRating, setMinRating] = useState<string | null>(null);
-  const [distance, setDistance] = useState(10);
-  const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
-  const [availableToday, setAvailableToday] = useState(false);
-
-  const handleReset = () => {
-    setMinRating(null);
-    setDistance(10);
-    setMinPrice('');
-    setMaxPrice('');
-    setAvailableToday(false);
-  };
 
   const ratingOptions = [
     { value: '4.5', label: '4.5+' },
-    { value: '4.0', label: '4.0+' },
+    { value: '4', label: '4.0+' },
   ];
 
+  const apply = (event: React.FormEvent) => {
+    event.preventDefault();
+    const query = new URLSearchParams();
+    if (minRating) query.set('minRating', minRating);
+    if (maxPrice) query.set('maxPrice', maxPrice);
+    query.set('sort', 'rating');
+    window.location.href = `/${locale}/search?${query.toString()}`;
+  };
+
+  const reset = () => {
+    setMinRating(null);
+    setMaxPrice('');
+    window.location.href = `/${locale}/search`;
+  };
+
   return (
-    <div className="rounded-[40px] bg-white p-6 shadow-[var(--bb-shadow-onboarding)] flex flex-col gap-6">
+    <form
+      onSubmit={apply}
+      className="flex flex-col gap-6 rounded-[1.75rem] border border-bb-cream-border bg-white p-6 shadow-[var(--bb-shadow-onboarding)]"
+    >
       <h3 className="font-display text-lg font-bold text-bb-espresso">
         {t('filters.title')}
       </h3>
 
       {/* Rating checkboxes */}
       <div className="flex flex-col gap-2">
-        <span className="font-sans text-sm font-semibold text-bb-espresso/60 uppercase tracking-[0.1em]">
+        <span className="font-sans text-sm font-semibold uppercase tracking-[0.1em] text-bb-espresso/60">
           {t('filters.rating')}
         </span>
         <div className="flex flex-col gap-2">
           {ratingOptions.map(({ value, label }) => (
-            <label key={value} className="flex cursor-pointer items-center gap-3 group">
+            <label key={value} className="group flex cursor-pointer items-center gap-3">
               <input
                 type="checkbox"
                 checked={minRating === value}
                 onChange={() => setMinRating(minRating === value ? null : value)}
-                className="size-5 rounded border-bb-cream-border text-bb-espresso accent-bb-espresso transition"
+                className="size-5 rounded border-bb-cream-border accent-bb-espresso-gold transition"
               />
-              <span className="flex items-center gap-1 font-sans text-sm text-bb-on-surface-muted group-hover:text-bb-espresso transition-colors">
+              <span className="flex items-center gap-1 font-sans text-sm text-bb-on-surface-muted transition-colors group-hover:text-bb-espresso">
                 {label}
-                <Star className="size-3.5 fill-bb-espresso-gold text-bb-espresso-gold" />
+                <span className="material-symbols-outlined text-[14px] text-bb-espresso-gold" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
               </span>
             </label>
           ))}
         </div>
       </div>
 
-      {/* Distance slider */}
+      {/* Max price */}
       <div className="flex flex-col gap-2">
-        <span className="font-sans text-sm font-semibold text-bb-espresso/60 uppercase tracking-[0.1em]">
-          {t('filters.distance')}
-        </span>
-        <input
-          type="range"
-          min={1}
-          max={20}
-          value={distance}
-          onChange={(e) => setDistance(Number(e.target.value))}
-          className="w-full cursor-pointer accent-bb-espresso"
-        />
-        <div className="flex justify-between font-sans text-xs text-bb-on-surface-muted">
-          <span>{t('filters.distanceNear')}</span>
-          <span className="font-semibold text-bb-espresso">{distance} km</span>
-          <span>20+ km</span>
-        </div>
-      </div>
-
-      {/* Price range */}
-      <div className="flex flex-col gap-2">
-        <span className="font-sans text-sm font-semibold text-bb-espresso/60 uppercase tracking-[0.1em]">
+        <span className="font-sans text-sm font-semibold uppercase tracking-[0.1em] text-bb-espresso/60">
           {t('filters.price')}
         </span>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="number"
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value)}
-            placeholder="Min"
-            className="w-full rounded-xl bg-bb-surface-variant px-4 py-3 font-sans text-sm text-bb-espresso placeholder:text-bb-espresso/40 outline-none focus:ring-2 focus:ring-bb-espresso/20 transition"
-          />
-          <span className="text-bb-espresso/40 font-sans text-sm shrink-0">–</span>
-          <input
-            type="number"
+            min={0}
+            step={50}
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            placeholder="Max"
-            className="w-full rounded-xl bg-bb-surface-variant px-4 py-3 font-sans text-sm text-bb-espresso placeholder:text-bb-espresso/40 outline-none focus:ring-2 focus:ring-bb-espresso/20 transition"
+            placeholder="250"
+            className="w-full rounded-xl bg-bb-surface-variant px-4 py-3 font-sans text-sm text-bb-espresso outline-none transition placeholder:text-bb-espresso/40 focus:ring-2 focus:ring-bb-espresso-gold/20"
+            aria-label="Prix maximum (MAD)"
           />
+          <span className="shrink-0 font-sans text-sm text-bb-espresso/60">MAD</span>
         </div>
       </div>
-
-      {/* Available today */}
-      <BBCheckbox
-        label={t('filters.availableToday')}
-        checked={availableToday}
-        onChange={setAvailableToday}
-      />
 
       {/* Actions */}
       <div className="flex flex-col gap-2 pt-2">
-        <BBButton variant="secondary" fullWidth>
+        <BBButton type="submit" variant="primary" fullWidth>
           {t('filters.apply')}
         </BBButton>
-        <BBButton variant="ghost" fullWidth onClick={handleReset}>
+        <BBButton type="button" variant="ghost" fullWidth onClick={reset}>
           {t('filters.reset')}
         </BBButton>
       </div>
-    </div>
+    </form>
   );
 }

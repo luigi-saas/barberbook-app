@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { formatShopTime, getShop, listBarbers, listServices, todayInShopTz, weekdayOf } from '@/lib/booking';
+import { formatShopTime, getShop, listBarbers, listServices, listShopReviews, todayInShopTz, weekdayOf } from '@/lib/booking';
 import { BookingPanel } from './components/booking-panel';
 import { ShopHero } from './components/shop-hero';
 import { ShopInfoTabs } from './components/shop-info-tabs';
@@ -25,6 +25,7 @@ const ShopPage = async ({ params }: ShopPageProps) => {
 
   const services = (await listServices(shop.id).catch(logDbDown)) ?? [];
   const barbers = (await listBarbers(shop.id).catch(logDbDown)) ?? [];
+  const reviews = (await listShopReviews(shop.id).catch(logDbDown)) ?? [];
 
   const today = todayInShopTz();
   const hoursToday = shop.openingHours.find((h) => h.dayOfWeek === weekdayOf(today));
@@ -70,6 +71,7 @@ const ShopPage = async ({ params }: ShopPageProps) => {
               barbers={barbers}
               gallery={gallery}
               openingHours={shop.openingHours}
+              reviews={reviews}
             />
           </div>
 

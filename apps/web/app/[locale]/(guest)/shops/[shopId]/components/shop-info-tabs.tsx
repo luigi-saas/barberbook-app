@@ -6,9 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import type { BarberCard, ServiceCard } from '@/lib/booking';
+import type { BarberCard, ServiceCard, ShopReview } from '@/lib/booking';
 
-type TabKey = 'services' | 'team' | 'gallery' | 'hours';
+type TabKey = 'services' | 'team' | 'gallery' | 'reviews' | 'hours';
 
 interface ShopInfoTabsProps {
   locale: string;
@@ -22,6 +22,7 @@ interface ShopInfoTabsProps {
     closeTime: string;
     isClosed: boolean;
   }[];
+  reviews: ShopReview[];
 }
 
 export function ShopInfoTabs({
@@ -31,6 +32,7 @@ export function ShopInfoTabs({
   barbers,
   gallery,
   openingHours,
+  reviews,
 }: ShopInfoTabsProps) {
   const t = useTranslations('web.guest.shop');
   const [activeTab, setActiveTab] = useState<TabKey>('services');
@@ -39,6 +41,7 @@ export function ShopInfoTabs({
     { key: 'services', label: t('services') },
     { key: 'team', label: t('team') },
     { key: 'gallery', label: t('gallery') },
+    { key: 'reviews', label: `${t('reviews')} (${reviews.length})` },
     { key: 'hours', label: t('hours') },
   ];
 
@@ -170,6 +173,54 @@ export function ShopInfoTabs({
                 sizes="(max-width: 640px) 50vw, 33vw"
                 className="object-cover"
               />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Reviews tab (Design.md — Reviews list) */}
+      {activeTab === 'reviews' && (
+        <div className="flex flex-col gap-4">
+          {reviews.length === 0 && (
+            <div className="rounded-2xl bg-white p-8 text-center shadow-sm">
+              <p className="font-sans text-sm text-bb-espresso/50">
+                {t('noReviews')}
+              </p>
+            </div>
+          )}
+          {reviews.map((review, i) => (
+            <div key={`${review.author}-${i}`} className="rounded-2xl bg-white p-5 shadow-sm">
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-9 items-center justify-center rounded-full bg-bb-gold-muted font-display text-sm font-black text-bb-espresso-gold">
+                    {review.author.charAt(0)}
+                  </div>
+                  <span className="font-sans text-sm font-semibold text-bb-espresso">
+                    {review.author}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: review.rating }).map((_, star) => (
+                    <span
+                      key={star}
+                      className="material-symbols-outlined text-[14px] text-bb-espresso-gold"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      star
+                    </span>
+                  ))}
+                  <span className="ml-2 font-sans text-xs text-bb-espresso/50">
+                    {new Intl.DateTimeFormat(locale === 'ar' ? 'ar-MA' : locale, {
+                      month: 'short',
+                      year: 'numeric',
+                      timeZone: 'UTC',
+                    }).format(review.createdAt)}
+                  </span>
+                </div>
+              </div>
+              <p className="font-sans text-sm leading-relaxed text-bb-espresso/70">
+                {review.comment}
+              </p>
             </div>
           ))}
         </div>
