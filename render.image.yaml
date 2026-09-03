@@ -1,0 +1,92 @@
+# ============================================================================
+# Render Blueprint — IMAGE VARIANT (opt-in escape hatch for build OOM)
+#
+# Use this ONLY if free-instance builds fail with `Killed` / exit 137 / OOM:
+#   1. GitHub → Actions → "Build images (GHCR)" → Run workflow (wait for green)
+#   2. GitHub → Packages → make barberbook-web/app/api PUBLIC
+#   3. Rename this file to render.yaml (keep the old one as render.build.yaml)
+#      and apply the Blueprint — OR create each service manually via
+#      Dashboard → New + → "Deploy an existing image from a registry" with
+#      the URLs below (then re-add the env vars from render.build.yaml).
+#
+# The image variant never builds on Render: deploys pull from GHCR, so the
+# 512 MB free instance only runs the app. Env vars are identical to the
+# build variant — DATABASE_URL must still point at a reachable Postgres
+# (schema + seed run automatically at every boot).
+# ============================================================================
+services:
+  - type: web
+    name: barberbook-web
+    runtime: image
+    region: frankfurt
+    plan: free
+    image:
+      url: ghcr.io/luigi-saas/barberbook-app/barberbook-web:latest
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VERCEL_PROJECT_PRODUCTION_URL
+        value: barberbook-web.onrender.com
+      - key: NEXT_PUBLIC_WEB_URL
+        value: https://barberbook-web.onrender.com
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://barberbook-app.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: https://barberbook-api.onrender.com
+      - key: DATABASE_URL
+        sync: false
+
+  - type: web
+    name: barberbook-app
+    runtime: image
+    region: frankfurt
+    plan: free
+    image:
+      url: ghcr.io/luigi-saas/barberbook-app/barberbook-app:latest
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VERCEL_PROJECT_PRODUCTION_URL
+        value: barberbook-app.onrender.com
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://barberbook-app.onrender.com
+      - key: NEXT_PUBLIC_WEB_URL
+        value: https://barberbook-web.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: https://barberbook-api.onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+
+  - type: web
+    name: barberbook-api
+    runtime: image
+    region: frankfurt
+    plan: free
+    image:
+      url: ghcr.io/luigi-saas/barberbook-app/barberbook-api:latest
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_WEB_URL
+        value: https://barberbook-web.onrender.com
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://barberbook-app.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: https://barberbook-api.onrender.com
+      - key: DATABASE_URL
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_TOKEN
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false

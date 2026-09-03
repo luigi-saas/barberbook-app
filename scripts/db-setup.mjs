@@ -66,32 +66,49 @@ async function main() {
   }
 
 
-  // 1. Apply the Prisma schema (no-op when already in sync).
+  // 1. Apply the Prisma schema ONLY when tables are missing. Steady-state
+  //    boots skip the Prisma CLI entirely (it peaks ~300 MB — an OOM risk on
+  //    Render free instances, and pure startup latency when in sync).
   const repoRoot = new globalThis.URL("..", import.meta.url).pathname;
+  let schemaExists = false;
   try {
-    execFileSync(
-      "bunx",
-      ["prisma", "db", "push", "--schema=packages/database/prisma/schema.prisma", "--skip-generate", "--accept-data-loss"],
-      { stdio: "inherit", cwd: repoRoot },
-    );
-  } catch (error) {
-    log("schema push failed — falling back to bundled scripts/schema.sql (applied only to EMPTY databases):", String(error).slice(0, 120));
+    const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+    await client.connect();
+    const { rows } = await client.query("SELECT to_regclass('\"Shop\"') AS reg");
+    await client.end();
+    schemaExists = Boolean(rows[0]?.reg);
+  } catch {
+    log("could not check schema presence — will attempt schema application.");
+  }
+  if (schemaExists) {
+    log("schema present — skipping prisma db push.");
+  } else {
+    log("schema missing — applying…");
     try {
-      const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
-      await client.connect();
-      const { rows } = await client.query(
-        "SELECT count(*)::int AS n FROM information_schema.tables WHERE table_schema = 'public'",
+      execFileSync(
+        "bunx",
+        ["prisma", "db", "push", "--schema=packages/database/prisma/schema.prisma", "--skip-generate", "--accept-data-loss"],
+        { stdio: "inherit", cwd: repoRoot },
       );
-      if ((rows[0]?.n ?? 0) > 0) {
-        log(`database already has ${rows[0].n} table(s) — schema.sql fallback skipped (it rebuilds tables).`);
-      } else {
-        const { readFileSync } = await import("node:fs");
-        await client.query(readFileSync(`${repoRoot}scripts/schema.sql`, "utf8"));
-        log("applied scripts/schema.sql — schema created.");
+    } catch (error) {
+      log("schema push failed — falling back to bundled scripts/schema.sql (applied only to EMPTY databases):", String(error).slice(0, 120));
+      try {
+        const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+        await client.connect();
+        const { rows } = await client.query(
+          "SELECT count(*)::int AS n FROM information_schema.tables WHERE table_schema = 'public'",
+        );
+        if ((rows[0]?.n ?? 0) > 0) {
+          log(`database already has ${rows[0].n} table(s) — schema.sql fallback skipped (it rebuilds tables).`);
+        } else {
+          const { readFileSync } = await import("node:fs");
+          await client.query(readFileSync(`${repoRoot}scripts/schema.sql`, "utf8"));
+          log("applied scripts/schema.sql — schema created.");
+        }
+        await client.end();
+      } catch (fallbackError) {
+        log("schema.sql fallback failed — continuing:", String(fallbackError).slice(0, 300));
       }
-      await client.end();
-    } catch (fallbackError) {
-      log("schema.sql fallback failed — continuing:", String(fallbackError).slice(0, 300));
     }
   }
 

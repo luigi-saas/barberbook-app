@@ -114,6 +114,36 @@ no card required. Know what you're signing up for:
   don't consume hours, so light demo usage fits; sustained traffic across all
   three will not.
 
+## 🚑 503 playbook (service down / not handling requests)
+
+A 503 from `*.onrender.com` is Render-level: the instance is deploying,
+restarting, crashed or OOM-killed — it is not an application error page.
+
+1. **Events tab**: is a deploy in progress or failed? A failed deploy keeps
+   the previous version running; a crash-looping service 503s until fixed.
+2. **Logs tab**: look for `Killed` / `exit 137` / `JavaScript heap out of
+   memory` (build or boot OOM → use the image pipeline below), or a boot
+   error loop.
+3. **Manual Deploy → Clear build cache & deploy** for a clean rebuild.
+4. Free instances also sleep after ~15 min idle — the first visit after a
+   nap shows Render's "spinning up" page for 30–60 s (not a 503).
+
+## 🐳 Image pipeline (free fix for build OOM — no card required)
+
+`next build` wants more RAM than the 512 MB free instance has. The escape
+hatch builds images on GitHub's 7 GB runners; Render only runs them:
+
+1. GitHub → **Actions → "Build images (GHCR)" → Run workflow** (matrix
+   builds web/app/api via the root `Dockerfile`, pushes to GHCR).
+2. GitHub → your profile → **Packages** → make each `barberbook-*` package
+   **public** (then Render needs no registry credentials).
+3. Swap Render to the images: rename `render.image.yaml` → `render.yaml`
+   and re-apply the Blueprint, or per service: **Settings → Image entry
+   point / source → Existing image** with
+   `ghcr.io/luigi-saas/barberbook-app/barberbook-web:latest` (+ app/api).
+4. Re-deploying later = re-run the workflow, then on Render
+   **Manual Deploy → Deploy latest reference** (pulls `:latest`).
+
 ## ⚠️ Build memory (paid path)
 
 If you'd rather have reliable builds and always-on services, keep `plan:
