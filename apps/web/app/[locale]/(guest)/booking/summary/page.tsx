@@ -9,6 +9,9 @@ import {
 import { BookingStepper } from '../components/booking-stepper';
 import { GuestForm } from './components/guest-form';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface SummaryPageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{

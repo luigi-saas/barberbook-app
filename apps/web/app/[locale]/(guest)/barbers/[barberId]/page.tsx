@@ -4,6 +4,9 @@ import { notFound } from 'next/navigation';
 import { getPrimaryShop, listServices } from '@/lib/booking';
 import { BarberProfileCard } from './components/barber-profile-card';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface BarberPageProps {
   params: Promise<{ locale: string; barberId: string }>;
 }

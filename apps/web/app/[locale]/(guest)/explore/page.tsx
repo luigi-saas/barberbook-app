@@ -6,6 +6,9 @@ import { ExplorePagination } from './components/explore-pagination';
 import { ExploreSearchBar } from './components/explore-search-bar';
 import { ExploreServiceChips } from './components/explore-service-chips';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface ExplorePageProps {
   params: Promise<{ locale: string }>;
 }

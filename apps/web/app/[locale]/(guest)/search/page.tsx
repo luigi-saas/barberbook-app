@@ -3,6 +3,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { listShops } from '@/lib/booking';
 import { SearchSortBar } from './components/search-sort-bar';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface SearchPageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ q?: string; page?: string }>;

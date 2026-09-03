@@ -4,6 +4,9 @@ import { formatShopTime, getBookingByReference } from '@/lib/booking';
 import { CopyReference } from './components/copy-reference';
 import { BookingStepper } from '../components/booking-stepper';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface ConfirmedPageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ ref?: string }>;

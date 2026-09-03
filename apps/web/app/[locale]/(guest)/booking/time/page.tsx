@@ -10,6 +10,9 @@ import {
 import { BookingStepper } from '../components/booking-stepper';
 import { TimePicker } from './components/time-picker';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface TimePageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ barber?: string; service?: string; shop?: string; date?: string }>;

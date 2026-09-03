@@ -3,6 +3,9 @@ import { getPrimaryShop, getShop, listBarbers } from '@/lib/booking';
 import { BookingStepper } from '../components/booking-stepper';
 import { BarberSelector } from './components/barber-selector';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface BarberPageProps {
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ service?: string; shop?: string }>;

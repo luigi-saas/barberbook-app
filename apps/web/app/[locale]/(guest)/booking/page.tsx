@@ -3,6 +3,9 @@ import { getPrimaryShop, listServices } from '@/lib/booking';
 import { BookingStepper } from './components/booking-stepper';
 import { ServiceSelector } from './components/service-selector';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface BookingPageProps {
   params: Promise<{ locale: string }>;
 }

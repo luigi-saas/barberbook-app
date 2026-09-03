@@ -5,6 +5,9 @@ import { BookingPanel } from './components/booking-panel';
 import { ShopHero } from './components/shop-hero';
 import { ShopInfoTabs } from './components/shop-info-tabs';
 
+// Live shop/availability data — never bake into a static build.
+export const dynamic = 'force-dynamic';
+
 interface ShopPageProps {
   params: Promise<{ locale: string; shopId: string }>;
 }
