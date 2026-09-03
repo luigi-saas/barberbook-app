@@ -167,6 +167,13 @@ const gridSlots = (open: string, close: string, durationMinutes: number): string
  * Queries
  * -------------------------------------------------------------------------------------------------*/
 
+/** Only local, bundled images are guaranteed to exist — anything else
+ * (dead external URLs from older seeds, junk data) falls back to a real
+ * asset so cards and heroes can never render a broken image. */
+export const FALLBACK_SHOP_IMAGE = "/images/shop-cover-royal.jpg";
+export const safeImage = (url: string | null | undefined): string =>
+  url && url.startsWith("/") ? url : FALLBACK_SHOP_IMAGE;
+
 const toShopSummary = (
   shop: Shop & {
     services?: { price: { toNumber?: () => number } | number }[];
@@ -189,8 +196,8 @@ const toShopSummary = (
     description: shop.description ?? "",
     city: shop.city ?? "",
     address: shop.address ?? "",
-    coverUrl: shop.coverUrl ?? "/images/shop-cover-royal.jpg",
-    logoUrl: shop.logoUrl ?? "/images/shop-logo-royal.jpg",
+    coverUrl: safeImage(shop.coverUrl),
+    logoUrl: safeImage(shop.logoUrl),
     rating,
     reviewCount: ratings.length,
     minPrice: prices.length ? `${Math.min(...prices)} MAD` : "—",
@@ -305,7 +312,7 @@ export const listServices = cache(async (shopId: string): Promise<ServiceCard[]>
       price: `${price} MAD`,
       priceValue: price,
       tier: tierForPrice(price),
-      imageUrl: s.imageUrl ?? "/images/svc-classic-cut.jpg",
+      imageUrl: s.imageUrl?.startsWith("/") ? s.imageUrl : "/images/svc-classic-cut.jpg",
       category: s.category?.name.toLowerCase() ?? "classic",
     };
   });
@@ -324,7 +331,7 @@ export const getService = cache(async (id: string): Promise<ServiceCard | null> 
     price: `${price} MAD`,
     priceValue: price,
     tier: tierForPrice(price),
-    imageUrl: s.imageUrl ?? "/images/svc-classic-cut.jpg",
+    imageUrl: s.imageUrl?.startsWith("/") ? s.imageUrl : "/images/svc-classic-cut.jpg",
     category: s.category?.name.toLowerCase() ?? "classic",
   };
 });
@@ -353,7 +360,7 @@ export const listBarbers = cache(async (shopId: string): Promise<BarberWithServi
       .split(",")
       .map((x) => x.trim())
       .filter(Boolean),
-    avatarUrl: barber.user.avatarUrl ?? undefined,
+    avatarUrl: barber.user.avatarUrl?.startsWith("/") ? barber.user.avatarUrl : undefined,
     initials: initialsOf(barber.user.firstName, barber.user.lastName),
     serviceIds: barber.services.map((bs) => bs.serviceId),
   }));

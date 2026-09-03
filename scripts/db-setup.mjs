@@ -96,14 +96,27 @@ async function main() {
   }
 
   // 2. Seed demo content only when the database is empty (raw pg — the
-  // generated Prisma client is TS and needs tsx/bun to run).
+  //    generated Prisma client is TS and needs tsx/bun to run). Also heals
+  //    databases seeded by older app versions: rows pointing at dead
+  //    external image URLs would render broken cards forever, so those
+  //    trigger a one-shot reseed (upserts restore local assets + ACTIVE).
   try {
     const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
     await client.connect();
     const { rows } = await client.query('SELECT COUNT(*)::int AS n FROM "Shop"');
-    await client.end();
     const shops = rows[0]?.n ?? 0;
-    if (shops > 0 && !process.env.SEED_FORCE) {
+    let force = Boolean(process.env.SEED_FORCE);
+    if (shops > 0 && !force) {
+      const { rows: broken } = await client.query(
+        `SELECT COUNT(*)::int AS n FROM "Shop" WHERE "coverUrl" IS NULL OR "coverUrl" NOT LIKE '/%'`,
+      );
+      if ((broken[0]?.n ?? 0) > 0) {
+        force = true;
+        log(`${broken[0].n} shop(s) carry non-local image URLs (old demo data) — reseeding to restore bundled assets.`);
+      }
+    }
+    await client.end();
+    if (shops > 0 && !force) {
       log(`database already has ${shops} shop(s) — seed skipped.`);
       return;
     }
