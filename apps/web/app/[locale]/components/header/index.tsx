@@ -1,213 +1,128 @@
 "use client";
 
-import { ModeToggle } from "@repo/design-system/components/mode-toggle";
-import { Button } from "@repo/design-system/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@repo/design-system/components/ui/navigation-menu";
-import type { Dictionary } from "@repo/internationalization";
-import { Menu, X, MoveRight } from "lucide-react";
+import { cn } from "@repo/design-system/lib/utils";
+import { Menu, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useParams, usePathname } from "next/navigation";
 import { useState } from "react";
-import { env } from "@/env";
-import { LanguageSwitcher } from "./language-switcher";
+import { BBLanguageSwitcher } from "../../(guest)/(home)/components/bb-language-switcher";
 
-interface HeaderProps {
-  dictionary: Dictionary;
-}
+export function Header() {
+  const t = useTranslations("web.marketing.nav");
+  const pathname = usePathname();
+  const params = useParams();
+  const locale = params.locale as string;
+  const [menuOpen, setMenuOpen] = useState(false);
 
-// Module-level so MobileMenu can share it (was previously scoped to Header)
-const buildNavigationItems = (dictionary: Dictionary) => {
-  const items = [
-    {
-      title: dictionary.web.header.home,
-      href: "/",
-      description: "",
-    },
-    {
-      title: dictionary.web.header.product.title,
-      description: dictionary.web.header.product.description,
-      items: [
-        {
-          title: dictionary.web.header.product.pricing,
-          href: "/pricing",
-        },
-      ],
-    },
-    {
-      title: dictionary.web.header.blog,
-      href: "/blog",
-      description: "",
-    },
+  const links = [
+    { label: t("explore"), href: `/${locale}/explore` },
+    { label: t("pricing"), href: `/${locale}/pricing` },
+    { label: t("blog"), href: `/${locale}/blog` },
+    { label: t("contact"), href: `/${locale}/contact` },
   ];
 
-  if (env.NEXT_PUBLIC_DOCS_URL) {
-    items.push({
-      title: dictionary.web.header.docs,
-      href: env.NEXT_PUBLIC_DOCS_URL,
-      description: "",
-    });
-  }
+  const isActive = (href: string) => pathname === href;
 
-  return items;
-};
-
-const MobileMenu = ({ dictionary }: HeaderProps) => {
-  const [isOpen, setOpen] = useState(false);
-  const navigationItems = buildNavigationItems(dictionary);
   return (
-    <div className="flex w-12 shrink items-end justify-end lg:hidden">
-      <Button onClick={() => setOpen(!isOpen)} variant="ghost">
-        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </Button>
-      {isOpen && (
-        <div className="container absolute top-20 right-0 flex w-full flex-col gap-8 border-t bg-background py-4 shadow-lg">
-          {navigationItems.map((item) => (
-            <div key={item.title}>
-              <div className="flex flex-col gap-2">
-                {item.href ? (
-                  <Link
-                    className="flex items-center justify-between"
-                    href={item.href}
-                    rel={
-                      item.href.startsWith("http")
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    target={
-                      item.href.startsWith("http") ? "_blank" : undefined
-                    }
-                  >
-                    <span className="text-lg">{item.title}</span>
-                    <MoveRight className="h-4 w-4 stroke-1 text-muted-foreground" />
-                  </Link>
-                ) : (
-                  <p className="text-lg">{item.title}</p>
+    <header className="sticky top-0 z-50 w-full border-b border-bb-cream-border/70 bg-bb-cream/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6 lg:px-8">
+        {/* Logo + desktop nav */}
+        <div className="flex items-center gap-10">
+          <Link
+            href={`/${locale}`}
+            className="font-display text-xl font-extrabold tracking-tight text-bb-espresso"
+          >
+            BarberBook<span className="text-bb-espresso-gold">.ma</span>
+          </Link>
+
+          <nav className="hidden items-center gap-7 lg:flex">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  isActive(link.href)
+                    ? "font-semibold text-bb-espresso-gold"
+                    : "text-bb-espresso/70 hover:text-bb-espresso",
                 )}
-                {item.items?.map((subItem) => (
-                  <Link
-                    className="flex items-center justify-between"
-                    href={subItem.href}
-                    key={subItem.title}
-                  >
-                    <span className="text-muted-foreground">
-                      {subItem.title}
-                    </span>
-                    <MoveRight className="h-4 w-4 stroke-1" />
-                  </Link>
-                ))}
-              </div>
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        {/* Desktop CTAs */}
+        <div className="hidden items-center gap-3 lg:flex">
+          <BBLanguageSwitcher />
+          <Link
+            href={`/${locale}/login`}
+            className="rounded-xl px-4 py-2 text-sm font-semibold text-bb-espresso/80 transition hover:bg-bb-cream-border/50 hover:text-bb-espresso"
+          >
+            {t("login")}
+          </Link>
+          <Link
+            href={`/${locale}/booking`}
+            className="rounded-xl bg-bb-espresso-gold px-5 py-2.5 text-sm font-bold text-white shadow-[0_8px_20px_-8px_rgba(119,90,25,0.45)] transition hover:bg-bb-espresso-gold-deep"
+          >
+            {t("booking")}
+          </Link>
+        </div>
+
+        {/* Mobile toggle */}
+        <button
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="flex items-center justify-center rounded-xl p-2 text-bb-espresso transition hover:bg-bb-cream-border/50 lg:hidden"
+        >
+          <span className="material-symbols-outlined">{menuOpen ? "close" : "menu"}</span>
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="border-t border-bb-cream-border bg-bb-cream lg:hidden">
+          <div className="mx-auto flex max-w-[1280px] flex-col gap-1 px-6 py-4">
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  "rounded-xl px-4 py-3 text-sm font-medium transition",
+                  isActive(link.href)
+                    ? "bg-bb-gold-muted/40 font-semibold text-bb-espresso-gold"
+                    : "text-bb-espresso/80 hover:bg-bb-cream-border/40",
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="mt-2 flex gap-3 border-t border-bb-cream-border pt-4">
+              <Link
+                href={`/${locale}/login`}
+                onClick={() => setMenuOpen(false)}
+                className="flex-1 rounded-xl border border-bb-cream-border px-4 py-3 text-center text-sm font-semibold text-bb-espresso"
+              >
+                {t("login")}
+              </Link>
+              <Link
+                href={`/${locale}/booking`}
+                onClick={() => setMenuOpen(false)}
+                className="flex-1 rounded-xl bg-bb-espresso-gold px-4 py-3 text-center text-sm font-bold text-white"
+              >
+                {t("booking")}
+              </Link>
             </div>
-          ))}
+            <div className="mt-3 flex justify-center">
+              <BBLanguageSwitcher />
+            </div>
+          </div>
         </div>
       )}
-    </div>
-  );
-};
-
-export const Header = ({ dictionary }: HeaderProps) => {
-  const navigationItems = buildNavigationItems(dictionary);
-
-  return (
-    <header className="sticky top-0 left-0 z-40 w-full border-b bg-background">
-      <div className="container relative mx-auto flex min-h-20 flex-row items-center gap-4 lg:grid lg:grid-cols-3">
-        <div className="hidden flex-row items-center justify-start gap-4 lg:flex">
-          <NavigationMenu className="flex items-start justify-start">
-            <NavigationMenuList className="flex flex-row justify-start gap-4">
-              {navigationItems.map((item) => (
-                <NavigationMenuItem key={item.title}>
-                  {item.href ? (
-                    <NavigationMenuLink asChild>
-                      <Button asChild variant="ghost">
-                        <Link href={item.href}>{item.title}</Link>
-                      </Button>
-                    </NavigationMenuLink>
-                  ) : (
-                    <>
-                      <NavigationMenuTrigger className="font-medium text-sm">
-                        {item.title}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent className="!w-[450px] p-4">
-                        <div className="flex grid-cols-2 flex-col gap-4 lg:grid">
-                          <div className="flex h-full flex-col justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-base">{item.title}</p>
-                              <p className="text-muted-foreground text-sm">
-                                {item.description}
-                              </p>
-                            </div>
-                            <Button asChild className="mt-10" size="sm">
-                              <Link href="/contact">
-                                {dictionary.web.global.primaryCta}
-                              </Link>
-                            </Button>
-                          </div>
-                          <div className="flex h-full flex-col justify-end text-sm">
-                            {item.items?.map((subItem) => (
-                              <NavigationMenuLink
-                                className="flex flex-row items-center justify-between rounded px-4 py-2 hover:bg-muted"
-                                href={subItem.href}
-                                key={subItem.href}
-                              >
-                                <span>{subItem.title}</span>
-                                <MoveRight className="h-4 w-4 text-muted-foreground" />
-                              </NavigationMenuLink>
-                            ))}
-                          </div>
-                        </div>
-                      </NavigationMenuContent>
-                    </>
-                  )}
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-        <div className="flex items-center gap-2 lg:justify-center">
-          <svg
-            className="h-[18px] w-[18px] -translate-y-[0.5px] fill-current"
-            fill="none"
-            height="22"
-            viewBox="0 0 235 203"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <title>Vercel</title>
-            <path
-              d="M117.082 0L234.164 202.794H0L117.082 0Z"
-              fill="currentColor"
-            />
-          </svg>
-          <p className="whitespace-nowrap font-semibold">next-forge</p>
-        </div>
-        <div className="flex w-full justify-end gap-4">
-          <Button asChild className="hidden md:inline" variant="ghost">
-            <Link href="/contact">{dictionary.web.header.contact}</Link>
-          </Button>
-          <div className="hidden border-r md:inline" />
-          <div className="hidden md:inline">
-            <LanguageSwitcher />
-          </div>
-          <div className="hidden md:inline">
-            <ModeToggle />
-          </div>
-          <Button asChild className="hidden md:inline" variant="outline">
-            <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-in`}>
-              {dictionary.web.header.signIn}
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-up`}>
-              {dictionary.web.header.signUp}
-            </Link>
-          </Button>
-        </div>
-        <MobileMenu dictionary={dictionary} />
-      </div>
     </header>
   );
-};
+}

@@ -1,156 +1,110 @@
-import { Button } from "@repo/design-system/components/ui/button";
-import { Check, Minus, MoveRight, PhoneCall } from "lucide-react";
+import { cn } from "@repo/design-system/lib/utils";
+import { Check } from "lucide-react";
+import type { Metadata } from "next";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import Link from "next/link";
-import { env } from "@/env";
+import { createMetadata } from "@repo/seo/metadata";
 
-const Pricing = () => (
-  <div className="w-full py-20 lg:py-40">
-    <div className="container mx-auto">
-      <div className="flex flex-col items-center justify-center gap-4 text-center">
-        <div className="flex flex-col gap-2">
-          <h2 className="max-w-xl text-center font-regular text-3xl tracking-tighter md:text-5xl">
-            Prices that make sense!
-          </h2>
-          <p className="max-w-xl text-center text-lg text-muted-foreground leading-relaxed tracking-tight">
-            Managing a small business today is already tough.
-          </p>
+interface PricingProps {
+  params: Promise<{ locale: string }>;
+}
+
+export const generateMetadata = async ({ params }: PricingProps): Promise<Metadata> => {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "web.pricing.meta" });
+  return createMetadata({ title: t("title"), description: t("description") });
+};
+
+const Pricing = async ({ params }: PricingProps) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "web.pricing" });
+
+  const plans = [
+    { key: "free", price: "0", popular: false },
+    { key: "starter", price: "99", popular: false },
+    { key: "pro", price: "199", popular: true },
+    { key: "elite", price: "349", popular: false },
+  ] as const;
+
+  return (
+    <main className="min-h-screen bg-bb-cream">
+      <section className="px-6 pb-20 pt-16 lg:pt-24">
+        <div className="mx-auto max-w-[1280px]">
+          {/* Heading */}
+          <div className="mx-auto mb-14 max-w-2xl text-center">
+            <h1 className="font-display text-4xl font-extrabold tracking-tight text-bb-espresso lg:text-5xl">
+              {t("title")}
+            </h1>
+            <p className="mt-4 text-bb-on-surface-muted">{t("subtitle")}</p>
+          </div>
+
+          {/* Plans */}
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {plans.map((plan) => (
+              <div
+                key={plan.key}
+                className={cn(
+                  "relative flex flex-col rounded-[1.75rem] border-2 bg-white p-8 transition-shadow",
+                  plan.popular
+                    ? "border-bb-espresso-gold shadow-[0_20px_50px_-24px_rgba(119,90,25,0.35)]"
+                    : "border-bb-cream-border hover:shadow-[var(--bb-shadow-onboarding)]",
+                )}
+              >
+                {plan.popular && (
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-bb-espresso-gold px-4 py-1 text-[11px] font-bold uppercase tracking-widest text-white">
+                    {t("popular")}
+                  </span>
+                )}
+
+                <h2 className="font-display text-xl font-bold text-bb-espresso">
+                  {t(`plans.${plan.key}.name`)}
+                </h2>
+                <p className="mt-1.5 min-h-[40px] text-sm text-bb-on-surface-muted">
+                  {t(`plans.${plan.key}.tagline`)}
+                </p>
+
+                <p className="mt-6 flex items-baseline gap-1.5">
+                  <span className="font-display text-4xl font-black text-bb-espresso-gold">
+                    {plan.price}
+                  </span>
+                  <span className="text-sm font-semibold text-bb-espresso/70">MAD</span>
+                  <span className="text-sm text-bb-on-surface-muted">{t("perMonth")}</span>
+                </p>
+
+                <ul className="mt-7 flex flex-1 flex-col gap-3">
+                  {(t.raw(`plans.${plan.key}.features`) as string[]).map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5 text-sm">
+                      <Check className="mt-0.5 size-4 shrink-0 text-bb-success" strokeWidth={3} />
+                      <span className="text-bb-espresso/85">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href={plan.key === "elite" ? `/${locale}/contact` : `/${locale}/sign-up`}
+                  className={cn(
+                    "mt-8 rounded-2xl py-3.5 text-center font-bold transition",
+                    plan.popular
+                      ? "bg-bb-espresso-gold text-white shadow-[0_8px_20px_-8px_rgba(119,90,25,0.45)] hover:bg-bb-espresso-gold-deep"
+                      : "border-2 border-bb-cream-border text-bb-espresso hover:border-bb-espresso-gold/40 hover:bg-bb-gold-muted/20",
+                  )}
+                >
+                  {plan.key === "elite"
+                    ? t("contactCta")
+                    : plan.key === "free"
+                      ? t("ctaFree")
+                      : t("cta")}
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-10 text-center text-sm text-bb-on-surface-muted">{t("note")}</p>
         </div>
-        <div className="grid w-full grid-cols-3 divide-x pt-20 text-left lg:grid-cols-4">
-          <div className="col-span-3 lg:col-span-1" />
-          <div className="flex flex-col gap-2 px-3 py-1 md:px-6 md:py-4">
-            <p className="text-2xl">Startup</p>
-            <p className="text-muted-foreground text-sm">
-              Our goal is to streamline SMB trade, making it easier and faster
-              than ever for everyone and everywhere.
-            </p>
-            <p className="mt-8 flex flex-col gap-2 text-xl lg:flex-row lg:items-center">
-              <span className="text-4xl">$40</span>
-              <span className="text-muted-foreground text-sm"> / month</span>
-            </p>
-            <Button asChild className="mt-8 gap-4" variant="outline">
-              <Link href={env.NEXT_PUBLIC_APP_URL}>
-                Try it <MoveRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-          <div className="flex flex-col gap-2 px-3 py-1 md:px-6 md:py-4">
-            <p className="text-2xl">Growth</p>
-            <p className="text-muted-foreground text-sm">
-              Our goal is to streamline SMB trade, making it easier and faster
-              than ever for everyone and everywhere.
-            </p>
-            <p className="mt-8 flex flex-col gap-2 text-xl lg:flex-row lg:items-center">
-              <span className="text-4xl">$40</span>
-              <span className="text-muted-foreground text-sm"> / month</span>
-            </p>
-            <Button asChild className="mt-8 gap-4">
-              <Link href={env.NEXT_PUBLIC_APP_URL}>
-                Try it <MoveRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-          <div className="flex flex-col gap-2 px-3 py-1 md:px-6 md:py-4">
-            <p className="text-2xl">Enterprise</p>
-            <p className="text-muted-foreground text-sm">
-              Our goal is to streamline SMB trade, making it easier and faster
-              than ever for everyone and everywhere.
-            </p>
-            <p className="mt-8 flex flex-col gap-2 text-xl lg:flex-row lg:items-center">
-              <span className="text-4xl">$40</span>
-              <span className="text-muted-foreground text-sm"> / month</span>
-            </p>
-            <Button asChild className="mt-8 gap-4" variant="outline">
-              <Link href="/contact">
-                Contact us <PhoneCall className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">
-            <b>Features</b>
-          </div>
-          <div />
-          <div />
-          <div />
-          {/* New Line */}
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">SSO</div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          {/* New Line */}
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">
-            AI Assistant
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Minus className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          {/* New Line */}
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">
-            Version Control
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Minus className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          {/* New Line */}
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">
-            Members
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <p className="text-muted-foreground text-sm">5 members</p>
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <p className="text-muted-foreground text-sm">25 members</p>
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <p className="text-muted-foreground text-sm">100+ members</p>
-          </div>
-          {/* New Line */}
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">
-            Multiplayer Mode
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Minus className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          {/* New Line */}
-          <div className="col-span-3 px-3 py-4 lg:col-span-1 lg:px-6">
-            Orchestration
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Minus className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex justify-center px-3 py-1 md:px-6 md:py-4">
-            <Check className="h-4 w-4 text-primary" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
+      </section>
+    </main>
+  );
+};
 
 export default Pricing;

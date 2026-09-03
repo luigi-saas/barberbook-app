@@ -1,19 +1,20 @@
-import type { Dictionary } from "@repo/internationalization";
-import { getMessages } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import { Footer } from "../components/footer";
 import { Header } from "../components/header";
 
 interface MarketingLayoutProps {
   readonly children: ReactNode;
+  readonly params: Promise<{ locale: string }>;
 }
 
-const MarketingLayout = async ({ children }: MarketingLayoutProps) => {
-  const messages = await getMessages() as unknown as Dictionary;
+const MarketingLayout = async ({ children, params }: MarketingLayoutProps) => {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
   return (
     <>
-      <Header dictionary={messages} />
+      <Header />
       {children}
       <Footer />
     </>

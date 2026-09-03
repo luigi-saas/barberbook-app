@@ -49,7 +49,11 @@ export type PostMeta = {
 };
 
 export type Post = PostMeta & {
-  body?: { plainText?: string; readingTime?: number };
+  body?: {
+    plainText?: string;
+    readingTime?: number;
+    json?: { content?: unknown; toc?: unknown };
+  };
 };
 
 export type LegalPostMeta = {
@@ -59,7 +63,11 @@ export type LegalPostMeta = {
 };
 
 export type LegalPost = LegalPostMeta & {
-  body?: { plainText?: string; readingTime?: number };
+  body?: {
+    plainText?: string;
+    readingTime?: number;
+    json?: { content?: unknown; toc?: unknown };
+  };
 };
 
 /* -------------------------------------------------------------------------------------------------

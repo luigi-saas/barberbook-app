@@ -169,11 +169,17 @@ const toShopSummary = (
   shop: Shop & {
     services?: { price: { toNumber?: () => number } | number }[];
     _count?: { reviews: number };
+    reviews?: { rating: number }[];
   },
 ): ShopSummary => {
   const prices = (shop.services ?? []).map((s) =>
     typeof s.price === "number" ? s.price : (s.price.toNumber?.() ?? 0),
   );
+  const ratings = shop.reviews?.map((r) => r.rating) ?? [];
+  const rating =
+    ratings.length > 0
+      ? Math.round((ratings.reduce((a, b) => a + b, 0) / ratings.length) * 10) / 10
+      : 0;
   return {
     id: shop.id,
     slug: shop.slug,
@@ -183,8 +189,8 @@ const toShopSummary = (
     address: shop.address ?? "",
     coverUrl: shop.coverUrl ?? "/images/shop-cover-royal.jpg",
     logoUrl: shop.logoUrl ?? "/images/shop-logo-royal.jpg",
-    rating: 4.9, // TODO: aggregate from Review once customers start leaving them
-    reviewCount: shop._count?.reviews ?? 0,
+    rating,
+    reviewCount: ratings.length,
     minPrice: prices.length ? `${Math.min(...prices)} MAD` : "—",
   };
 };
@@ -192,6 +198,7 @@ const toShopSummary = (
 const shopInclude = {
   services: { where: { isActive: true }, orderBy: { createdAt: "asc" as const } },
   _count: { select: { reviews: true } },
+  reviews: { select: { rating: true }, where: { status: "VISIBLE" as const } },
 };
 
 /**

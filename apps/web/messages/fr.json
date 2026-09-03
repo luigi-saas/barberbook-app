@@ -19,8 +19,8 @@
     },
     "home": {
       "meta": {
-        "title": "Transformez vos opérations commerciales aujourd'hui",
-        "description": "Dans le monde rapide d'aujourd'hui, votre entreprise mérite mieux que des systèmes de trading obsolètes. Notre plateforme innovante rationalise les opérations, réduit la complexité et aide les petites entreprises à prospérer dans l'économie moderne."
+        "title": "BarberBook.ma — Réservez chez les meilleurs barbiers du Maroc",
+        "description": "Réservez votre coupe, barbe ou rituel de grooming chez les salons partenaires à Casablanca, Rabat et Marrakech. Confirmation instantanée, sans appel."
       },
       "hero": {
         "announcement": "Lisez notre dernier article"
@@ -478,6 +478,138 @@
         },
         "backHome": "Retour à l'accueil"
       }
+    },
+    "marketing": {
+      "nav": {
+        "home": "Accueil",
+        "explore": "Salons",
+        "booking": "Réserver",
+        "pricing": "Tarifs",
+        "blog": "Blog",
+        "contact": "Contact",
+        "login": "Connexion",
+        "signUp": "Devenir partenaire"
+      },
+      "footer": {
+        "tagline": "La plateforme de réservation des barbiers marocains. Confirmation instantanée, zéro appel.",
+        "product": "Produit",
+        "company": "Entreprise",
+        "legal": "Légal",
+        "rights": "© 2026 BarberBook.ma — Casablanca, Maroc",
+        "privacy": "Confidentialité",
+        "terms": "Conditions",
+        "exploreLabel": "Salons",
+        "bookingLabel": "Réserver",
+        "pricingLabel": "Tarifs",
+        "blogLabel": "Blog",
+        "contactLabel": "Contact"
+      }
+    },
+    "pricing": {
+      "meta": {
+        "title": "Tarifs — Développez votre salon avec BarberBook",
+        "description": "Des tarifs simples en MAD pour les salons marocains. Commencez gratuitement, évoluez quand votre planning se remplit."
+      },
+      "title": "Un tarif clair, pensé pour les salons marocains",
+      "subtitle": "Commencez gratuitement. Passez à la vitesse supérieure quand votre planning se remplit.",
+      "perMonth": "/ mois",
+      "popular": "Populaire",
+      "cta": "Commencer",
+      "ctaFree": "Créer mon compte",
+      "contactCta": "Parler à l'équipe",
+      "plans": {
+        "free": {
+          "name": "Découverte",
+          "tagline": "Pour tester BarberBook sans engagement.",
+          "features": [
+            "Page salon + réservation en ligne",
+            "Jusqu'à 10 réservations / mois",
+            "Confirmations par e-mail",
+            "Paiement au salon"
+          ]
+        },
+        "starter": {
+          "name": "Essentiel",
+          "tagline": "Pour l'artisan seul ou le petit salon.",
+          "features": [
+            "Réservations illimitées",
+            "Profil mis en avant dans l'annuaire",
+            "Confirmations WhatsApp",
+            "Gestion de l'équipe (3 barbiers)"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "tagline": "Pour le salon qui tourne à plein régime.",
+          "features": [
+            "Tout Essentiel, plus :",
+            "Statistiques & revenus en temps réel",
+            "File d'attente & clients de passage",
+            "Programme de fidélité",
+            "Barbiers illimités"
+          ]
+        },
+        "elite": {
+          "name": "Réseau",
+          "tagline": "Pour les multi-salons et franchises.",
+          "features": [
+            "Tout Pro, plus :",
+            "Plusieurs établissements",
+            "Accès API",
+            "Support prioritaire",
+            "Accompagnement dédié"
+          ]
+        }
+      },
+      "note": "Sans engagement. Payez en MAD, annulez quand vous voulez."
+    },
+    "contact": {
+      "meta": {
+        "title": "Contact — BarberBook.ma",
+        "description": "Une question sur BarberBook ? Écrivez-nous, nous répondons sous 24 h ouvrées."
+      },
+      "title": "Parlons de votre salon",
+      "subtitle": "Une question, une demande de démonstration, un partenariat ? Écrivez-nous.",
+      "name": "Votre nom",
+      "email": "Votre e-mail",
+      "message": "Votre message",
+      "send": "Envoyer",
+      "sending": "Envoi…",
+      "successTitle": "Message envoyé !",
+      "successText": "Nous revenons vers vous sous 24 h ouvrées.",
+      "errorTitle": "Le message n'a pas pu partir"
+    },
+    "blog": {
+      "meta": {
+        "title": "Le Magazine — BarberBook.ma",
+        "description": "Conseils grooming, tendances coupes et coulisses des meilleurs barbiers du Maroc."
+      },
+      "emptyTitle": "Le magazine arrive bientôt",
+      "emptyText": "Nos rédacteurs préparent déjà des guides grooming, des interviews de maîtres barbiers et les tendances coupes du Royaume."
+    },
+    "legal": {
+      "back": "Retour à l'accueil",
+      "privacy": {
+        "title": "Confidentialité",
+        "description": "Comment BarberBook.ma collecte, utilise et protège vos données.",
+        "body": [
+          "BarberBook.ma collecte uniquement les données nécessaires à la prise de rendez-vous : nom, numéro de téléphone, e-mail et historique de réservations. Ces données servent à confirmer vos rendez-vous, à permettre au salon de vous retrouver et à améliorer le service.",
+          "Vos données ne sont jamais revendues. Les salons partenaires accèdent uniquement aux informations indispensables à votre rendez-vous (nom, téléphone, notes de prestation).",
+          "Vous pouvez demander l'accès, la rectification ou la suppression de vos données à tout moment à privacy@barberbook.ma. Les réservations passées peuvent être conservées pour raisons comptables, conformément à la loi marocaine (loi 09-08).",
+          "Les paiements sont réglés directement au salon. BarberBook.ma ne stocke aucune donnée bancaire."
+        ]
+      },
+      "terms": {
+        "title": "Conditions d'utilisation",
+        "description": "Les règles qui encadrent l'utilisation de BarberBook.ma.",
+        "body": [
+          "BarberBook.ma est une plateforme de mise en relation entre clients et salons de coiffure partenaires. La réservation est confirmée immédiatement et le paiement s'effectue directement au salon.",
+          "Annulation : vous pouvez annuler gratuitement jusqu'à 2 heures avant le rendez-vous. Les retards de plus de 15 minutes peuvent entraîner la perte du créneau au profit des clients de passage.",
+          "Le salon s'engage à honorer les créneaux réservés et à fournir la prestation décrite. En cas de litige, BarberBook.ma intervient comme médiateur.",
+          "Ces conditions sont régies par le droit marocain. Tout litige relève des tribunaux de Casablanca."
+        ]
+      },
+      "notFound": "Document introuvable."
     }
   }
 }

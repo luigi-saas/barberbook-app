@@ -19,8 +19,8 @@
     },
     "home": {
       "meta": {
-        "title": "Transform Your Business Operations Today",
-        "description": "In today's fast-paced world, your business deserves better than outdated trading systems. Our innovative platform streamlines operations, reduces complexity, and helps small businesses thrive in the modern economy."
+        "title": "BarberBook.ma — Book Morocco's best barbers",
+        "description": "Book your cut, beard or grooming ritual at partner shops in Casablanca, Rabat and Marrakech. Instant confirmation, no phone calls."
       },
       "hero": {
         "announcement": "Read our latest article"
@@ -497,39 +497,135 @@
     },
     "blog": {
       "meta": {
-        "title": "Blog",
-        "description": "Thoughts, ideas, and opinions."
-      }
+        "title": "The Magazine — BarberBook.ma",
+        "description": "Grooming advice, haircut trends and behind the scenes of Morocco's best barbers."
+      },
+      "emptyTitle": "The magazine is coming soon",
+      "emptyText": "Our writers are preparing grooming guides, master barber interviews and the Kingdom's haircut trends."
     },
     "contact": {
       "meta": {
-        "title": "Let's Talk About Your Business",
-        "description": "Schedule a consultation with our team to discuss how we can help streamline your operations and drive growth for your business."
+        "title": "Contact — BarberBook.ma",
+        "description": "Questions about BarberBook? Write to us, we reply within 24 business hours."
       },
-      "hero": {
-        "benefits": [
-          {
-            "title": "Personalized Consultation",
-            "description": "Get tailored solutions and expert advice specific to your business needs."
-          },
-          {
-            "title": "Seamless Integration",
-            "description": "We seamlessly integrate with your existing systems to ensure a smooth transition and minimal disruption."
-          },
-          {
-            "title": "Expert Guidance",
-            "description": "Our team of experts will guide you through the process, ensuring you get the most out of our platform."
-          }
-        ],
-        "form": {
-          "title": "Book a meeting",
-          "date": "Date",
-          "firstName": "First name",
-          "lastName": "Last name",
-          "resume": "Upload resume",
-          "cta": "Book the meeting"
-        }
+      "title": "Let's talk about your shop",
+      "subtitle": "A question, a demo request, a partnership? Write to us.",
+      "name": "Your name",
+      "email": "Your email",
+      "message": "Your message",
+      "send": "Send",
+      "sending": "Sending…",
+      "successTitle": "Message sent!",
+      "successText": "We'll get back to you within 24 business hours.",
+      "errorTitle": "The message could not be sent"
+    },
+    "marketing": {
+      "nav": {
+        "home": "Home",
+        "explore": "Shops",
+        "booking": "Book now",
+        "pricing": "Pricing",
+        "blog": "Blog",
+        "contact": "Contact",
+        "login": "Log in",
+        "signUp": "Become a partner"
+      },
+      "footer": {
+        "tagline": "The booking platform for Moroccan barbershops. Instant confirmation, zero phone calls.",
+        "product": "Product",
+        "company": "Company",
+        "legal": "Legal",
+        "rights": "© 2026 BarberBook.ma — Casablanca, Morocco",
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "exploreLabel": "Shops",
+        "bookingLabel": "Book now",
+        "pricingLabel": "Pricing",
+        "blogLabel": "Blog",
+        "contactLabel": "Contact"
       }
+    },
+    "pricing": {
+      "meta": {
+        "title": "Pricing — Grow your shop with BarberBook",
+        "description": "Simple MAD pricing for Moroccan barbershops. Start free, upgrade as your calendar fills up."
+      },
+      "title": "Simple pricing, built for Moroccan barbershops",
+      "subtitle": "Start free. Upgrade when your calendar fills up.",
+      "perMonth": "/ month",
+      "popular": "Popular",
+      "cta": "Get started",
+      "ctaFree": "Create my account",
+      "contactCta": "Talk to us",
+      "plans": {
+        "free": {
+          "name": "Discovery",
+          "tagline": "Try BarberBook with zero commitment.",
+          "features": [
+            "Shop page + online booking",
+            "Up to 10 bookings / month",
+            "Email confirmations",
+            "Pay at the shop"
+          ]
+        },
+        "starter": {
+          "name": "Essential",
+          "tagline": "For solo artisans and small shops.",
+          "features": [
+            "Unlimited bookings",
+            "Featured placement in the directory",
+            "WhatsApp confirmations",
+            "Team management (3 barbers)"
+          ]
+        },
+        "pro": {
+          "name": "Pro",
+          "tagline": "For shops running at full speed.",
+          "features": [
+            "Everything in Essential, plus:",
+            "Real-time revenue analytics",
+            "Walk-in queue management",
+            "Loyalty program",
+            "Unlimited barbers"
+          ]
+        },
+        "elite": {
+          "name": "Network",
+          "tagline": "For multi-location shops and franchises.",
+          "features": [
+            "Everything in Pro, plus:",
+            "Multiple locations",
+            "API access",
+            "Priority support",
+            "Dedicated onboarding"
+          ]
+        }
+      },
+      "note": "No commitment. Pay in MAD, cancel anytime."
+    },
+    "legal": {
+      "back": "Back to home",
+      "privacy": {
+        "title": "Privacy",
+        "description": "How BarberBook.ma collects, uses and protects your data.",
+        "body": [
+          "BarberBook.ma collects only the data needed to manage appointments: name, phone number, email and booking history. This data is used to confirm your bookings, help the shop find you, and improve the service.",
+          "Your data is never sold. Partner shops access only the information essential to your appointment (name, phone, service notes).",
+          "You can request access, correction or deletion of your data at any time at privacy@barberbook.ma. Past bookings may be kept for accounting purposes, in accordance with Moroccan law (law 09-08).",
+          "Payments are made directly at the shop. BarberBook.ma stores no banking data."
+        ]
+      },
+      "terms": {
+        "title": "Terms of use",
+        "description": "The rules that govern the use of BarberBook.ma.",
+        "body": [
+          "BarberBook.ma is a platform connecting clients with partner barbershops. Bookings are confirmed instantly and payment is made directly at the shop.",
+          "Cancellation: you can cancel free of charge up to 2 hours before the appointment. Delays over 15 minutes may result in the slot being given to walk-in clients.",
+          "The shop commits to honouring booked slots and providing the service as described. In case of dispute, BarberBook.ma acts as mediator.",
+          "These terms are governed by Moroccan law. Any dispute falls under the courts of Casablanca."
+        ]
+      },
+      "notFound": "Document not found."
     }
   }
 }

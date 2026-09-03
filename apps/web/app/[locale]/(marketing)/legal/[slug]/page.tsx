@@ -1,90 +1,98 @@
-import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { legal } from "@repo/cms";
 import { Body } from "@repo/cms/components/body";
-import { Feed } from "@repo/cms/components/feed";
-import { TableOfContents } from "@repo/cms/components/toc";
 import { createMetadata } from "@repo/seo/metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Sidebar } from "@/components/sidebar";
 
 interface LegalPageProperties {
-  readonly params: Promise<{
-    slug: string;
-  }>;
+  readonly params: Promise<{ locale: string; slug: string }>;
 }
+
+const FALLBACK_SLUGS = ["privacy", "terms"] as const;
+type FallbackSlug = (typeof FALLBACK_SLUGS)[number];
 
 export const generateMetadata = async ({
   params,
 }: LegalPageProperties): Promise<Metadata> => {
-  const { slug } = await params;
-  const post = await legal.getPost(slug);
+  const { locale, slug } = await params;
 
-  if (!post) {
-    return {};
+  // CMS content wins when configured; otherwise the local fallback titles.
+  const post = await legal.getPost(slug).catch(() => null);
+  if (post?._title) {
+    return createMetadata({
+      title: post._title,
+      description: post.description ?? "",
+    });
   }
-
-  return createMetadata({
-    title: post._title ?? "",
-    description: post.description ?? "",
-  });
-};
-
-export const generateStaticParams = async (): Promise<{ slug: string }[]> => {
-  const posts = await legal.getPosts();
-
-  return posts.map(({ _slug }) => ({ slug: _slug ?? "" }));
+  if ((FALLBACK_SLUGS as readonly string[]).includes(slug)) {
+    const t = await getTranslations({ locale, namespace: `web.legal.${slug}` });
+    return createMetadata({ title: t("title"), description: t("description") });
+  }
+  return {};
 };
 
 const LegalPage = async ({ params }: LegalPageProperties) => {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: "web.legal" });
 
-  return (
-    <Feed queries={[legal.postQuery(slug)]}>
-      {async ([data]) => {
-        "use server";
+  const cmsPost = await legal.getPost(slug).catch(() => null);
 
-        const page = data.legalPages.item;
-
-        if (!page) {
-          notFound();
-        }
-
-        return (
-          <div className="container max-w-5xl py-16">
-            <Link
-              className="mb-4 inline-flex items-center gap-1 text-muted-foreground text-sm focus:underline focus:outline-none"
-              href="/"
-            >
-              <ArrowLeftIcon className="h-4 w-4" />
-              Back to Home
-            </Link>
-            <h1 className="scroll-m-20 text-balance font-extrabold text-4xl tracking-tight lg:text-5xl">
-              {page._title}
-            </h1>
-            <p className="text-balance leading-7 [&:not(:first-child)]:mt-6">
-              {page.description}
-            </p>
-            <div className="mt-16 flex flex-col items-start gap-8 sm:flex-row">
-              <div className="sm:flex-1">
-                <div className="prose prose-neutral dark:prose-invert">
-                  <Body content={page.body.json.content} />
-                </div>
-              </div>
-              <div className="sticky top-24 hidden shrink-0 md:block">
-                <Sidebar
-                  date={new Date()}
-                  readingTime={`${page.body.readingTime} min read`}
-                  toc={<TableOfContents data={page.body.json.toc} />}
-                />
-              </div>
-            </div>
+  // CMS-backed page (BaseHub configured + slug exists there)
+  if (cmsPost?.body?.json?.content) {
+    return (
+      <main className="min-h-screen bg-bb-cream">
+        <div className="mx-auto max-w-3xl px-6 py-16">
+          <Link
+            href={`/${locale}`}
+            className="mb-8 inline-flex items-center gap-1.5 text-sm text-bb-on-surface-muted transition hover:text-bb-espresso"
+          >
+            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+            {t("back")}
+          </Link>
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-bb-espresso">
+            {cmsPost._title}
+          </h1>
+          <p className="mt-3 text-bb-on-surface-muted">{cmsPost.description}</p>
+          <div className="mt-10 rounded-[1.75rem] border border-bb-cream-border bg-white p-8 leading-relaxed text-bb-espresso/85 lg:p-10">
+            {/* CMS boundary: content shape is validated by the CMS schema */}
+            <Body content={cmsPost.body.json.content as any} />
           </div>
-        );
-      }}
-    </Feed>
-  );
+        </div>
+      </main>
+    );
+  }
+
+  // Local fallback (privacy / terms) — no CMS required
+  if ((FALLBACK_SLUGS as readonly string[]).includes(slug)) {
+    const content = t.raw(`${slug}.body`) as string[];
+    return (
+      <main className="min-h-screen bg-bb-cream">
+        <div className="mx-auto max-w-3xl px-6 py-16">
+          <Link
+            href={`/${locale}`}
+            className="mb-8 inline-flex items-center gap-1.5 text-sm text-bb-on-surface-muted transition hover:text-bb-espresso"
+          >
+            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+            {t("back")}
+          </Link>
+          <h1 className="font-display text-4xl font-extrabold tracking-tight text-bb-espresso">
+            {t(`${slug}.title`)}
+          </h1>
+          <p className="mt-3 text-bb-on-surface-muted">{t(`${slug}.description`)}</p>
+          <div className="mt-10 flex flex-col gap-5 rounded-[1.75rem] border border-bb-cream-border bg-white p-8 leading-relaxed text-bb-espresso/85 lg:p-10">
+            {content.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  notFound();
 };
 
 export default LegalPage;

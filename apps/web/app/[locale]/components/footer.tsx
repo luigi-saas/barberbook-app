@@ -1,111 +1,73 @@
-import { legal } from "@repo/cms";
-import { Status } from "@repo/observability/status";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { env } from "@/env";
 
 export const Footer = async () => {
-  const legalPages = await legal.getPostsMeta();
+  const t = await getTranslations("web.marketing.footer");
 
-  const navigationItems = [
+  const columns = [
     {
-      title: "Home",
-      href: "/",
-      description: "",
-    },
-    {
-      title: "Pages",
-      description: "Managing a small business today is already tough.",
-      items: [
-        {
-          title: "Blog",
-          href: "/blog",
-        },
+      title: t("product"),
+      links: [
+        { label: t("exploreLabel"), href: "/explore" },
+        { label: t("bookingLabel"), href: "/booking" },
+        { label: t("pricingLabel"), href: "/pricing" },
       ],
     },
     {
-      title: "Legal",
-      description: "We stay on top of the latest legal requirements.",
-      items: legalPages.map((post) => ({
-        title: post._title,
-        href: `/legal/${post._slug}`,
-      })),
+      title: t("company"),
+      links: [
+        { label: t("blogLabel"), href: "/blog" },
+        { label: t("contactLabel"), href: "/contact" },
+      ],
+    },
+    {
+      title: t("legal"),
+      links: [
+        { label: t("privacy"), href: "/legal/privacy" },
+        { label: t("terms"), href: "/legal/terms" },
+      ],
     },
   ];
 
-  if (env.NEXT_PUBLIC_DOCS_URL) {
-    navigationItems.at(1)?.items?.push({
-      title: "Docs",
-      href: env.NEXT_PUBLIC_DOCS_URL,
-    });
-  }
-
   return (
-    <section className="dark border-foreground/10 border-t">
-      <div className="w-full bg-background py-20 text-foreground lg:py-40">
-        <div className="container mx-auto">
-          <div className="grid items-center gap-10 lg:grid-cols-2">
-            <div className="flex flex-col items-start gap-8">
-              <div className="flex flex-col gap-2">
-                <h2 className="max-w-xl text-left font-regular text-3xl tracking-tighter md:text-5xl">
-                  next-forge
-                </h2>
-                <p className="max-w-lg text-left text-foreground/75 text-lg leading-relaxed tracking-tight">
-                  This is the start of something new.
-                </p>
-              </div>
-              <Status />
-            </div>
-            <div className="grid items-start gap-10 lg:grid-cols-3">
-              {navigationItems.map((item) => (
-                <div
-                  className="flex flex-col items-start gap-1 text-base"
-                  key={item.title}
+    <footer className="border-t border-bb-cream-border bg-white">
+      <div className="mx-auto max-w-[1280px] px-6 py-14 lg:px-8">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          {/* Brand */}
+          <div className="flex flex-col gap-3">
+            <Link
+              href="/"
+              className="font-display text-xl font-extrabold tracking-tight text-bb-espresso"
+            >
+              BarberBook<span className="text-bb-espresso-gold">.ma</span>
+            </Link>
+            <p className="max-w-xs text-sm leading-relaxed text-bb-on-surface-muted">
+              {t("tagline")}
+            </p>
+          </div>
+
+          {columns.map((column) => (
+            <div key={column.title} className="flex flex-col gap-3">
+              <p className="text-xs font-bold uppercase tracking-widest text-bb-espresso/60">
+                {column.title}
+              </p>
+              {column.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-bb-on-surface-muted transition-colors hover:text-bb-espresso-gold"
                 >
-                  <div className="flex flex-col gap-2">
-                    {item.href ? (
-                      <Link
-                        className="flex items-center justify-between"
-                        href={item.href}
-                        rel={
-                          item.href.includes("http")
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                        target={
-                          item.href.includes("http") ? "_blank" : undefined
-                        }
-                      >
-                        <span className="text-xl">{item.title}</span>
-                      </Link>
-                    ) : (
-                      <p className="text-xl">{item.title}</p>
-                    )}
-                    {item.items?.map((subItem) => (
-                      <Link
-                        className="flex items-center justify-between"
-                        href={subItem.href}
-                        key={subItem.title}
-                        rel={
-                          subItem.href.includes("http")
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                        target={
-                          subItem.href.includes("http") ? "_blank" : undefined
-                        }
-                      >
-                        <span className="text-foreground/75">
-                          {subItem.title}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+                  {link.label}
+                </Link>
               ))}
             </div>
-          </div>
+          ))}
+        </div>
+
+        <div className="mt-12 border-t border-bb-cream-border pt-6">
+          <p className="text-xs text-bb-on-surface-muted/70">{t("rights")}</p>
         </div>
       </div>
-    </section>
+    </footer>
   );
 };
