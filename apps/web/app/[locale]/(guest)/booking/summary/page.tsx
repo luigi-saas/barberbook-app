@@ -29,10 +29,15 @@ const SummaryPage = async ({ params, searchParams }: SummaryPageProps) => {
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'web.guest.booking' });
 
-  const shop = shopParam
-    ? (await getShop(shopParam)) ?? (await getPrimaryShop())
-    : await getPrimaryShop();
-  const service = serviceId ? await getService(serviceId) : null;
+  const logDbDown = (error: unknown) => {
+    console.error("[booking] database unavailable:", error instanceof Error ? error.message : error);
+    return null;
+  };
+  const shop = await (shopParam
+    ? getShop(shopParam).then((s) => s ?? getPrimaryShop())
+    : getPrimaryShop()
+  ).catch(logDbDown);
+  const service = serviceId ? await getService(serviceId).catch(logDbDown) : null;
 
   if (!shop || !service || !date || !time) {
     return (

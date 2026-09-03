@@ -18,7 +18,10 @@ const SearchPage = async ({ params, searchParams }: SearchPageProps) => {
   const t = await getTranslations('web.guest.search');
 
   const query = (q ?? '').trim().toLowerCase();
-  const all = await listShops();
+  const all = (await listShops().catch((error: unknown) => {
+    console.error("[search] database unavailable:", error instanceof Error ? error.message : error);
+    return [];
+  })) ?? [];
   const results = query
     ? all.filter(
         (s) =>

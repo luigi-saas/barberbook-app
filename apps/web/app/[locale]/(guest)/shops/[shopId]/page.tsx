@@ -16,13 +16,15 @@ const ShopPage = async ({ params }: ShopPageProps) => {
   const { locale, shopId } = await params;
   setRequestLocale(locale);
 
-  const shop = await getShop(shopId);
+  const logDbDown = (error: unknown) => {
+    console.error("[shop] database unavailable:", error instanceof Error ? error.message : error);
+    return null;
+  };
+  const shop = await getShop(shopId).catch(logDbDown);
   if (!shop) notFound();
 
-  const [services, barbers] = await Promise.all([
-    listServices(shop.id),
-    listBarbers(shop.id),
-  ]);
+  const services = (await listServices(shop.id).catch(logDbDown)) ?? [];
+  const barbers = (await listBarbers(shop.id).catch(logDbDown)) ?? [];
 
   const today = todayInShopTz();
   const hoursToday = shop.openingHours.find((h) => h.dayOfWeek === weekdayOf(today));

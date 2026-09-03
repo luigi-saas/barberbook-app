@@ -23,9 +23,14 @@ const TimePage = async ({ params, searchParams }: TimePageProps) => {
   const { barber, service: serviceId, shop: shopParam, date } = await searchParams;
   setRequestLocale(locale);
 
-  const shop = shopParam
-    ? (await getShop(shopParam)) ?? (await getPrimaryShop())
-    : await getPrimaryShop();
+  const logDbDown = (error: unknown) => {
+    console.error("[booking] database unavailable:", error instanceof Error ? error.message : error);
+    return null;
+  };
+  const shop = await (shopParam
+    ? getShop(shopParam).then((s) => s ?? getPrimaryShop())
+    : getPrimaryShop()
+  ).catch(logDbDown);
 
   if (!shop || !serviceId) {
     return (
@@ -46,12 +51,15 @@ const TimePage = async ({ params, searchParams }: TimePageProps) => {
     );
   }
 
-  const [service, days] = await Promise.all([getService(serviceId), buildDayOptions(shop.id)]);
+  const service = await getService(serviceId).catch(logDbDown);
+  const days = (await buildDayOptions(shop.id).catch(logDbDown)) ?? [];
   const activeDate =
     date && days.some((d) => d.date === date && !d.isClosed)
       ? date
       : (days.find((d) => !d.isClosed)?.date ?? days[0]?.date ?? todayInShopTz());
-  const slots = await computeSlots(shop.id, barber, serviceId, activeDate);
+  const slots = service
+    ? (await computeSlots(shop.id, barber, serviceId, activeDate).catch(logDbDown)) ?? []
+    : [];
 
   return (
     <main className="min-h-screen bg-bb-cream">

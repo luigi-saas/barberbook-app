@@ -21,16 +21,22 @@ const BarberPage = async ({ params }: BarberPageProps) => {
   const { locale, barberId } = await params;
   setRequestLocale(locale);
 
-  const row = await database.barber.findUnique({
-    where: { id: barberId },
-    include: { user: true, shops: { include: { shop: true } } },
-  });
+  const logDbDown = (error: unknown) => {
+    console.error("[barber] database unavailable:", error instanceof Error ? error.message : error);
+    return null;
+  };
+  const row = await database.barber
+    .findUnique({
+      where: { id: barberId },
+      include: { user: true, shops: { include: { shop: true } } },
+    })
+    .catch(logDbDown);
   if (!row || !row.isActive) notFound();
 
-  const shop = row.shops[0]?.shop ?? (await getPrimaryShop());
+  const shop = row.shops[0]?.shop ?? (await getPrimaryShop().catch(logDbDown));
   if (!shop) notFound();
 
-  const services = await listServices(shop.id);
+  const services = (await listServices(shop.id).catch(logDbDown)) ?? [];
   const priceFrom = services.length ? Math.min(...services.map((s) => s.priceValue)) : 0;
 
   const now = new Date();

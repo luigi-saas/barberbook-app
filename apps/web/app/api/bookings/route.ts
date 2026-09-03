@@ -30,10 +30,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
   }
 
-  const result = await createBooking(parsed.data);
+  let result: Awaited<ReturnType<typeof createBooking>>;  try {
+    result = await createBooking(parsed.data);
+  } catch (error) {
+    // Unconfigured/unreachable database (e.g. DATABASE_URL missing on a fresh
+    // deploy) — degrade gracefully and leave a distinctive log for operators.
+    console.error(
+      "[barberbook] database unavailable during booking:",
+      error instanceof Error ? `${error.name}: ${error.message}` : error,
+    );
+    return NextResponse.json({ error: "unavailable" }, { status: 503 });
+  }
 
   if (!result.ok) {
-    const status = result.error === "slot_taken" ? 409 : result.error === "not_found" ? 404 : 422;
+    const status =
+      result.error === "slot_taken"
+        ? 409
+        : result.error === "not_found"
+          ? 404
+          : result.error === "closed"
+            ? 422
+            : 503;
     return NextResponse.json({ error: result.error }, { status });
   }
 

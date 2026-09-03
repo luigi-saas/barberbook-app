@@ -464,7 +464,7 @@ export type CreateBookingInput = {
 
 export type CreateBookingResult =
   | { ok: true; reference: string }
-  | { ok: false; error: "slot_taken" | "not_found" | "closed" };
+  | { ok: false; error: "slot_taken" | "not_found" | "closed" | "unavailable" };
 
 const phoneDigits = (phone: string) => phone.replace(/\D/g, "");
 

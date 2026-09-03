@@ -17,8 +17,15 @@ const BarberPage = async ({ params, searchParams }: BarberPageProps) => {
   const shopQuery = shopParam ? `&shop=${shopParam}` : '';
   setRequestLocale(locale);
 
-  const shop = shopParam ? (await getShop(shopParam)) ?? (await getPrimaryShop()) : await getPrimaryShop();
-  const barbers = shop ? await listBarbers(shop.id) : [];
+  const logDbDown = (error: unknown) => {
+    console.error("[booking] database unavailable:", error instanceof Error ? error.message : error);
+    return null;
+  };
+  const shop = await (shopParam
+    ? getShop(shopParam).then((s) => s ?? getPrimaryShop())
+    : getPrimaryShop()
+  ).catch(logDbDown);
+  const barbers = shop ? (await listBarbers(shop.id).catch(logDbDown)) ?? [] : [];
 
   return (
     <main className="min-h-screen bg-bb-cream">

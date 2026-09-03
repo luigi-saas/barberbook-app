@@ -11,31 +11,40 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 neonConfig.webSocketConstructor = ws;
 
-const connectionString = keys().DATABASE_URL;
-const isLocal =
-  connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
+const createClient = (): PrismaClient => {
+  const connectionString = keys().DATABASE_URL;
+  const isLocal =
+    connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
 
-// Neon's HTTP/WebSocket driver only speaks to Neon endpoints. Everything
-// else (Render, RDS, Supabase, local Postgres) uses the standard pg adapter.
-const isNeon = /neon\.(tech|build|com)/i.test(connectionString);
+  // Neon's HTTP/WebSocket driver only speaks to Neon endpoints. Everything
+  // else (Render, RDS, Supabase, local Postgres) uses the standard pg adapter.
+  const isNeon = /neon\.(tech|build|com)/i.test(connectionString);
 
-const adapter = isNeon
-  ? new PrismaNeon({ connectionString })
-  : new PrismaPg({
-      connectionString,
-      // Managed providers (Render, RDS, Supabase…) enforce TLS; local
-      // sockets and the embedded dev server don't.
-      ...(isLocal ? {} : { ssl: { rejectUnauthorized: false } }),
-    });
+  const adapter = isNeon
+    ? new PrismaNeon({ connectionString })
+    : new PrismaPg({
+        connectionString,
+        // Managed providers (Render, RDS, Supabase…) enforce TLS; local
+        // sockets and the embedded dev server don't.
+        ...(isLocal ? {} : { ssl: { rejectUnauthorized: false } }),
+      });
 
-export const database = globalForPrisma.prisma || new PrismaClient({ adapter });
+  return new PrismaClient({ adapter });
+};
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = database;
-}
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = database;
-}
-
-export * from "./generated/client";
+/**
+ * Lazy Prisma client. The client (and its env validation) initializes on
+ * first QUERY, not at import time — a missing/unreachable DATABASE_URL then
+ * surfaces as a catchable error in the calling feature with a clear log,
+ * instead of a module-init crash that takes down every route importing it.
+ */
+export const database: PrismaClient = new Proxy({} as PrismaClient, {
+  get(_target, prop, receiver) {
+    if (!globalForPrisma.prisma) {
+      globalForPrisma.prisma = createClient();
+    }
+    const client = globalForPrisma.prisma;
+    const value = Reflect.get(client as object, prop, receiver);
+    return typeof value === "function" ? value.bind(client) : value;
+  },
+});

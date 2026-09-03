@@ -9,10 +9,15 @@ interface AnalyticsProviderProps {
 
 const { NEXT_PUBLIC_GA_MEASUREMENT_ID } = keys();
 
+// VercelAnalytics requests /_vercel/insights/script.js, which only exists on
+// Vercel — on other hosts (Render, local) it just produces a 404. VERCEL is
+// inlined at build time, so the component is dropped from non-Vercel builds.
+const isVercel = process.env.VERCEL === "1";
+
 export const AnalyticsProvider = ({ children }: AnalyticsProviderProps) => (
   <>
     {children}
-    <VercelAnalytics />
+    {isVercel && <VercelAnalytics />}
     {NEXT_PUBLIC_GA_MEASUREMENT_ID && (
       <GoogleAnalytics gaId={NEXT_PUBLIC_GA_MEASUREMENT_ID} />
     )}

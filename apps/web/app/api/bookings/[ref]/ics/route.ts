@@ -11,7 +11,13 @@ export async function GET(
   { params }: { params: Promise<{ ref: string }> },
 ) {
   const { ref } = await params;
-  const booking = await getBookingByReference(ref);
+  let booking = null;
+  try {
+    booking = await getBookingByReference(ref);
+  } catch (error) {
+    console.error("[ics] database unavailable:", error instanceof Error ? error.message : error);
+    return new Response("Service unavailable", { status: 503 });
+  }
 
   if (!booking) {
     return new Response("Not found", { status: 404 });

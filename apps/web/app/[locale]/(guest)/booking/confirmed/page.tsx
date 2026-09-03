@@ -18,7 +18,12 @@ const ConfirmedPage = async ({ params, searchParams }: ConfirmedPageProps) => {
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'web.guest.booking' });
 
-  const booking = ref ? await getBookingByReference(ref) : null;
+  const booking = ref
+    ? await getBookingByReference(ref).catch((error: unknown) => {
+        console.error("[booking] database unavailable:", error instanceof Error ? error.message : error);
+        return null;
+      })
+    : null;
 
   if (!booking) {
     return (

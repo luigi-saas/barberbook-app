@@ -14,8 +14,12 @@ const BookingPage = async ({ params }: BookingPageProps) => {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const shop = await getPrimaryShop();
-  const services = shop ? await listServices(shop.id) : [];
+  const logDbDown = (error: unknown) => {
+    console.error("[booking] database unavailable:", error instanceof Error ? error.message : error);
+    return null;
+  };
+  const shop = await getPrimaryShop().catch(logDbDown);
+  const services = shop ? (await listServices(shop.id).catch(logDbDown)) ?? [] : [];
 
   return (
     <main className="min-h-screen bg-bb-cream">

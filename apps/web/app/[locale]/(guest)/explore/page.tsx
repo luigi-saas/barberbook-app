@@ -18,7 +18,10 @@ const ExplorePage = async ({ params }: ExplorePageProps) => {
   setRequestLocale(locale);
   const t = await getTranslations('web.guest.explore');
 
-  const shops = await listShops();
+  const shops = (await listShops().catch((error: unknown) => {
+    console.error("[explore] database unavailable:", error instanceof Error ? error.message : error);
+    return [];
+  })) ?? [];
   const totalPages = Math.max(1, Math.ceil(shops.length / 9));
 
   return (
