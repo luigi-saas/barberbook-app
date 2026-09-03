@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "bun --bun next build",
-    "start": "bun --bun next start",
+    "start": "node ../../scripts/db-setup.mjs; bun --bun next start",
     "analyze": "ANALYZE=true npm run build",
     "clean": "git clean -xdf .cache .turbo dist node_modules",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"

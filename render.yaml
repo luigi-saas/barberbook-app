@@ -32,7 +32,7 @@ services:
       npm install -g bun@1
       bun install
       bun run build --filter web
-    startCommand: cd apps/web && bun run start
+    startCommand: cd apps/web && bun run start # package.json start runs scripts/db-setup.mjs first (schema + seed, idempotent)
     envVars:
       - key: NODE_VERSION
         value: "22"
@@ -64,7 +64,7 @@ services:
       npm install -g bun@1
       bun install
       bun run build --filter app
-    startCommand: cd apps/app && bun run start
+    startCommand: cd apps/app && bun run start # package.json start runs scripts/db-setup.mjs first (schema + seed, idempotent)
     envVars:
       - key: NODE_VERSION
         value: "22"
@@ -104,13 +104,12 @@ services:
       bunx prisma generate --schema=packages/database/prisma/schema.prisma
       # Apply schema + demo content. Both no-op safely when DATABASE_URL is
       # not set yet (first deploy before the DB is pasted in).
-      if [ -n "$DATABASE_URL" ]; then
-        bunx prisma db push --schema=packages/database/prisma/schema.prisma --skip-generate
-        bunx tsx scripts/seed-demo.mjs
-      else
-        echo "[api] DATABASE_URL not set — skipping db push + seed"
-      fi
+      node scripts/db-setup.mjs
       bun run build --filter api
+    # db-setup ALSO runs at start (idempotent, never blocks boot): even if the
+    # build ran before DATABASE_URL existed, the first boot after it is set
+    # applies the schema and seeds demo content. Same for web + app below —
+    # whichever service boots first brings the database up.
     startCommand: cd apps/api && bun run start
     healthCheckPath: /health
     envVars:
