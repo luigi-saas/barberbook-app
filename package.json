@@ -29,6 +29,8 @@
     "migrate": "cd packages/database && bunx prisma format && bunx prisma generate && bunx prisma migrate dev",
     "migrate:deploy": "cd packages/database && bunx prisma generate && bunx prisma migrate deploy",
     "db:push": "cd packages/database && bunx prisma format && bunx prisma generate && bunx prisma db push",
+    "db:seed": "bunx tsx seed/index.mjs",
+    "db:setup": "node scripts/db-setup.mjs",
     "clean": "git clean -xdf node_modules",
     "release": "npm publish"
   },

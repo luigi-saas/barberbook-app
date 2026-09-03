@@ -1,0 +1,66 @@
+/**
+ * Barber profiles — one User (role BARBER) + one Barber per entry.
+ * Fixed IDs: safe to upsert on every run.
+ */
+export const barbers = [
+  {
+    userId: "user_barber_yassine",
+    barberId: "barber_yassine",
+    firstName: "Yassine",
+    lastName: "El Mansouri",
+    email: "yassine@royalblade.ma",
+    phone: "+212661000001",
+    bio: "Beard Sculpting, Skin Fade, Hot Towel · Master artisan of Royal Moroccan grooming. 12 years of craft, meticulous detail, traditional techniques with a modern finish.",
+    avatarUrl: "/images/barber-yassine.jpg",
+  },
+  {
+    userId: "user_barber_mehdi",
+    barberId: "barber_mehdi",
+    firstName: "Mehdi",
+    lastName: "Benali",
+    email: "mehdi@royalblade.ma",
+    phone: "+212661000002",
+    bio: "Taper Fade, Hair Tattoo, Scissor Cut · The master of precision fades and contemporary urban styles. Modern architectural lines, traditional barbering soul.",
+    avatarUrl: "/images/barber-mehdi.jpg",
+  },
+  {
+    userId: "user_barber_omar",
+    barberId: "barber_omar",
+    firstName: "Omar",
+    lastName: "Tahiri",
+    email: "omar@royalblade.ma",
+    phone: "+212661000003",
+    bio: "Straight Razor, Classic Cut, Head Massage · Guardian of the old-world grooming legacy. Traditional straight-razor shaving and classic silhouettes.",
+    avatarUrl: "/images/barber-omar.jpg",
+  },
+  {
+    userId: "user_barber_hamza",
+    barberId: "barber_hamza",
+    firstName: "Hamza",
+    lastName: "Idrissi",
+    email: "hamza@heritage.ma",
+    phone: "+212661000004",
+    bio: "Classic Cut, Beard Trim, Hot Towel · Heritage craftsman. Calm, precise, old-school.",
+    avatarUrl: "/images/barber-hamza.jpg",
+  },
+  {
+    userId: "user_barber_reda",
+    barberId: "barber_reda",
+    firstName: "Reda",
+    lastName: "Alaoui",
+    email: "reda@heritage.ma",
+    phone: "+212661000005",
+    bio: "Skin Fade, Textured Crop, Styling · Young energy, sharp lines.",
+    avatarUrl: "/images/barber-reda.jpg",
+  },
+  {
+    userId: "user_barber_ilias",
+    barberId: "barber_ilias",
+    firstName: "Ilias",
+    lastName: "Bennani",
+    email: "ilias@atlas.ma",
+    phone: "+212661000006",
+    bio: "Royal Cut, Argan Facial, Grooming Ritual · Minimalist precision from Marrakech.",
+    avatarUrl: "/images/barber-ilias.jpg",
+  },
+];

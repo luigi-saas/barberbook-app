@@ -11,8 +11,8 @@
  *
  * Guarantees:
  *   - exits 0 in every scenario so it can never block a deploy/boot
- *   - idempotent: seed-demo.mjs uses fixed IDs + upserts, and is skipped
- *     entirely when the database already has shops (SEED_FORCE=1 overrides)
+ *   - idempotent: seed/ uses fixed IDs + upserts, and is skipped entirely
+ *     when the database already has shops (SEED_FORCE=1 overrides)
  *
  * Run: node scripts/db-setup.mjs
  */
@@ -151,7 +151,7 @@ async function main() {
 
   log("seeding demo content…");
   try {
-    execFileSync("bunx", ["tsx", "scripts/seed-demo.mjs"], {
+    execFileSync("bunx", ["tsx", "seed/index.mjs"], {
       stdio: "inherit",
       cwd: new globalThis.URL("..", import.meta.url).pathname,
     });
